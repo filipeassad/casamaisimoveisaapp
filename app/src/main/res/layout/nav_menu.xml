@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="horizontal"
+        android:gravity="left|center">
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="5dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivImagemUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:src="@drawable/bradpit"
+                app:civ_border_width="1dp"
+                app:civ_border_color="#E5E5E5"
+                android:layout_marginLeft="10dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:gravity="left|center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtNomeUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Brad Pitt"
+                android:textColor="#767676"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/txtProfissao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Captador"
+                android:textColor="#c4c4c4"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginTop="5dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#c4c4c4"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"></LinearLayout>
+
+    <ListView
+        android:layout_marginTop="20dp"
+        android:id="@+id/lvMenus"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:divider="#c4c4c4"
+        android:dividerHeight="0.5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
+
+    </ListView>
+
+</LinearLayout>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activitys.MainActivity"
+    android:background="@drawable/background_login">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#70000000">
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_marginTop="100dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="30dp">
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:text="LUCIENNE FRANCINE IMOVEIS CRECI:8033/MS"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_marginRight="20dp"></TextView>
+
+                <ImageView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/logo"></ImageView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="30dp"
+                android:paddingLeft="30dp"
+                android:layout_marginTop="60dp">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edittext_bg_login"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:hint="Login"
+                    android:textColor="#ffffff"
+                    android:textColorHint="#ffffff"
+                    android:inputType="textPersonName"
+                    android:textSize="14sp"
+                    android:drawableRight="@drawable/avatar_icone">
+
+                </EditText>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="30dp"
+                android:paddingLeft="30dp"
+                android:layout_marginTop="20dp">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edittext_bg_login"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:hint="Senha"
+                    android:textSize="14sp"
+                    android:textColor="#ffffff"
+                    android:textColorHint="#ffffff"
+                    android:inputType="textPassword"
+                    android:drawableRight="@drawable/padlock">
+
+                </EditText>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="30dp"
+                android:paddingLeft="30dp"
+                android:layout_marginTop="20dp">
+
+                <Button
+                    android:id="@+id/btnEntrar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Entrar"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold"
+                    android:background="@drawable/botao"></Button>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

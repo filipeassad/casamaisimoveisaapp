@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:gravity="left|center">
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/localizacao_cinza_escuro"
+        android:padding="5dp"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/txtNomeItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nome do item"
+        android:layout_marginLeft="10dp"
+        android:textColor="#767676"/>
+
+
+
+</LinearLayout>

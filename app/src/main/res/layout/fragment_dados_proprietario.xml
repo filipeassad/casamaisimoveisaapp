@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Detalhes Imóvel"
+                android:textColor="#000000"
+                android:layout_marginTop="20dp"
+                android:textSize="20sp"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dados Proprietário"
+                android:textColor="#0D5ED9"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nome Proprietário:"
+                android:textColor="#0D5ED9"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"></TextView>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/bg_edittext_form"
+                android:textColor="#c4c4c4"
+                android:textColorHint="#c4c4c4"
+                android:hint="Digite o nome do proprietário"
+                android:paddingLeft="10dp"></EditText>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CPF:"
+                android:textColor="#0D5ED9"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"></TextView>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/bg_edittext_form"
+                android:textColor="#c4c4c4"
+                android:textColorHint="#c4c4c4"
+                android:hint="Digite o CPF do proprietário"
+                android:paddingLeft="10dp"></EditText>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Telefone:"
+                android:textColor="#0D5ED9"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"></TextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/bg_edittext_form"
+                    android:textColor="#c4c4c4"
+                    android:textColorHint="#c4c4c4"
+                    android:hint="Digite o telefone do proprietário"
+                    android:paddingLeft="10dp"></EditText>
+
+            </LinearLayout>
+
+
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbarAlwaysDrawVerticalTrack="false"
+                android:layout_marginTop="10dp">
+
+            </ListView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
