@@ -52,7 +52,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dados Proprietário"
+                android:text="Composição Imóvel"
                 android:textColor="#0D5ED9"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center"></TextView>
@@ -60,7 +60,25 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nome Proprietário:"
+                android:text="Ambiente:"
+                android:textColor="#0D5ED9"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"></TextView>
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/shape_edittext_form"
+                android:textColor="#c4c4c4"
+                android:paddingLeft="10dp"></Spinner>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quantidade:"
                 android:textColor="#0D5ED9"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"></TextView>
@@ -74,63 +92,28 @@
                 android:background="@drawable/shape_edittext_form"
                 android:textColor="#c4c4c4"
                 android:textColorHint="#c4c4c4"
-                android:hint="Digite o nome do proprietário"
+                android:hint="Digite a quantidade"
                 android:paddingLeft="10dp"></EditText>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="CPF:"
-                android:textColor="#0D5ED9"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"></TextView>
-
-            <EditText
+            <Button
+                android:id="@+id/btnEntrar"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/shape_edittext_form"
-                android:textColor="#c4c4c4"
-                android:textColorHint="#c4c4c4"
-                android:hint="Digite o CPF do proprietário"
-                android:paddingLeft="10dp"></EditText>
-
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Telefone:"
-                android:textColor="#0D5ED9"
+                android:text="Adicionar"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:background="@drawable/selector_botao_arrendondado_azul"
                 android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"></TextView>
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"></Button>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="left|center">
-
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="3"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:background="@drawable/shape_edittext_form"
-                    android:textColor="#c4c4c4"
-                    android:textColorHint="#c4c4c4"
-                    android:hint="Digite o telefone do proprietário"
-                    android:paddingLeft="10dp"></EditText>
-
-                <Button
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:text="+"
-                    android:background="@drawable/selector_botao_azul_redondo"
-                    android:layout_marginRight="20dp"></Button>
-
-            </LinearLayout>
+                android:layout_height="1dp"
+                android:background="#E5E5E5"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"></LinearLayout>
 
             <ListView
                 android:layout_width="match_parent"

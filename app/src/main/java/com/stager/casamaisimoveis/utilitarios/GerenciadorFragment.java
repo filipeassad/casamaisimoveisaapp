@@ -7,8 +7,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.stager.casamaisimoveis.R;
+import com.stager.casamaisimoveis.fragments.CadastrarComposicaoImovelFragment;
+import com.stager.casamaisimoveis.fragments.CadastrarDadosAnuncioFragment;
+import com.stager.casamaisimoveis.fragments.CadastrarDadosProprietarioFragment;
 import com.stager.casamaisimoveis.fragments.CadastrarEnderecoRotaFragment;
+import com.stager.casamaisimoveis.fragments.CadastrarInformacoesImovelFragment;
 import com.stager.casamaisimoveis.fragments.CadastrarRotaFragment;
+import com.stager.casamaisimoveis.fragments.CadastrarVisitaImovelFragment;
+import com.stager.casamaisimoveis.fragments.CadastroEnderecoImovelFragment;
 import com.stager.casamaisimoveis.fragments.MapaRotaFragment;
 import com.stager.casamaisimoveis.fragments.RotaFragment;
 import com.stager.casamaisimoveis.fragments.TelaInicialFragment;
@@ -35,11 +41,28 @@ public class GerenciadorFragment {
         }else if(nomeTela.equals("CadastrarEnderecoRota")){
             CadastrarEnderecoRotaFragment cadastrarEnderecoRotaFragment = new CadastrarEnderecoRotaFragment();
             ft.replace(R.id.contFragments, cadastrarEnderecoRotaFragment, nomeTela);
+        }else if(nomeTela.equals("CadastrarDadosProprietario")){
+            CadastrarDadosProprietarioFragment cadastrarDadosProprietarioFragment = new CadastrarDadosProprietarioFragment();
+            ft.replace(R.id.contFragments, cadastrarDadosProprietarioFragment, nomeTela);
+        }else if(nomeTela.equals("CadastrarEnderecoImovel")){
+            CadastroEnderecoImovelFragment cadastroEnderecoImovelFragment = new CadastroEnderecoImovelFragment();
+            ft.replace(R.id.contFragments, cadastroEnderecoImovelFragment, nomeTela);
+        }else if(nomeTela.equals("CadastrarDadosAnuncio")){
+            CadastrarDadosAnuncioFragment cadastrarDadosAnuncioFragment = new CadastrarDadosAnuncioFragment();
+            ft.replace(R.id.contFragments, cadastrarDadosAnuncioFragment, nomeTela);
+        }else if(nomeTela.equals("CadastrarInformacoesImovel")){
+            CadastrarInformacoesImovelFragment cadastrarInformacoesImovelFragment = new CadastrarInformacoesImovelFragment();
+            ft.replace(R.id.contFragments, cadastrarInformacoesImovelFragment, nomeTela);
+        }else if(nomeTela.equals("CadastrarComposicaoImovel")){
+            CadastrarComposicaoImovelFragment cadastrarComposicaoImovelFragment = new CadastrarComposicaoImovelFragment();
+            ft.replace(R.id.contFragments, cadastrarComposicaoImovelFragment, nomeTela);
+        }else if(nomeTela.equals("CadastrarVisitaImovel")){
+            CadastrarVisitaImovelFragment cadastrarVisitaImovelFragment = new CadastrarVisitaImovelFragment();
+            ft.replace(R.id.contFragments, cadastrarVisitaImovelFragment, nomeTela);
         }
 
-        if(fm.findFragmentByTag(nomeTela) != null){
+        if(fm.findFragmentByTag(nomeTela) != null)
             fm.popBackStack(nomeTela,1);
-        }
 
         ft.addToBackStack(nomeTela);
         ft.commit();
@@ -47,6 +70,5 @@ public class GerenciadorFragment {
 
         if(llBgCinza.getVisibility() == View.VISIBLE)
             animacao.fadeOutAnimation(llBgCinza);
-
     }
 }

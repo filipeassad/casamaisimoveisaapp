@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -52,93 +53,101 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dados Proprietário"
+                android:text="Visita Imóvel"
                 android:textColor="#0D5ED9"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center"></TextView>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nome Proprietário:"
-                android:textColor="#0D5ED9"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"></TextView>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/shape_edittext_form"
-                android:textColor="#c4c4c4"
-                android:textColorHint="#c4c4c4"
-                android:hint="Digite o nome do proprietário"
-                android:paddingLeft="10dp"></EditText>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="CPF:"
-                android:textColor="#0D5ED9"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"></TextView>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/shape_edittext_form"
-                android:textColor="#c4c4c4"
-                android:textColorHint="#c4c4c4"
-                android:hint="Digite o CPF do proprietário"
-                android:paddingLeft="10dp"></EditText>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Telefone:"
-                android:textColor="#0D5ED9"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"></TextView>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="left|center">
+                android:layout_marginTop="10dp">
 
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="3"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:background="@drawable/shape_edittext_form"
-                    android:textColor="#c4c4c4"
-                    android:textColorHint="#c4c4c4"
-                    android:hint="Digite o telefone do proprietário"
-                    android:paddingLeft="10dp"></EditText>
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/bradpit"
+                    app:civ_border_width="1dp"
+                    app:civ_border_color="#0D5ED9"
+                    android:layout_marginLeft="10dp"/>
 
-                <Button
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:text="+"
-                    android:background="@drawable/selector_botao_azul_redondo"
-                    android:layout_marginRight="20dp"></Button>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="left|center"
+                    android:layout_marginLeft="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Brad Pitt"
+                        android:textColor="#0D5ED9"
+                        android:textStyle="bold"></TextView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Captador"
+                        android:textColor="#767676"
+                        android:textSize="10sp"></TextView>
+                </LinearLayout>
+
 
             </LinearLayout>
 
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbarAlwaysDrawVerticalTrack="false"
-                android:layout_marginTop="10dp">
 
-            </ListView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E5E5E5"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"></LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Data Visita:"
+                    android:textColor="#0D5ED9"
+                    android:layout_marginLeft="20dp"></TextView>
+
+                <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="03/11/2020"
+                android:textColor="#767676"
+                android:layout_marginLeft="5dp"></TextView>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Retorno:"
+                android:textColor="#0D5ED9"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"></TextView>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/shape_edittext_form"
+                android:textColor="#c4c4c4"
+                android:textColorHint="#c4c4c4"
+                android:hint="Digite a data do retorno"
+                android:paddingLeft="10dp"></EditText>
+
 
         </LinearLayout>
 
