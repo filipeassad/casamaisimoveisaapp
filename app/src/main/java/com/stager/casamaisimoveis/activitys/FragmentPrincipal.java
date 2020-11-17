@@ -58,7 +58,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         getNavMenu();
         inserirPrimeiroFragment();
 
-        acoes();
+        eventosBotoes();
     }
 
     private void inserirPrimeiroFragment(){
@@ -112,7 +112,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         });
     }
 
-    private void acoes(){
+    private void eventosBotoes(){
 
         llMenu.setOnClickListener(new View.OnClickListener() {
             @Override

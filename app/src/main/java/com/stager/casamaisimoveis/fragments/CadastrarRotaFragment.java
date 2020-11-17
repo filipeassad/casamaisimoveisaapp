@@ -20,5 +20,4 @@ public class CadastrarRotaFragment extends Fragment {
 
         return view;
     }
-
 }
