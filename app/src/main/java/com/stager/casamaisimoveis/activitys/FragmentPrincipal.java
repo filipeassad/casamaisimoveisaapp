@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
@@ -15,15 +16,25 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.stager.casamaisimoveis.R;
 import com.stager.casamaisimoveis.adapters.MenuAdapter;
+import com.stager.casamaisimoveis.api.GetHttpComHeaderAsyncTask;
 import com.stager.casamaisimoveis.fragments.TelaInicialFragment;
 import com.stager.casamaisimoveis.interfaces.FragmentInterface;
+import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
+import com.stager.casamaisimoveis.models.Autenticacao;
+import com.stager.casamaisimoveis.models.Captador;
+import com.stager.casamaisimoveis.models.Coordenador;
 import com.stager.casamaisimoveis.utilitarios.Animacao;
+import com.stager.casamaisimoveis.utilitarios.FerramentasBasicas;
 import com.stager.casamaisimoveis.utilitarios.GerenciadorFragment;
+import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentPrincipal extends FragmentActivity implements FragmentInterface {
+public class FragmentPrincipal extends FragmentActivity implements FragmentInterface, HttpResponseInterface {
 
     private LinearLayout llMenu;
     private TextView ttTituloFragment;
@@ -38,10 +49,13 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
 
     private Bundle savedInstanceState;
     private FragmentManager fm = getSupportFragmentManager();
-
     private GerenciadorFragment gerenciadorFragment = new GerenciadorFragment();
 
-    Animacao animacao = new Animacao();
+    private Animacao animacao = new Animacao();
+    private HttpResponseInterface httpResponseInterface;
+
+    private final String API_CAPTADOR = "api/captador";
+    private final String API_COORDENACAO = "api/coordenador";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,10 +69,24 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         llNavDraw = (LinearLayout) findViewById(R.id.llNavDraw);
         contFragments = (LinearLayout) findViewById(R.id.contFragments);
 
+        httpResponseInterface = this;
+
         getNavMenu();
         inserirPrimeiroFragment();
 
+        buscarDadosUsuario(VariaveisEstaticas.getAutenticacao());
+
         eventosBotoes();
+    }
+
+    private void buscarDadosUsuario(Autenticacao autenticacao){
+        if(autenticacao.isCaptador()){
+            GetHttpComHeaderAsyncTask getHttpComHeaderAsyncTask = new GetHttpComHeaderAsyncTask(this, httpResponseInterface, API_CAPTADOR);
+            getHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_CAPTADOR + "/" + autenticacao.getUsuario_id());
+        }else{
+            GetHttpComHeaderAsyncTask getHttpComHeaderAsyncTask = new GetHttpComHeaderAsyncTask(this, httpResponseInterface, API_COORDENACAO);
+            getHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_CAPTADOR + "/" + autenticacao.getUsuario_id());
+        }
     }
 
     private void inserirPrimeiroFragment(){
@@ -174,5 +202,48 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
     @Override
     public void sair() {
         finish();
+    }
+
+    @Override
+    public void retornoJsonObject(JSONObject jsonObject, String rotaApi) {
+        try {
+            if(jsonObject.has("erro")){
+                Toast.makeText(this, jsonObject.getString("erro"), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if(rotaApi.equals(API_CAPTADOR))
+                retornoCaptador(jsonObject);
+            else if(rotaApi.equals(API_COORDENACAO))
+                retornoCoordenador(jsonObject);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void retornoCaptador(JSONObject resposta){
+        Captador captadorLogado = new Captador();
+        captadorLogado.setCaptador(resposta);
+
+        if(captadorLogado.getId() != null){
+            VariaveisEstaticas.setCaptador(captadorLogado);
+            inserirDadosUsuario(captadorLogado.getNome(), "Captador");
+        }
+    }
+
+    private void retornoCoordenador(JSONObject resposta){
+        Coordenador coordenadorLogado = new Coordenador();
+        coordenadorLogado.setCoordenador(resposta);
+
+        if(coordenadorLogado.getId() != null){
+            VariaveisEstaticas.setCoordenador(coordenadorLogado);
+            inserirDadosUsuario(coordenadorLogado.getNome(), "Coordenador");
+        }
+    }
+
+    private void inserirDadosUsuario(String nome, String profissao){
+        txtNomeUsuario.setText(nome);
+        txtProfissao.setText(profissao);
     }
 }

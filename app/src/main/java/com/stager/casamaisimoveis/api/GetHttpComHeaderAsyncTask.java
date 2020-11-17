@@ -9,6 +9,7 @@ import com.stager.casamaisimoveis.utilitarios.FerramentasHttp;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -58,6 +59,8 @@ public class GetHttpComHeaderAsyncTask extends AsyncTask<String, String, JSONObj
                 else
                     jsonResposta =  new JSONObject(responseString);
 
+                return jsonResposta;
+
             }else if(responseCode == HttpURLConnection.HTTP_UNAUTHORIZED){
                 jsonResposta.put("erro", "sem credenciais");
                 return jsonResposta;
@@ -70,6 +73,12 @@ public class GetHttpComHeaderAsyncTask extends AsyncTask<String, String, JSONObj
         } finally {
             if(urlConnection != null)
                 urlConnection.disconnect();
+        }
+
+        try {
+            jsonResposta.put("erro", "Erro ao buscar.");
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
         return jsonResposta;
     }

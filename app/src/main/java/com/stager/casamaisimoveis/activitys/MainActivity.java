@@ -49,7 +49,7 @@ public class MainActivity extends Activity implements HttpResponseInterface{
         httpResponseInterface = this;
         databaseManager = new DatabaseManager(this);
         autenticacaoManager = new AutenticacaoManager(databaseManager.getWritableDatabase());
-        autenticacao = new Autenticacao();
+
         verificarAutenticacao();
 
         eventosBotoes();
@@ -84,7 +84,8 @@ public class MainActivity extends Activity implements HttpResponseInterface{
         if(!lista.isEmpty()){
 
             if(FerramentasBasicas.isOnline(this)){
-                VariaveisEstaticas.setAutenticacao(lista.get(0));
+                autenticacao = lista.get(0);
+                VariaveisEstaticas.setAutenticacao(autenticacao);
                 GetHttpComHeaderAsyncTask getHttpComHeaderAsyncTask = new GetHttpComHeaderAsyncTask(this, httpResponseInterface, API_VALIDAR_TOKEN);
                 getHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_VALIDAR_TOKEN);
             }else{
@@ -134,10 +135,5 @@ public class MainActivity extends Activity implements HttpResponseInterface{
             entrarAplicativo();
         else
             Toast.makeText(this, "Token inválido.", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void retornoJsonArray(JSONArray jsonArray, String rotaApi) {
-
     }
 }

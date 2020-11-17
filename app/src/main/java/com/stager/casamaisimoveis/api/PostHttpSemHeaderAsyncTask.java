@@ -35,7 +35,9 @@ public class PostHttpSemHeaderAsyncTask extends AsyncTask<String, String, JSONOb
 
     @Override
     protected void onPreExecute() {
-
+        progress = new ProgressDialog(contexto);
+        progress.setMessage("Aguarde...");
+        progress.show();
     }
 
     @Override
@@ -96,7 +98,7 @@ public class PostHttpSemHeaderAsyncTask extends AsyncTask<String, String, JSONOb
 
     @Override
     protected void onPostExecute(JSONObject resposta) {
-
+        progress.dismiss();
         httpResponseInterface.retornoJsonObject(resposta, rotaApi);
     }
 }
