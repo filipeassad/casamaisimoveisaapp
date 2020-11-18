@@ -7,4 +7,5 @@ public interface FragmentInterface {
     public void alterarTitulo(String nometitulo);
     public void voltar();
     public void sair();
+    public void fecharTeclado();
 }

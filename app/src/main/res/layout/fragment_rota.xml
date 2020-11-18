@@ -1,31 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff">
 
+    <ListView
+        android:id="@+id/lvRota"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        android:dividerHeight="10dp"
+        android:divider="#fff">
+    </ListView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="bottom">
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cadastrar Nova Rota"
-            android:padding="10dp"
-            android:background="@drawable/selector_botao_arrendondado_azul">
-
+            android:id="@+id/btnCadastrarRota"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="+"
+            android:background="@drawable/selector_botao_azul_borda_branca_redondo">
         </Button>
 
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/lvRota"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ListView>
-
-</LinearLayout>
+</FrameLayout>

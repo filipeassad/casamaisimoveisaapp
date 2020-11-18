@@ -1,7 +1,10 @@
 package com.stager.casamaisimoveis.activitys;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -10,10 +13,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.maps.SupportMapFragment;
 import com.stager.casamaisimoveis.R;
 import com.stager.casamaisimoveis.adapters.MenuAdapter;
 import com.stager.casamaisimoveis.api.GetHttpComHeaderAsyncTask;
@@ -35,6 +41,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentPrincipal extends FragmentActivity implements FragmentInterface, HttpResponseInterface {
+
+    static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 24;
 
     private LinearLayout llMenu;
     private TextView ttTituloFragment;
@@ -70,6 +78,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         contFragments = (LinearLayout) findViewById(R.id.contFragments);
 
         httpResponseInterface = this;
+        VariaveisEstaticas.setFragmentInterface(this);
 
         getNavMenu();
         inserirPrimeiroFragment();
@@ -77,6 +86,12 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         buscarDadosUsuario(VariaveisEstaticas.getAutenticacao());
 
         eventosBotoes();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        verificarPermissaoLocalizacao();
     }
 
     private void buscarDadosUsuario(Autenticacao autenticacao){
@@ -117,11 +132,6 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
 
         MenuAdapter menuAdapter = new MenuAdapter(this, R.layout.adapter_menu, listString);
         lvMenus.setAdapter(menuAdapter);
-
-        /*if(VariaveisEstaticas.getUsuario() != null){
-            txtNomeUsuario.setText(VariaveisEstaticas.getUsuario().getNome() != null ? VariaveisEstaticas.getUsuario().getNome() : "Sem Nome");
-            txtEmailUsuario.setText(VariaveisEstaticas.getUsuario().getEmail() != null ? VariaveisEstaticas.getUsuario().getEmail() : "Sem e-mail");
-        }*/
 
         lvMenus.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -205,6 +215,15 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
     }
 
     @Override
+    public void fecharTeclado() {
+        InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    @Override
     public void retornoJsonObject(JSONObject jsonObject, String rotaApi) {
         try {
             if(jsonObject.has("erro")){
@@ -229,6 +248,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         if(captadorLogado.getId() != null){
             VariaveisEstaticas.setCaptador(captadorLogado);
             inserirDadosUsuario(captadorLogado.getNome(), "Captador");
+            VariaveisEstaticas.getTelaInicialInterface().carregarDadosUsuario();
         }
     }
 
@@ -239,6 +259,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         if(coordenadorLogado.getId() != null){
             VariaveisEstaticas.setCoordenador(coordenadorLogado);
             inserirDadosUsuario(coordenadorLogado.getNome(), "Coordenador");
+            VariaveisEstaticas.getTelaInicialInterface().carregarDadosUsuario();
         }
     }
 
@@ -246,4 +267,29 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         txtNomeUsuario.setText(nome);
         txtProfissao.setText(profissao);
     }
+
+    public void verificarPermissaoLocalizacao(){
+        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION )
+                != PackageManager.PERMISSION_GRANTED ) {
+
+            ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
+                    MY_PERMISSIONS_REQUEST_READ_CONTACTS );
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                } else {
+                    this.finish();
+                }
+                return;
+            }
+        }
+    }
+
 }

@@ -72,7 +72,7 @@ public class MainActivity extends Activity implements HttpResponseInterface{
                 autenticacao = new Autenticacao();
 
                 JSONObject jsonLogin = autenticacao.getJsonLogin(edtLogin.getText().toString(), edtSenha.getText().toString());
-                PostHttpSemHeaderAsyncTask postHttpSemHeaderAsyncTask = new PostHttpSemHeaderAsyncTask(getBaseContext(), jsonLogin, httpResponseInterface, API_LOGIN);
+                PostHttpSemHeaderAsyncTask postHttpSemHeaderAsyncTask = new PostHttpSemHeaderAsyncTask(view.getContext(), jsonLogin, httpResponseInterface, API_LOGIN);
                 postHttpSemHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_LOGIN);
             }
         });
