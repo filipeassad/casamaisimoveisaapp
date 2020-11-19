@@ -20,6 +20,7 @@
                 android:layout_marginTop="20dp">
 
                 <Button
+                    android:id="@+id/btnVoltar"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_gravity="left"
@@ -38,10 +39,11 @@
                     android:textSize="20sp"></TextView>
 
                 <Button
+                    android:id="@+id/btnAvancar"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_gravity="right"
-                    android:text="Salvar"
+                    android:text="Avançar"
                     android:layout_marginRight="10dp"
                     android:background="@drawable/selector_botao_topo_form"
                     android:textColor="#0D5ED9"
@@ -58,6 +60,7 @@
                 android:layout_gravity="center"></TextView>
 
             <FrameLayout
+                android:id="@+id/flDivulgacao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -76,14 +79,17 @@
                     android:layout_gravity="left|center"></TextView>
 
                 <CheckBox
+                    android:id="@+id/ckDivulgacao"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|center"
-                    android:layout_marginRight="20dp"></CheckBox>
+                    android:layout_marginRight="20dp"
+                    android:clickable="false"></CheckBox>
 
             </FrameLayout>
 
             <FrameLayout
+                android:id="@+id/flPlaca"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -102,14 +108,17 @@
                     android:layout_gravity="left|center"></TextView>
 
                 <CheckBox
+                    android:id="@+id/ckPlaca"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|center"
-                    android:layout_marginRight="20dp"></CheckBox>
+                    android:layout_marginRight="20dp"
+                    android:clickable="false"></CheckBox>
 
             </FrameLayout>
 
             <FrameLayout
+                android:id="@+id/flExclusividade"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -128,14 +137,17 @@
                     android:layout_gravity="left|center"></TextView>
 
                 <CheckBox
+                    android:id="@+id/ckExclusividade"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|center"
-                    android:layout_marginRight="20dp"></CheckBox>
+                    android:layout_marginRight="20dp"
+                    android:clickable="false"></CheckBox>
 
             </FrameLayout>
 
             <FrameLayout
+                android:id="@+id/flTempoAutorizacao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -146,7 +158,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tempo autorização ?"
+                    android:text="Tempo autorização até venda ?"
                     android:textColor="#0D5ED9"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="10dp"
@@ -154,10 +166,12 @@
                     android:layout_gravity="left|center"></TextView>
 
                 <CheckBox
+                    android:id="@+id/ckTempoAutorizacao"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|center"
-                    android:layout_marginRight="20dp"></CheckBox>
+                    android:layout_marginRight="20dp"
+                    android:clickable="false"></CheckBox>
 
             </FrameLayout>
 

@@ -32,6 +32,7 @@
                 android:layout_marginLeft="20dp"></TextView>
 
             <EditText
+                android:id="@+id/edtBairroEnderecoRota"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
@@ -41,7 +42,8 @@
                 android:textColor="#c4c4c4"
                 android:textColorHint="#c4c4c4"
                 android:hint="Digite o nome do bairro"
-                android:paddingLeft="10dp"></EditText>
+                android:paddingLeft="10dp"
+                android:textSize="14sp"></EditText>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -49,9 +51,11 @@
                 android:text="Rua:"
                 android:textColor="#0D5ED9"
                 android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"></TextView>
+                android:layout_marginLeft="20dp"
+                android:textSize="14sp"></TextView>
 
             <EditText
+                android:id="@+id/edtRuaEnderecoRota"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
@@ -61,7 +65,9 @@
                 android:textColor="#c4c4c4"
                 android:textColorHint="#c4c4c4"
                 android:hint="Digite o nome da rua"
-                android:paddingLeft="10dp"></EditText>
+                android:paddingLeft="10dp"
+                android:textSize="14sp"
+                android:inputType="textPersonName"></EditText>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -69,9 +75,11 @@
                 android:text="Número:"
                 android:textColor="#0D5ED9"
                 android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"></TextView>
+                android:layout_marginLeft="20dp"
+                android:inputType="textPersonName"></TextView>
 
             <EditText
+                android:id="@+id/edtNumeroEnderecoRota"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
@@ -81,10 +89,12 @@
                 android:textColor="#c4c4c4"
                 android:textColorHint="#c4c4c4"
                 android:hint="Digite o número do endereço"
-                android:paddingLeft="10dp"></EditText>
+                android:paddingLeft="10dp"
+                android:textSize="14sp"
+                android:inputType="number"></EditText>
 
             <Button
-                android:id="@+id/btnCadastrarRota"
+                android:id="@+id/btnCadastrarEnderecoRota"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Cadastrar"

@@ -47,7 +47,7 @@
                 android:text="Retorno: 3"
                 android:textColor="#767676"
                 android:textSize="15sp"
-                android:layout_marginLeft="10dp"></TextView>
+                android:layout_marginLeft="20dp"></TextView>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -55,17 +55,18 @@
                 android:text="Finalizado: 10"
                 android:textColor="#767676"
                 android:textSize="15sp"
-                android:layout_marginLeft="10dp"></TextView>
+                android:layout_marginLeft="20dp"></TextView>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:gravity="center">
 
             <Button
+                android:id="@+id/btnNovoEndereco"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
@@ -78,6 +79,7 @@
             </Button>
 
             <Button
+                android:id="@+id/btnNovoImovel"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
@@ -88,8 +90,6 @@
                 android:textSize="11sp">
 
             </Button>
-
-
 
         </LinearLayout>
 

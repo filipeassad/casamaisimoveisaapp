@@ -20,6 +20,7 @@
                 android:layout_marginTop="20dp">
 
                 <Button
+                    android:id="@+id/btnVoltar"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_gravity="left"
@@ -38,10 +39,11 @@
                     android:textSize="20sp"></TextView>
 
                 <Button
+                    android:id="@+id/btnAvancar"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_gravity="right"
-                    android:text="Salvar"
+                    android:text="Avancar"
                     android:layout_marginRight="10dp"
                     android:background="@drawable/selector_botao_topo_form"
                     android:textColor="#0D5ED9"
@@ -66,6 +68,7 @@
                 android:layout_marginLeft="20dp"></TextView>
 
             <EditText
+                android:id="@+id/edtBairroEnderecoImovel"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
@@ -75,7 +78,9 @@
                 android:textColor="#c4c4c4"
                 android:textColorHint="#c4c4c4"
                 android:hint="Digite o nome do bairro"
-                android:paddingLeft="10dp"></EditText>
+                android:paddingLeft="10dp"
+                android:textSize="14sp"
+                android:inputType="textPersonName"></EditText>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -86,6 +91,7 @@
                 android:layout_marginLeft="20dp"></TextView>
 
             <EditText
+                android:id="@+id/edtRuaEnderecoImovel"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
@@ -95,7 +101,9 @@
                 android:textColor="#c4c4c4"
                 android:textColorHint="#c4c4c4"
                 android:hint="Digite o nome da rua"
-                android:paddingLeft="10dp"></EditText>
+                android:paddingLeft="10dp"
+                android:textSize="14sp"
+                android:inputType="textPersonName"></EditText>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -106,6 +114,7 @@
                 android:layout_marginLeft="20dp"></TextView>
 
             <EditText
+                android:id="@+id/edtNumeroEnderecoImovel"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
@@ -115,7 +124,9 @@
                 android:textColor="#c4c4c4"
                 android:textColorHint="#c4c4c4"
                 android:hint="Digite o número do imóvel"
-                android:paddingLeft="10dp"></EditText>
+                android:paddingLeft="10dp"
+                android:textSize="14sp"
+                android:inputType="number"></EditText>
 
         </LinearLayout>
 

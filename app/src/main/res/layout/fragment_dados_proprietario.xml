@@ -20,6 +20,7 @@
                 android:layout_marginTop="20dp">
 
                 <Button
+                    android:id="@+id/btnVoltar"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_gravity="left"
@@ -38,10 +39,11 @@
                     android:textSize="20sp"></TextView>
 
                 <Button
+                    android:id="@+id/btnAvancar"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_gravity="right"
-                    android:text="Salvar"
+                    android:text="Avançar"
                     android:layout_marginRight="10dp"
                     android:background="@drawable/selector_botao_topo_form"
                     android:textColor="#0D5ED9"
@@ -66,6 +68,7 @@
                 android:layout_marginLeft="20dp"></TextView>
 
             <EditText
+                android:id="@+id/edtNomeProprietario"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
@@ -75,7 +78,9 @@
                 android:textColor="#c4c4c4"
                 android:textColorHint="#c4c4c4"
                 android:hint="Digite o nome do proprietário"
-                android:paddingLeft="10dp"></EditText>
+                android:paddingLeft="10dp"
+                android:textSize="14sp"
+                android:inputType="textPersonName"></EditText>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -86,6 +91,7 @@
                 android:layout_marginLeft="20dp"></TextView>
 
             <EditText
+                android:id="@+id/edtCpfProprietario"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
@@ -95,7 +101,9 @@
                 android:textColor="#c4c4c4"
                 android:textColorHint="#c4c4c4"
                 android:hint="Digite o CPF do proprietário"
-                android:paddingLeft="10dp"></EditText>
+                android:paddingLeft="10dp"
+                android:textSize="14sp"
+                android:inputType="phone"></EditText>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -112,6 +120,7 @@
                 android:gravity="left|center">
 
                 <EditText
+                    android:id="@+id/edtTelefoneProprietario"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_weight="3"
@@ -121,9 +130,12 @@
                     android:textColor="#c4c4c4"
                     android:textColorHint="#c4c4c4"
                     android:hint="Digite o telefone do proprietário"
-                    android:paddingLeft="10dp"></EditText>
+                    android:paddingLeft="10dp"
+                    android:textSize="14sp"
+                    android:inputType="phone"></EditText>
 
                 <Button
+                    android:id="@+id/btnAdicionar"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:text="+"
@@ -133,10 +145,13 @@
             </LinearLayout>
 
             <ListView
+                android:id="@+id/lvTelefoneProprietario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbarAlwaysDrawVerticalTrack="false"
-                android:layout_marginTop="10dp">
+                android:divider="#fff"
+                android:dividerHeight="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
             </ListView>
 

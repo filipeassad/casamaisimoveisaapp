@@ -14,7 +14,7 @@ import com.stager.casamaisimoveis.fragments.CadastrarEnderecoRotaFragment;
 import com.stager.casamaisimoveis.fragments.CadastrarInformacoesImovelFragment;
 import com.stager.casamaisimoveis.fragments.CadastrarRotaFragment;
 import com.stager.casamaisimoveis.fragments.CadastrarVisitaImovelFragment;
-import com.stager.casamaisimoveis.fragments.CadastroEnderecoImovelFragment;
+import com.stager.casamaisimoveis.fragments.CadastrarEnderecoImovelFragment;
 import com.stager.casamaisimoveis.fragments.MapaRotaFragment;
 import com.stager.casamaisimoveis.fragments.RotaFragment;
 import com.stager.casamaisimoveis.fragments.TelaInicialFragment;
@@ -45,8 +45,8 @@ public class GerenciadorFragment {
             CadastrarDadosProprietarioFragment cadastrarDadosProprietarioFragment = new CadastrarDadosProprietarioFragment();
             ft.replace(R.id.contFragments, cadastrarDadosProprietarioFragment, nomeTela);
         }else if(nomeTela.equals("CadastrarEnderecoImovel")){
-            CadastroEnderecoImovelFragment cadastroEnderecoImovelFragment = new CadastroEnderecoImovelFragment();
-            ft.replace(R.id.contFragments, cadastroEnderecoImovelFragment, nomeTela);
+            CadastrarEnderecoImovelFragment cadastrarEnderecoImovelFragment = new CadastrarEnderecoImovelFragment();
+            ft.replace(R.id.contFragments, cadastrarEnderecoImovelFragment, nomeTela);
         }else if(nomeTela.equals("CadastrarDadosAnuncio")){
             CadastrarDadosAnuncioFragment cadastrarDadosAnuncioFragment = new CadastrarDadosAnuncioFragment();
             ft.replace(R.id.contFragments, cadastrarDadosAnuncioFragment, nomeTela);

@@ -98,9 +98,8 @@ public class RotaFragment extends Fragment implements HttpResponseInterface {
         lvRota.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                VariaveisEstaticas.setRotaSelecionada((Rota) parent.getItemAtPosition(position));
                 VariaveisEstaticas.getFragmentInterface().alterarFragment("MapaRota");
-
             }
         });
     }

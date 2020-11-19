@@ -5,15 +5,55 @@ import com.stager.casamaisimoveis.interfaces.TelaInicialInterface;
 import com.stager.casamaisimoveis.models.Autenticacao;
 import com.stager.casamaisimoveis.models.Captador;
 import com.stager.casamaisimoveis.models.Coordenador;
+import com.stager.casamaisimoveis.models.DadosImovel;
+import com.stager.casamaisimoveis.models.EnderecoImovel;
+import com.stager.casamaisimoveis.models.Proprietario;
+import com.stager.casamaisimoveis.models.Rota;
 
 public class VariaveisEstaticas {
 
     private static Autenticacao autenticacao;
     private static Captador captador;
     private static Coordenador coordenador;
+    private static Rota rotaSelecionada;
+    private static Proprietario proprietarioCadastro;
+    private static EnderecoImovel enderecoImovelCadastro;
+    private static DadosImovel dadosImovelCadastro;
 
     private static TelaInicialInterface telaInicialInterface;
     private static FragmentInterface fragmentInterface;
+
+    public static DadosImovel getDadosImovelCadastro() {
+        return dadosImovelCadastro;
+    }
+
+    public static void setDadosImovelCadastro(DadosImovel dadosImovelCadastro) {
+        VariaveisEstaticas.dadosImovelCadastro = dadosImovelCadastro;
+    }
+
+    public static EnderecoImovel getEnderecoImovelCadastro() {
+        return enderecoImovelCadastro;
+    }
+
+    public static void setEnderecoImovelCadastro(EnderecoImovel enderecoImovelCadastro) {
+        VariaveisEstaticas.enderecoImovelCadastro = enderecoImovelCadastro;
+    }
+
+    public static Proprietario getProprietarioCadastro() {
+        return proprietarioCadastro;
+    }
+
+    public static void setProprietarioCadastro(Proprietario proprietarioCadastro) {
+        VariaveisEstaticas.proprietarioCadastro = proprietarioCadastro;
+    }
+
+    public static Rota getRotaSelecionada() {
+        return rotaSelecionada;
+    }
+
+    public static void setRotaSelecionada(Rota rotaSelecionada) {
+        VariaveisEstaticas.rotaSelecionada = rotaSelecionada;
+    }
 
     public static FragmentInterface getFragmentInterface() {
         return fragmentInterface;

@@ -20,6 +20,7 @@
                 android:layout_marginTop="20dp">
 
                 <Button
+                    android:id="@+id/btnVoltar"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_gravity="left"
@@ -38,10 +39,11 @@
                     android:textSize="20sp"></TextView>
 
                 <Button
+                    android:id="@+id/btnAvancar"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_gravity="right"
-                    android:text="Salvar"
+                    android:text="Avançar"
                     android:layout_marginRight="10dp"
                     android:background="@drawable/selector_botao_topo_form"
                     android:textColor="#0D5ED9"
@@ -66,6 +68,7 @@
                 android:layout_marginLeft="20dp"></TextView>
 
             <Spinner
+                android:id="@+id/spTipoImovel"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
@@ -84,6 +87,7 @@
                 android:layout_marginLeft="20dp"></TextView>
 
             <Spinner
+                android:id="@+id/spFaseObra"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
@@ -102,6 +106,7 @@
                 android:layout_marginLeft="20dp"></TextView>
 
             <EditText
+                android:id="@+id/edtValor"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
@@ -111,7 +116,32 @@
                 android:textColor="#c4c4c4"
                 android:textColorHint="#c4c4c4"
                 android:hint="Digite o valor do imóvel"
-                android:paddingLeft="10dp"></EditText>
+                android:paddingLeft="10dp"
+                android:textSize="14sp"
+                android:inputType="phone"></EditText>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Honorário:"
+                android:textColor="#0D5ED9"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"></TextView>
+
+            <EditText
+                android:id="@+id/edtHonorario"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/shape_edittext_form"
+                android:textColor="#c4c4c4"
+                android:textColorHint="#c4c4c4"
+                android:hint="Digite o valor do honorário"
+                android:paddingLeft="10dp"
+                android:textSize="14sp"
+                android:inputType="phone">></EditText>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -122,6 +152,7 @@
                 android:layout_marginLeft="20dp"></TextView>
 
             <EditText
+                android:id="@+id/edtAreaTerreno"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
@@ -131,7 +162,9 @@
                 android:textColor="#c4c4c4"
                 android:textColorHint="#c4c4c4"
                 android:hint="Digite a área do terreno"
-                android:paddingLeft="10dp"></EditText>
+                android:paddingLeft="10dp"
+                android:textSize="14sp"
+                android:inputType="phone">></EditText>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -142,6 +175,7 @@
                 android:layout_marginLeft="20dp"></TextView>
 
             <EditText
+                android:id="@+id/edtAreaConstruida"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
@@ -151,7 +185,9 @@
                 android:textColor="#c4c4c4"
                 android:textColorHint="#c4c4c4"
                 android:hint="Digite a área construída"
-                android:paddingLeft="10dp"></EditText>
+                android:paddingLeft="10dp"
+                android:textSize="14sp"
+                android:inputType="phone">></EditText>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -162,6 +198,7 @@
                 android:layout_marginLeft="20dp"></TextView>
 
             <EditText
+                android:id="@+id/edtObservacao"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_marginTop="10dp"
@@ -170,12 +207,13 @@
                 android:background="@drawable/shape_edittext_form"
                 android:textColor="#c4c4c4"
                 android:textColorHint="#c4c4c4"
-                android:inputType="text|textMultiLine"
+                android:inputType="textPersonName|textMultiLine"
                 android:hint="Digite sua observação"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:gravity="top"
-                android:layout_marginBottom="50dp"></EditText>
+                android:layout_marginBottom="50dp"
+                android:textSize="14sp"></EditText>
 
         </LinearLayout>
 
