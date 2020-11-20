@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -14,7 +16,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.stager.casamaisimoveis.R;
+import com.stager.casamaisimoveis.models.ItemSpinner;
+import com.stager.casamaisimoveis.utilitarios.MontarSpinners;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
+
+import java.util.List;
 
 public class CadastrarComposicaoImovelFragment extends Fragment {
 
@@ -25,6 +31,9 @@ public class CadastrarComposicaoImovelFragment extends Fragment {
     private Spinner spAmbiente;
     private EditText edtQuantidade;
     private ListView lvAmbientes;
+
+    private List<ItemSpinner> ambientes;
+    private ItemSpinner ambienteSelecionado;
 
     @Nullable
     @Override
@@ -68,6 +77,26 @@ public class CadastrarComposicaoImovelFragment extends Fragment {
     }
 
     private void carregarSpinner(){
+        MontarSpinners montarSpinners = new MontarSpinners();
 
+        ambientes = montarSpinners.listarAmbiente();
+        ArrayAdapter adapterAmbienteImovel = new ArrayAdapter(getContext(),
+                R.layout.adapter_item_spinner,
+                ambientes);
+
+        adapterAmbienteImovel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spAmbiente.setAdapter(adapterAmbienteImovel);
+
+        spAmbiente.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int posicao, long l) {
+                ambienteSelecionado = (ItemSpinner) adapterView.getItemAtPosition(posicao);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 }

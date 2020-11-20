@@ -37,4 +37,40 @@ public class MontarSpinners {
 
         return tiposImovel;
     }
+
+    public List<ItemSpinner> listarAmbiente(){
+        List<ItemSpinner> ambientesImovel = new ArrayList<>();
+
+        ambientesImovel.add(new ItemSpinner(0, "Selecione"));
+        ambientesImovel.add(new ItemSpinner(1, "Quarto"));
+        ambientesImovel.add(new ItemSpinner(2, "Suíte"));
+        ambientesImovel.add(new ItemSpinner(3, "Closet"));
+        ambientesImovel.add(new ItemSpinner(4, "Lavanderia"));
+        ambientesImovel.add(new ItemSpinner(5, "Banheiro"));
+        ambientesImovel.add(new ItemSpinner(6, "Lavabo"));
+        ambientesImovel.add(new ItemSpinner(7, "Área de Serviço/Deposito"));
+        ambientesImovel.add(new ItemSpinner(8, "Varanda Gourmet"));
+        ambientesImovel.add(new ItemSpinner(9, "Sala de Estar"));
+        ambientesImovel.add(new ItemSpinner(10, "Sala de Jantar"));
+        ambientesImovel.add(new ItemSpinner(11, "Sala de TV"));
+        ambientesImovel.add(new ItemSpinner(12, "Jardom de Inverno"));
+        ambientesImovel.add(new ItemSpinner(13, "Escritório"));
+        ambientesImovel.add(new ItemSpinner(14, "Cozinha"));
+        ambientesImovel.add(new ItemSpinner(15, "Cozinha Americana"));
+        ambientesImovel.add(new ItemSpinner(16, "Copa"));
+        ambientesImovel.add(new ItemSpinner(17, "Despensa"));
+        ambientesImovel.add(new ItemSpinner(18, "Churrasqueira"));
+        ambientesImovel.add(new ItemSpinner(19, "Vaga Descoberta"));
+        ambientesImovel.add(new ItemSpinner(20, "Vaga Coberta"));
+        ambientesImovel.add(new ItemSpinner(21, "Varanda"));
+        ambientesImovel.add(new ItemSpinner(22, "Cerca Elétrica"));
+        ambientesImovel.add(new ItemSpinner(23, "Concertina"));
+        ambientesImovel.add(new ItemSpinner(24, "Alarme"));
+        ambientesImovel.add(new ItemSpinner(25, "Motor Portão"));
+        ambientesImovel.add(new ItemSpinner(26, "Forro Rebaixado"));
+        ambientesImovel.add(new ItemSpinner(27, "Geminada"));
+        ambientesImovel.add(new ItemSpinner(28, "Corredor Lateral"));
+
+        return ambientesImovel;
+    }
 }
