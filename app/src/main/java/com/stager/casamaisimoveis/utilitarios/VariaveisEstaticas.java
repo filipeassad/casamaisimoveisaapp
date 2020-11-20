@@ -4,11 +4,14 @@ import com.stager.casamaisimoveis.interfaces.FragmentInterface;
 import com.stager.casamaisimoveis.interfaces.TelaInicialInterface;
 import com.stager.casamaisimoveis.models.Autenticacao;
 import com.stager.casamaisimoveis.models.Captador;
+import com.stager.casamaisimoveis.models.Composicao;
 import com.stager.casamaisimoveis.models.Coordenador;
 import com.stager.casamaisimoveis.models.DadosImovel;
 import com.stager.casamaisimoveis.models.EnderecoImovel;
 import com.stager.casamaisimoveis.models.Proprietario;
 import com.stager.casamaisimoveis.models.Rota;
+
+import java.util.List;
 
 public class VariaveisEstaticas {
 
@@ -19,9 +22,18 @@ public class VariaveisEstaticas {
     private static Proprietario proprietarioCadastro;
     private static EnderecoImovel enderecoImovelCadastro;
     private static DadosImovel dadosImovelCadastro;
+    private static List<Composicao> composicoesImovelCadastro;
 
     private static TelaInicialInterface telaInicialInterface;
     private static FragmentInterface fragmentInterface;
+
+    public static List<Composicao> getComposicoesImovelCadastro() {
+        return composicoesImovelCadastro;
+    }
+
+    public static void setComposicoesImovelCadastro(List<Composicao> composicoesImovelCadastro) {
+        VariaveisEstaticas.composicoesImovelCadastro = composicoesImovelCadastro;
+    }
 
     public static DadosImovel getDadosImovelCadastro() {
         return dadosImovelCadastro;

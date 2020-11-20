@@ -21,6 +21,7 @@
             android:gravity="left|center">
 
             <TextView
+                android:id="@+id/txtNomeAmbiente"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Quarto"
@@ -29,6 +30,7 @@
                 android:textStyle="bold"></TextView>
 
             <TextView
+                android:id="@+id/txtQuantidadeAmbinte"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Quantidade: 2"
@@ -41,6 +43,7 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/btnRemoverAmbiente"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:text="x"

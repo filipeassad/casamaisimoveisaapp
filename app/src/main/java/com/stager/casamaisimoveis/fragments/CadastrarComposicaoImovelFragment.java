@@ -8,21 +8,28 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.stager.casamaisimoveis.R;
+import com.stager.casamaisimoveis.adapters.ComposicaoAdapter;
+import com.stager.casamaisimoveis.adapters.TelefoneProprietarioAdapter;
+import com.stager.casamaisimoveis.interfaces.ComposicaoInterface;
+import com.stager.casamaisimoveis.models.Composicao;
 import com.stager.casamaisimoveis.models.ItemSpinner;
 import com.stager.casamaisimoveis.utilitarios.MontarSpinners;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class CadastrarComposicaoImovelFragment extends Fragment {
+public class CadastrarComposicaoImovelFragment extends Fragment implements ComposicaoInterface {
 
     private Button btnVoltar;
     private Button btnAvancar;
@@ -34,6 +41,9 @@ public class CadastrarComposicaoImovelFragment extends Fragment {
 
     private List<ItemSpinner> ambientes;
     private ItemSpinner ambienteSelecionado;
+    private List<Composicao> composicoesImovel;
+
+    private ComposicaoInterface composicaoInterface;
 
     @Nullable
     @Override
@@ -48,9 +58,26 @@ public class CadastrarComposicaoImovelFragment extends Fragment {
         edtQuantidade = (EditText) view.findViewById(R.id.edtQuantidade);
         lvAmbientes = (ListView) view.findViewById(R.id.lvAmbientes);
 
+        composicoesImovel = new ArrayList<>();
+        composicaoInterface = this;
         eventosBotoes();
         carregarSpinner();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(VariaveisEstaticas.getComposicoesImovelCadastro() != null){
+            composicoesImovel = VariaveisEstaticas.getComposicoesImovelCadastro();
+            ComposicaoAdapter composicaoAdapter = new ComposicaoAdapter(getContext(),
+                    R.layout.adapter_ambiente_imovel,
+                    composicoesImovel,
+                    composicaoInterface);
+            lvAmbientes.setAdapter(composicaoAdapter);
+            lvAmbientes.setLayoutParams(parametrosListView());
+        }
     }
 
     private void eventosBotoes(){
@@ -64,16 +91,28 @@ public class CadastrarComposicaoImovelFragment extends Fragment {
         btnAvancar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                avancarFormulario();
             }
         });
 
         btnAdicionar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                adicionarComposicao();
             }
         });
+    }
+
+    private void avancarFormulario(){
+        VariaveisEstaticas.getFragmentInterface().fecharTeclado();
+
+        if(composicoesImovel.size() == 0){
+            Toast.makeText(getContext(), "Adicione pelo menos uma composição", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        VariaveisEstaticas.setComposicoesImovelCadastro(composicoesImovel);
+        VariaveisEstaticas.getFragmentInterface().alterarFragment("CadastrarVisitaImovel");
     }
 
     private void carregarSpinner(){
@@ -98,5 +137,50 @@ public class CadastrarComposicaoImovelFragment extends Fragment {
 
             }
         });
+    }
+
+    private void adicionarComposicao(){
+        VariaveisEstaticas.getFragmentInterface().fecharTeclado();
+
+        if(ambienteSelecionado == null || (ambienteSelecionado != null && ambienteSelecionado.getId() == 0)){
+            Toast.makeText(getContext(), "Selecione o ambiente", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(edtQuantidade.getText().toString().trim().equals("")){
+            edtQuantidade.setError("Digite a quantidade.");
+            return;
+        }
+
+        Composicao composicao = new Composicao(ambienteSelecionado.getId(), Integer.parseInt(edtQuantidade.getText().toString()));
+        composicoesImovel.add(composicao);
+
+        ComposicaoAdapter composicaoAdapter = new ComposicaoAdapter(getContext(),
+                R.layout.adapter_ambiente_imovel,
+                composicoesImovel,
+                composicaoInterface);
+        lvAmbientes.setAdapter(composicaoAdapter);
+        lvAmbientes.setLayoutParams(parametrosListView());
+
+        spAmbiente.setSelection(0);
+        edtQuantidade.setText(new String());
+    }
+
+    private LinearLayout.LayoutParams parametrosListView(){
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (200 * composicoesImovel.size()));
+        layoutParams.setMargins(0,50,0,0);
+
+        return layoutParams;
+    }
+
+    @Override
+    public void removerComposicao(Composicao composicao) {
+        composicoesImovel.remove(composicao);
+        ComposicaoAdapter composicaoAdapter = new ComposicaoAdapter(getContext(),
+                R.layout.adapter_ambiente_imovel,
+                composicoesImovel,
+                composicaoInterface);
+        lvAmbientes.setAdapter(composicaoAdapter);
+        lvAmbientes.setLayoutParams(parametrosListView());
     }
 }
