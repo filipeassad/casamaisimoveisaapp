@@ -20,6 +20,7 @@
                 android:layout_marginTop="20dp">
 
                 <Button
+                    android:id="@+id/btnVoltar"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_gravity="left"
@@ -38,10 +39,11 @@
                     android:textSize="20sp"></TextView>
 
                 <Button
+                    android:id="@+id/btnAvancar"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_gravity="right"
-                    android:text="Salvar"
+                    android:text="Avançar"
                     android:layout_marginRight="10dp"
                     android:background="@drawable/selector_botao_topo_form"
                     android:textColor="#0D5ED9"
@@ -66,6 +68,7 @@
                 android:layout_marginLeft="20dp"></TextView>
 
             <Spinner
+                android:id="@+id/spAmbiente"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
@@ -84,6 +87,7 @@
                 android:layout_marginLeft="20dp"></TextView>
 
             <EditText
+                android:id="@+id/edtQuantidade"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
@@ -93,10 +97,12 @@
                 android:textColor="#c4c4c4"
                 android:textColorHint="#c4c4c4"
                 android:hint="Digite a quantidade"
-                android:paddingLeft="10dp"></EditText>
+                android:paddingLeft="10dp"
+                android:textSize="14sp"
+                android:inputType="number"></EditText>
 
             <Button
-                android:id="@+id/btnEntrar"
+                android:id="@+id/btnAdicionar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Adicionar"
@@ -116,6 +122,7 @@
                 android:layout_marginRight="10dp"></LinearLayout>
 
             <ListView
+                android:id="@+id/lvAmbientes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbarAlwaysDrawVerticalTrack="false"
