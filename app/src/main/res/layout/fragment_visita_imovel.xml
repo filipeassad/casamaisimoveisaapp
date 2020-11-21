@@ -21,6 +21,7 @@
                 android:layout_marginTop="20dp">
 
                 <Button
+                    android:id="@+id/btnVoltar"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_gravity="left"
@@ -39,6 +40,7 @@
                     android:textSize="20sp"></TextView>
 
                 <Button
+                    android:id="@+id/btnSalvar"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_gravity="right"
@@ -81,6 +83,7 @@
                     android:layout_marginLeft="10dp">
 
                     <TextView
+                        android:id="@+id/txtNomeCaptador"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Brad Pitt"
@@ -88,6 +91,7 @@
                         android:textStyle="bold"></TextView>
 
                     <TextView
+                        android:id="@+id/txtProfissao"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Captador"
@@ -97,8 +101,6 @@
 
 
             </LinearLayout>
-
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -121,11 +123,12 @@
                     android:layout_marginLeft="20dp"></TextView>
 
                 <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="03/11/2020"
-                android:textColor="#767676"
-                android:layout_marginLeft="5dp"></TextView>
+                    android:id="@+id/txtDataVisita"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="03/11/2020"
+                    android:textColor="#767676"
+                    android:layout_marginLeft="5dp"></TextView>
             </LinearLayout>
 
             <TextView
@@ -137,6 +140,7 @@
                 android:layout_marginLeft="20dp"></TextView>
 
             <EditText
+                android:id="@+id/edtDataRetorno"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
@@ -146,8 +150,9 @@
                 android:textColor="#c4c4c4"
                 android:textColorHint="#c4c4c4"
                 android:hint="Digite a data do retorno"
-                android:paddingLeft="10dp"></EditText>
-
+                android:paddingLeft="10dp"
+                android:textSize="14sp"
+                android:inputType="phone"></EditText>
 
         </LinearLayout>
 

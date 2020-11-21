@@ -4,6 +4,9 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class FerramentasBasicas {
 
     public static String getURL(){
@@ -15,6 +18,19 @@ public class FerramentasBasicas {
                 (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    public static String converterDataParaString(Date data, String formato){
+        String dataConvertida = "";
+
+        try{
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formato);
+            dataConvertida = simpleDateFormat.format(data);
+        }catch (Exception e){
+
+        }
+
+        return dataConvertida;
     }
 
 }

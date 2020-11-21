@@ -10,6 +10,7 @@ import com.stager.casamaisimoveis.models.DadosImovel;
 import com.stager.casamaisimoveis.models.EnderecoImovel;
 import com.stager.casamaisimoveis.models.Proprietario;
 import com.stager.casamaisimoveis.models.Rota;
+import com.stager.casamaisimoveis.models.VisitaImovel;
 
 import java.util.List;
 
@@ -23,9 +24,18 @@ public class VariaveisEstaticas {
     private static EnderecoImovel enderecoImovelCadastro;
     private static DadosImovel dadosImovelCadastro;
     private static List<Composicao> composicoesImovelCadastro;
+    private static VisitaImovel visitaImovelCadastro;
 
     private static TelaInicialInterface telaInicialInterface;
     private static FragmentInterface fragmentInterface;
+
+    public static VisitaImovel getVisitaImovelCadastro() {
+        return visitaImovelCadastro;
+    }
+
+    public static void setVisitaImovelCadastro(VisitaImovel visitaImovelCadastro) {
+        VariaveisEstaticas.visitaImovelCadastro = visitaImovelCadastro;
+    }
 
     public static List<Composicao> getComposicoesImovelCadastro() {
         return composicoesImovelCadastro;

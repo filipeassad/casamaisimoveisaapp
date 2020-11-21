@@ -82,7 +82,6 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
 
         getNavMenu();
         inserirPrimeiroFragment();
-
         buscarDadosUsuario(VariaveisEstaticas.getAutenticacao());
 
         eventosBotoes();
