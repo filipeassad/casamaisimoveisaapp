@@ -78,19 +78,6 @@
 
             </Button>
 
-            <Button
-                android:id="@+id/btnNovoImovel"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:text="Novo Imóvel"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/selector_botao_arrendondado_azul"
-                android:textSize="11sp">
-
-            </Button>
-
         </LinearLayout>
 
     </LinearLayout>

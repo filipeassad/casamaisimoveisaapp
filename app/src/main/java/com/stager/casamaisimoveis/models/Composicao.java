@@ -2,6 +2,12 @@ package com.stager.casamaisimoveis.models;
 
 import com.stager.casamaisimoveis.utilitarios.MontarSpinners;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
+
 public class Composicao {
 
     private Integer id;
@@ -49,5 +55,22 @@ public class Composicao {
     public String getNomeComposicao(){
         MontarSpinners montarSpinners = new MontarSpinners();
         return montarSpinners.listarAmbiente().get(this.ambiente_id).getDescricao();
+    }
+
+    public static JSONArray gerarComposicaoJsonArray(List<Composicao> composicoes){
+        JSONArray composicoesJSONArray = new JSONArray();
+
+        for(Composicao composicao: composicoes){
+            JSONObject composicaoJSONObject = new JSONObject();
+            try {
+                composicaoJSONObject.put("ambiente_id", composicao.getAmbiente_id());
+                composicaoJSONObject.put("quantidade", composicao.getQuantidade());
+                composicoesJSONArray.put(composicaoJSONObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return composicoesJSONArray;
     }
 }

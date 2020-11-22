@@ -71,4 +71,43 @@ public class GerenciadorFragment {
         if(llBgCinza.getVisibility() == View.VISIBLE)
             animacao.fadeOutAnimation(llBgCinza);
     }
+
+    public void removerFragmentParaVoltar(FragmentManager fm, String nomeTela){
+        FragmentTransaction ft = fm.beginTransaction();
+
+        if(nomeTela.equals("TelaInicial")){
+            TelaInicialFragment telaInicialFragment = new TelaInicialFragment();
+            ft.remove(telaInicialFragment);
+        }else if(nomeTela.equals("Rota")){
+            RotaFragment rotaFragment = new RotaFragment();
+            ft.remove(rotaFragment);
+        }else if(nomeTela.equals("CadastrarRota")){
+            CadastrarRotaFragment cadastrarRotaFragment = new CadastrarRotaFragment();
+            ft.remove(cadastrarRotaFragment);
+        }else if(nomeTela.equals("MapaRota")){
+            MapaRotaFragment mapaRotaFragment = new MapaRotaFragment();
+            ft.remove(mapaRotaFragment);
+        }else if(nomeTela.equals("CadastrarEnderecoRota")){
+            CadastrarEnderecoRotaFragment cadastrarEnderecoRotaFragment = new CadastrarEnderecoRotaFragment();
+            ft.remove(cadastrarEnderecoRotaFragment);
+        }else if(nomeTela.equals("CadastrarDadosProprietario")){
+            CadastrarDadosProprietarioFragment cadastrarDadosProprietarioFragment = new CadastrarDadosProprietarioFragment();
+            ft.remove(cadastrarDadosProprietarioFragment);
+        }else if(nomeTela.equals("CadastrarEnderecoImovel")){
+            CadastrarEnderecoImovelFragment cadastrarEnderecoImovelFragment = new CadastrarEnderecoImovelFragment();
+            ft.remove(cadastrarEnderecoImovelFragment);
+        }else if(nomeTela.equals("CadastrarDadosAnuncio")){
+            CadastrarDadosAnuncioFragment cadastrarDadosAnuncioFragment = new CadastrarDadosAnuncioFragment();
+            ft.remove(cadastrarDadosAnuncioFragment);
+        }else if(nomeTela.equals("CadastrarInformacoesImovel")){
+            CadastrarInformacoesImovelFragment cadastrarInformacoesImovelFragment = new CadastrarInformacoesImovelFragment();
+            ft.remove(cadastrarInformacoesImovelFragment);
+        }else if(nomeTela.equals("CadastrarComposicaoImovel")){
+            CadastrarComposicaoImovelFragment cadastrarComposicaoImovelFragment = new CadastrarComposicaoImovelFragment();
+            ft.remove(cadastrarComposicaoImovelFragment);
+        }else if(nomeTela.equals("CadastrarVisitaImovel")){
+            CadastrarVisitaImovelFragment cadastrarVisitaImovelFragment = new CadastrarVisitaImovelFragment();
+            ft.remove(cadastrarVisitaImovelFragment);
+        }
+    }
 }

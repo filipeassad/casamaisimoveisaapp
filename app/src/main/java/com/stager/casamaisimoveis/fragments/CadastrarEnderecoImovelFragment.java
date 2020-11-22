@@ -43,6 +43,8 @@ public class CadastrarEnderecoImovelFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Endereço");
+
         if(VariaveisEstaticas.getEnderecoImovelCadastro() != null){
             EnderecoImovel enderecoImovel = VariaveisEstaticas.getEnderecoImovelCadastro();
 

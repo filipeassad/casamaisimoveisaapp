@@ -1,6 +1,7 @@
 package com.stager.casamaisimoveis.activitys;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
@@ -32,6 +33,7 @@ import com.stager.casamaisimoveis.models.Coordenador;
 import com.stager.casamaisimoveis.utilitarios.Animacao;
 import com.stager.casamaisimoveis.utilitarios.FerramentasBasicas;
 import com.stager.casamaisimoveis.utilitarios.GerenciadorFragment;
+import com.stager.casamaisimoveis.utilitarios.LocalizacaoService;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
 
 import org.json.JSONException;
@@ -225,6 +227,11 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
     }
 
     @Override
+    public void removerFragment(String nomeFragment) {
+        gerenciadorFragment.removerFragmentParaVoltar(fm, nomeFragment);
+    }
+
+    @Override
     public void retornoJsonObject(JSONObject jsonObject, String rotaApi) {
         try {
             if(jsonObject.has("erro")){
@@ -250,6 +257,8 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
             VariaveisEstaticas.setCaptador(captadorLogado);
             inserirDadosUsuario(captadorLogado.getNome(), "Captador");
             VariaveisEstaticas.getTelaInicialInterface().carregarDadosUsuario();
+            Intent serviceIntent = new Intent(this, LocalizacaoService.class);
+            this.startService(serviceIntent);
         }
     }
 

@@ -7,21 +7,31 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.stager.casamaisimoveis.R;
+import com.stager.casamaisimoveis.api.PostHttpComHeaderAsyncTask;
+import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
 import com.stager.casamaisimoveis.models.Captador;
+import com.stager.casamaisimoveis.models.DadosImovel;
+import com.stager.casamaisimoveis.models.EnderecoImovel;
+import com.stager.casamaisimoveis.models.Imovel;
+import com.stager.casamaisimoveis.models.Proprietario;
 import com.stager.casamaisimoveis.models.VisitaImovel;
 import com.stager.casamaisimoveis.utilitarios.FerramentasBasicas;
 import com.stager.casamaisimoveis.utilitarios.MascaraEditText;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Date;
 
-public class CadastrarVisitaImovelFragment extends Fragment {
+public class CadastrarVisitaImovelFragment extends Fragment implements HttpResponseInterface{
 
     private Button btnVoltar;
     private Button btnSalvar;
@@ -29,7 +39,8 @@ public class CadastrarVisitaImovelFragment extends Fragment {
     private TextView txtProfissao;
     private TextView txtDataVisita;
     private EditText edtDataRetorno;
-
+    private HttpResponseInterface httpResponseInterface;
+    private String API_IMOVEL = "api/cadastrarImovel";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,6 +55,8 @@ public class CadastrarVisitaImovelFragment extends Fragment {
 
         edtDataRetorno.addTextChangedListener(MascaraEditText.mask(edtDataRetorno, MascaraEditText.FORMAT_DATE));
 
+        httpResponseInterface = this;
+
         eventosBotoes();
 
         return view;
@@ -52,6 +65,8 @@ public class CadastrarVisitaImovelFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Visita");
 
         if(VariaveisEstaticas.getCaptador() != null){
             Captador captador = VariaveisEstaticas.getCaptador();
@@ -65,7 +80,6 @@ public class CadastrarVisitaImovelFragment extends Fragment {
         }else{
             txtDataVisita.setText(FerramentasBasicas.converterDataParaString(new Date(), "dd/MM/yyyy"));
         }
-
     }
 
     private void eventosBotoes(){
@@ -79,12 +93,79 @@ public class CadastrarVisitaImovelFragment extends Fragment {
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                salvarDadosImovel();
+                validarDadosVisita();
             }
         });
     }
 
-    private void salvarDadosImovel(){
+    private void validarDadosVisita(){
+        if(edtDataRetorno.getText().toString().length() != 0 && edtDataRetorno.getText().toString().length() < 10){
+            edtDataRetorno.setError("Data de retorno inválida.");
+            return;
+        }
 
+        VisitaImovel visitaImovel = new VisitaImovel(FerramentasBasicas.converterDataParaString(new Date(), "dd/MM/yyyy"),
+                edtDataRetorno.getText().toString(),
+                VariaveisEstaticas.getCaptador().getId());
+
+        VariaveisEstaticas.setVisitaImovelCadastro(visitaImovel);
+        salvarImovel();
+    }
+
+    private void salvarImovel(){
+        Proprietario proprietario = VariaveisEstaticas.getProprietarioCadastro();
+        EnderecoImovel enderecoImovel = VariaveisEstaticas.getEnderecoImovelCadastro();
+        DadosImovel dadosImovel = VariaveisEstaticas.getDadosImovelCadastro();
+
+        dadosImovel.setComposicoes(VariaveisEstaticas.getComposicoesImovelCadastro());
+        dadosImovel.setVisitaImovel(VariaveisEstaticas.getVisitaImovelCadastro());
+
+        Imovel imovel = new Imovel(enderecoImovel, proprietario, dadosImovel);
+
+        PostHttpComHeaderAsyncTask postHttpComHeaderAsyncTask = new PostHttpComHeaderAsyncTask(getContext(),
+                imovel.gerarImovelJson(),
+                httpResponseInterface,
+                API_IMOVEL);
+        postHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_IMOVEL);
+    }
+
+    @Override
+    public void retornoJsonObject(JSONObject jsonObject, String rotaApi) {
+        try {
+            if(jsonObject.has("erro")){
+                Toast.makeText(getContext(), jsonObject.getString("erro"), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if(rotaApi.equals(API_IMOVEL))
+                retornoImovel(jsonObject);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void retornoImovel(JSONObject resposta){
+        if(resposta.has("sucesso")){
+            try {
+                Toast.makeText(getContext(), resposta.getString("mensagem"), Toast.LENGTH_SHORT).show();
+                if(resposta.getBoolean("sucesso")){
+                    VariaveisEstaticas.setProprietarioCadastro(null);
+                    VariaveisEstaticas.setEnderecoImovelCadastro(null);
+                    VariaveisEstaticas.setDadosImovelCadastro(null);
+                    VariaveisEstaticas.setComposicoesImovelCadastro(null);
+                    VariaveisEstaticas.setVisitaImovelCadastro(null);
+                    VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarDadosProprietario");
+                    VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarEnderecoImovel");
+                    VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarDadosAnuncio");
+                    VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarInformacoesImovel");
+                    VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarComposicaoImovel");
+                    VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarVisitaImovel");
+                    VariaveisEstaticas.getFragmentInterface().alterarFragment("TelaInicial");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

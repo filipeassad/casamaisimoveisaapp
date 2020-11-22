@@ -8,4 +8,5 @@ public interface FragmentInterface {
     public void voltar();
     public void sair();
     public void fecharTeclado();
+    public void removerFragment(String nomeFragment);
 }

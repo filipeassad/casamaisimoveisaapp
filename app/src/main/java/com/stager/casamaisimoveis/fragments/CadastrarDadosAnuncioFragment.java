@@ -58,6 +58,8 @@ public class CadastrarDadosAnuncioFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Anúncio");
+
         if(VariaveisEstaticas.getDadosImovelCadastro() != null){
             DadosImovel dadosImovel = VariaveisEstaticas.getDadosImovelCadastro();
             ckDivulgacao.setChecked(dadosImovel.isDivulgacao());

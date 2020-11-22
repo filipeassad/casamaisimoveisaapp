@@ -1,7 +1,11 @@
 package com.stager.casamaisimoveis.models;
 
+import com.stager.casamaisimoveis.utilitarios.FerramentasBasicas;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Date;
 
 public class RotaCaptador {
 
@@ -61,10 +65,13 @@ public class RotaCaptador {
     public JSONObject gerarRotaCaptadorJSON(){
         JSONObject rotaJson = new JSONObject();
 
+        Date dataRota = FerramentasBasicas
+                .converterStringParaData(this.data_rota, "dd/MM/yyyy");
+
         try {
             rotaJson.put("latitude", this.latitude);
             rotaJson.put("longitude", this.longitude);
-            rotaJson.put("data_rota", this.data_rota);
+            rotaJson.put("data_rota", FerramentasBasicas.converterDataParaString(dataRota, "yyyy-MM-dd hh:mm:ss"));
             rotaJson.put("captador_id", this.captador_id);
         } catch (JSONException e) {
             e.printStackTrace();

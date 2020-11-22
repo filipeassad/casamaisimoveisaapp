@@ -68,6 +68,8 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Informações");
+
         if(VariaveisEstaticas.getDadosImovelCadastro() != null){
             DadosImovel dadosImovel = VariaveisEstaticas.getDadosImovelCadastro();
 

@@ -50,6 +50,12 @@ public class CadastrarEnderecoRotaFragment extends Fragment implements HttpRespo
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Endereço Rota");
+    }
+
     private void eventosBotoes(){
 
         btnCadastrarEnderecoRota.setOnClickListener(new View.OnClickListener() {

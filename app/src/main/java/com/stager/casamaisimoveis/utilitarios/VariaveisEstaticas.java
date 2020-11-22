@@ -8,6 +8,7 @@ import com.stager.casamaisimoveis.models.Composicao;
 import com.stager.casamaisimoveis.models.Coordenador;
 import com.stager.casamaisimoveis.models.DadosImovel;
 import com.stager.casamaisimoveis.models.EnderecoImovel;
+import com.stager.casamaisimoveis.models.EnderecoRota;
 import com.stager.casamaisimoveis.models.Proprietario;
 import com.stager.casamaisimoveis.models.Rota;
 import com.stager.casamaisimoveis.models.VisitaImovel;
@@ -25,9 +26,18 @@ public class VariaveisEstaticas {
     private static DadosImovel dadosImovelCadastro;
     private static List<Composicao> composicoesImovelCadastro;
     private static VisitaImovel visitaImovelCadastro;
+    private static EnderecoRota enderecoRotaSelecionado;
 
     private static TelaInicialInterface telaInicialInterface;
     private static FragmentInterface fragmentInterface;
+
+    public static EnderecoRota getEnderecoRotaSelecionado() {
+        return enderecoRotaSelecionado;
+    }
+
+    public static void setEnderecoRotaSelecionado(EnderecoRota enderecoRotaSelecionado) {
+        VariaveisEstaticas.enderecoRotaSelecionado = enderecoRotaSelecionado;
+    }
 
     public static VisitaImovel getVisitaImovelCadastro() {
         return visitaImovelCadastro;

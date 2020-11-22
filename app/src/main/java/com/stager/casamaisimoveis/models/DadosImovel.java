@@ -1,5 +1,10 @@
 package com.stager.casamaisimoveis.models;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
+
 public class DadosImovel {
 
     private Integer id;
@@ -14,6 +19,8 @@ public class DadosImovel {
     private String area_terreno;
     private String area_construida;
     private String observacao;
+    private List<Composicao> composicoes;
+    private VisitaImovel visitaImovel;
 
     public DadosImovel(boolean divulgacao, boolean placa, boolean exclusividade, boolean autorizacao_ate_venda) {
         this.divulgacao = divulgacao;
@@ -128,6 +135,22 @@ public class DadosImovel {
         this.observacao = observacao;
     }
 
+    public List<Composicao> getComposicoes() {
+        return composicoes;
+    }
+
+    public void setComposicoes(List<Composicao> composicoes) {
+        this.composicoes = composicoes;
+    }
+
+    public VisitaImovel getVisitaImovel() {
+        return visitaImovel;
+    }
+
+    public void setVisitaImovel(VisitaImovel visitaImovel) {
+        this.visitaImovel = visitaImovel;
+    }
+
     public void setDadosImovel(Integer tipo, Integer fase_obra, String valor, String honorario, String area_terreno, String area_construida, String observacao){
         this.tipo = tipo;
         this.fase_obra = fase_obra;
@@ -136,5 +159,29 @@ public class DadosImovel {
         this.area_terreno = area_terreno;
         this.area_construida = area_construida;
         this.observacao = observacao;
+    }
+
+    public JSONObject gerarDadosImovelJson(){
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("divulgacao", this.divulgacao);
+            jsonObject.put("placa", this.placa);
+            jsonObject.put("exclusividade", this.exclusividade);
+            jsonObject.put("autorizacao_ate_venda", this.autorizacao_ate_venda);
+            jsonObject.put("tipo", this.tipo);
+            jsonObject.put("valor", this.valor);
+            jsonObject.put("honorario", this.honorario);
+            jsonObject.put("fase_obra", this.fase_obra);
+            jsonObject.put("area_terreno", this.area_terreno);
+            jsonObject.put("area_construida", this.area_construida);
+            jsonObject.put("observacao", this.observacao);
+            jsonObject.put("composicoesImovel", Composicao.gerarComposicaoJsonArray(this.composicoes));
+            jsonObject.put("divulgacao", this.visitaImovel.gerarVisitaJson());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jsonObject;
     }
 }

@@ -33,4 +33,14 @@ public class FerramentasBasicas {
         return dataConvertida;
     }
 
+    public static Date converterStringParaData(String data, String formato){
+        try{
+            SimpleDateFormat format = new SimpleDateFormat(formato);
+            return format.parse(data);
+        }catch (Exception e){
+
+        }
+        return new Date();
+    }
+
 }

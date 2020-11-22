@@ -50,7 +50,7 @@ public class Proprietario {
         this.telefones = telefones;
     }
 
-    public JSONObject gerarEnderecoRotaJSON(){
+    public JSONObject gerarProprietarioJSON(){
         JSONObject rotaJson = new JSONObject();
 
         try {

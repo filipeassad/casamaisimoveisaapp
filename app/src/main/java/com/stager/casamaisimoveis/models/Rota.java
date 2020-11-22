@@ -94,4 +94,9 @@ public class Rota {
 
         return rotaJson;
     }
+
+    public String getEndereco(){
+        String endereco = "Campo Grande MS, " + this.bairro;
+        return endereco;
+    }
 }

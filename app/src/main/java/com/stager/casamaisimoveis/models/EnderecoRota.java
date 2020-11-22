@@ -1,7 +1,11 @@
 package com.stager.casamaisimoveis.models;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EnderecoRota {
 
@@ -16,6 +20,18 @@ public class EnderecoRota {
         this.rua = rua;
         this.numero = numero;
         this.rota_id = rota_id;
+    }
+
+    public EnderecoRota(JSONObject jsonObject) {
+        try {
+            this.id = jsonObject.has("id") ? jsonObject.getInt("id") : 0;
+            this.bairro = jsonObject.getString("bairro") != null ? jsonObject.getString("bairro") : new String();
+            this.rua = jsonObject.getString("rua") != null ? jsonObject.getString("rua") : new String();
+            this.numero = jsonObject.getString("numero") != null ? jsonObject.getString("numero") : new String();
+            this.rota_id = jsonObject.has("rota_id") ? jsonObject.getInt("rota_id") : 0;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public Integer getId() {
@@ -72,4 +88,30 @@ public class EnderecoRota {
 
         return rotaJson;
     }
+
+    public static List<EnderecoRota> listarEnderecosRotas(JSONObject resposta){
+        List<EnderecoRota> enderecosRota = new ArrayList<EnderecoRota>();
+
+        try {
+            if(resposta.has("array")) {
+                JSONArray arrayResposta = resposta.getJSONArray("array");
+
+                for(int i = 0; i < arrayResposta.length(); i++){
+                    JSONObject itemResposta = arrayResposta.getJSONObject(i);
+                    EnderecoRota enderecoRota = new EnderecoRota(itemResposta);
+                    enderecosRota.add(enderecoRota);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return enderecosRota;
+    }
+
+    public String getEndereco(){
+        String endereco = "Campo Grande MS, " + this.bairro + ", " + this.rua + ", " + this.numero;
+        return endereco;
+    }
+
 }

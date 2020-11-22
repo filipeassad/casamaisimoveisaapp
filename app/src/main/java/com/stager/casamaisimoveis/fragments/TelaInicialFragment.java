@@ -38,6 +38,12 @@ public class TelaInicialFragment extends Fragment implements TelaInicialInterfac
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Tela Inicial");
+    }
+
     private void eventosBotoes(){
         llRota.setOnClickListener(new View.OnClickListener() {
             @Override

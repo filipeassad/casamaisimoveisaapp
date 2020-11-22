@@ -68,6 +68,8 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
     public void onResume() {
         super.onResume();
 
+        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Proprietário");
+
         if(VariaveisEstaticas.getProprietarioCadastro() != null){
             Proprietario proprietario = VariaveisEstaticas.getProprietarioCadastro();
 

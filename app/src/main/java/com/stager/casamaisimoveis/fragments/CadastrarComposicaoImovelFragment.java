@@ -69,6 +69,8 @@ public class CadastrarComposicaoImovelFragment extends Fragment implements Compo
     public void onResume() {
         super.onResume();
 
+        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Composição");
+
         if(VariaveisEstaticas.getComposicoesImovelCadastro() != null){
             composicoesImovel = VariaveisEstaticas.getComposicoesImovelCadastro();
             ComposicaoAdapter composicaoAdapter = new ComposicaoAdapter(getContext(),

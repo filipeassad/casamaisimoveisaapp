@@ -1,13 +1,18 @@
 package com.stager.casamaisimoveis.fragments;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,22 +25,37 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.stager.casamaisimoveis.R;
+import com.stager.casamaisimoveis.alertas.AlertaGoogleMaps;
 import com.stager.casamaisimoveis.api.GetHttpComHeaderAsyncTask;
 import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
+import com.stager.casamaisimoveis.interfaces.MapaRotaInterface;
+import com.stager.casamaisimoveis.models.EnderecoRota;
+import com.stager.casamaisimoveis.models.Rota;
+import com.stager.casamaisimoveis.utilitarios.FerramentasBasicas;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, HttpResponseInterface {
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, HttpResponseInterface, MapaRotaInterface {
 
     private GoogleMap googleMapsFragment;
 
     private Button btnNovoEndereco;
-    private Button btnNovoImovel;
     private HttpResponseInterface httpResponseInterface;
-    private String API_ENDERECOS_ROTAS = "api/endereco_rota/";
+    private String API_ENDERECOS_ROTAS = "api/enderecosRota/";
+    private List<EnderecoRota> enderecosRota;
+
+    private MapaRotaInterface mapaRotaInterface;
+    private HashMap<String, EnderecoRota> marcasEnderecoRota;
 
     @Nullable
     @Override
@@ -46,21 +66,29 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
         mapFragment.getMapAsync(this);
 
         httpResponseInterface = this;
+        mapaRotaInterface = this;
 
         btnNovoEndereco = (Button) view.findViewById(R.id.btnNovoEndereco);
-        btnNovoImovel = (Button) view.findViewById(R.id.btnNovoImovel);
+
+        enderecosRota = new ArrayList<>();
+        marcasEnderecoRota = new HashMap<>();
 
         eventosBotoes();
-        carregarEnderecos();
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Mapa Rota");
     }
 
     private void carregarEnderecos(){
         GetHttpComHeaderAsyncTask getHttpComHeaderAsyncTask = new GetHttpComHeaderAsyncTask(getContext(),
                 httpResponseInterface,
-                API_ENDERECOS_ROTAS + VariaveisEstaticas.getRotaSelecionada().getId());
-        getHttpComHeaderAsyncTask.execute(API_ENDERECOS_ROTAS + VariaveisEstaticas.getRotaSelecionada().getId());
+                API_ENDERECOS_ROTAS);
+        getHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_ENDERECOS_ROTAS + VariaveisEstaticas.getRotaSelecionada().getId());
     }
 
     private void eventosBotoes() {
@@ -71,12 +99,12 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
             }
         });
 
-        btnNovoImovel.setOnClickListener(new View.OnClickListener() {
+        /*btnNovoImovel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 VariaveisEstaticas.getFragmentInterface().alterarFragment("CadastrarDadosProprietario");
             }
-        });
+        });*/
     }
 
     @Override
@@ -89,25 +117,97 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
            return;
         }
         googleMapsFragment.setMyLocationEnabled(true);
-        googleMapsFragment.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
-            @Override
-            public void onMyLocationChange(Location location) {
-                LatLng latlng = new LatLng(location.getLatitude(),location.getLongitude());
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(latlng);
 
-                markerOptions.title("My Marker");
-                googleMapsFragment.clear();
+        Rota rota = VariaveisEstaticas.getRotaSelecionada();
+        Geocoder geocoder = new Geocoder(getContext());
+        List<Address> addresses;
+
+        try {
+            addresses = geocoder.getFromLocationName(rota.getEndereco(), 1);
+            if(addresses.size() > 0) {
+                LatLng latlng = new LatLng(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(
-                        latlng, 15);
+                        latlng, 14);
                 googleMapsFragment.animateCamera(cameraUpdate);
-                googleMapsFragment.addMarker(markerOptions);
+                googleMapsFragment.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        AlertaGoogleMaps.alertaGoogleMaps(getContext(), marcasEnderecoRota.get(marker.getTitle()), mapaRotaInterface);
+                        return false;
+                    }
+                });
             }
-        });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        carregarEnderecos();
     }
 
     @Override
     public void retornoJsonObject(JSONObject jsonObject, String rotaApi) {
+        try {
+            if(jsonObject.has("erro")){
+                Toast.makeText(getContext(), jsonObject.getString("erro"), Toast.LENGTH_SHORT).show();
+                return;
+            }
 
+            if(rotaApi.equals(API_ENDERECOS_ROTAS))
+                retornoEnderecosRota(jsonObject);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void retornoEnderecosRota(JSONObject resposta){
+
+        enderecosRota = EnderecoRota.listarEnderecosRotas(resposta);
+        Rota rota = VariaveisEstaticas.getRotaSelecionada();
+
+        for(EnderecoRota enderecoRota: enderecosRota){
+            Geocoder geocoder = new Geocoder(getContext());
+            List<Address> addresses;
+            try {
+                addresses = geocoder.getFromLocationName(enderecoRota.getEndereco(), 1);
+                if(addresses.size() > 0) {
+                    LatLng latlng = new LatLng(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(latlng);
+                    markerOptions.title(rota.getNome() + ": " + enderecoRota.getId());
+                    marcasEnderecoRota.put(markerOptions.getTitle(), enderecoRota);
+                    googleMapsFragment.addMarker(markerOptions);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void gerarRota(EnderecoRota enderecoRota) {
+        Geocoder geocoder = new Geocoder(getContext());
+        List<Address> addresses;
+        try {
+            addresses = geocoder.getFromLocationName(enderecoRota.getEndereco(), 1);
+
+            Uri gmmIntentUri = Uri.parse("google.streetview:cbll="
+                    + addresses.get(0).getLatitude()
+                    + ","
+                    + addresses.get(0).getLongitude());
+
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+
+            startActivity(mapIntent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void criarImovel(EnderecoRota enderecoRota) {
+        VariaveisEstaticas.setEnderecoRotaSelecionado(enderecoRota);
+        VariaveisEstaticas.getFragmentInterface().alterarFragment("CadastrarDadosProprietario");
     }
 }

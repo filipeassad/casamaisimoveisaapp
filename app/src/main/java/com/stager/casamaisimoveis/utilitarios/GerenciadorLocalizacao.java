@@ -37,12 +37,14 @@ public class GerenciadorLocalizacao implements LocationListener, HttpResponseInt
                     FerramentasBasicas.converterDataParaString(new Date(),
                             "dd/MM/yyyy HH:mm"),
                     VariaveisEstaticas.getCaptador().getId());
+
             PostHttpComHeaderAsyncTask postHttpComHeaderAsyncTask = new PostHttpComHeaderAsyncTask(myContext,
                     rotaCaptador.gerarRotaCaptadorJSON(),
                     httpResponseInterface, API_ROTA_CAPTADO);
             postHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_ROTA_CAPTADO);
         }
     }
+
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {

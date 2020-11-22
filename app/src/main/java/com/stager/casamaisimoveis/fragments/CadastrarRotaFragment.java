@@ -48,6 +48,12 @@ public class CadastrarRotaFragment extends Fragment implements HttpResponseInter
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Rota");
+    }
+
     private void eventosBotoes(){
         btnCadastrarRota.setOnClickListener(new View.OnClickListener() {
             @Override
