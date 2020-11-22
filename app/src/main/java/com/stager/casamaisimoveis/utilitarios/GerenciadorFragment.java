@@ -15,6 +15,8 @@ import com.stager.casamaisimoveis.fragments.CadastrarInformacoesImovelFragment;
 import com.stager.casamaisimoveis.fragments.CadastrarRotaFragment;
 import com.stager.casamaisimoveis.fragments.CadastrarVisitaImovelFragment;
 import com.stager.casamaisimoveis.fragments.CadastrarEnderecoImovelFragment;
+import com.stager.casamaisimoveis.fragments.HistoricoCaptadorFragment;
+import com.stager.casamaisimoveis.fragments.MapaHistoricoFragment;
 import com.stager.casamaisimoveis.fragments.MapaRotaFragment;
 import com.stager.casamaisimoveis.fragments.RotaFragment;
 import com.stager.casamaisimoveis.fragments.TelaInicialFragment;
@@ -59,6 +61,12 @@ public class GerenciadorFragment {
         }else if(nomeTela.equals("CadastrarVisitaImovel")){
             CadastrarVisitaImovelFragment cadastrarVisitaImovelFragment = new CadastrarVisitaImovelFragment();
             ft.replace(R.id.contFragments, cadastrarVisitaImovelFragment, nomeTela);
+        }else if(nomeTela.equals("HistoricoCaptador")){
+            HistoricoCaptadorFragment historicoCaptadorFragment = new HistoricoCaptadorFragment();
+            ft.replace(R.id.contFragments, historicoCaptadorFragment);
+        }else if(nomeTela.equals("MapaHistoricoCaptador")){
+            MapaHistoricoFragment mapaHistoricoFragment = new MapaHistoricoFragment();
+            ft.replace(R.id.contFragments, mapaHistoricoFragment);
         }
 
         if(fm.findFragmentByTag(nomeTela) != null)
@@ -76,38 +84,44 @@ public class GerenciadorFragment {
         FragmentTransaction ft = fm.beginTransaction();
 
         if(nomeTela.equals("TelaInicial")){
-            TelaInicialFragment telaInicialFragment = new TelaInicialFragment();
+            TelaInicialFragment telaInicialFragment = (TelaInicialFragment) fm.findFragmentByTag(nomeTela);
             ft.remove(telaInicialFragment);
         }else if(nomeTela.equals("Rota")){
-            RotaFragment rotaFragment = new RotaFragment();
+            RotaFragment rotaFragment = (RotaFragment) fm.findFragmentByTag(nomeTela);
             ft.remove(rotaFragment);
         }else if(nomeTela.equals("CadastrarRota")){
-            CadastrarRotaFragment cadastrarRotaFragment = new CadastrarRotaFragment();
+            CadastrarRotaFragment cadastrarRotaFragment = (CadastrarRotaFragment) fm.findFragmentByTag(nomeTela);
             ft.remove(cadastrarRotaFragment);
         }else if(nomeTela.equals("MapaRota")){
-            MapaRotaFragment mapaRotaFragment = new MapaRotaFragment();
+            MapaRotaFragment mapaRotaFragment = (MapaRotaFragment) fm.findFragmentByTag(nomeTela);
             ft.remove(mapaRotaFragment);
         }else if(nomeTela.equals("CadastrarEnderecoRota")){
-            CadastrarEnderecoRotaFragment cadastrarEnderecoRotaFragment = new CadastrarEnderecoRotaFragment();
+            CadastrarEnderecoRotaFragment cadastrarEnderecoRotaFragment = (CadastrarEnderecoRotaFragment) fm.findFragmentByTag(nomeTela);
             ft.remove(cadastrarEnderecoRotaFragment);
         }else if(nomeTela.equals("CadastrarDadosProprietario")){
-            CadastrarDadosProprietarioFragment cadastrarDadosProprietarioFragment = new CadastrarDadosProprietarioFragment();
+            CadastrarDadosProprietarioFragment cadastrarDadosProprietarioFragment = (CadastrarDadosProprietarioFragment) fm.findFragmentByTag(nomeTela);
             ft.remove(cadastrarDadosProprietarioFragment);
         }else if(nomeTela.equals("CadastrarEnderecoImovel")){
-            CadastrarEnderecoImovelFragment cadastrarEnderecoImovelFragment = new CadastrarEnderecoImovelFragment();
+            CadastrarEnderecoImovelFragment cadastrarEnderecoImovelFragment = (CadastrarEnderecoImovelFragment) fm.findFragmentByTag(nomeTela);
             ft.remove(cadastrarEnderecoImovelFragment);
         }else if(nomeTela.equals("CadastrarDadosAnuncio")){
-            CadastrarDadosAnuncioFragment cadastrarDadosAnuncioFragment = new CadastrarDadosAnuncioFragment();
+            CadastrarDadosAnuncioFragment cadastrarDadosAnuncioFragment = (CadastrarDadosAnuncioFragment) fm.findFragmentByTag(nomeTela);
             ft.remove(cadastrarDadosAnuncioFragment);
         }else if(nomeTela.equals("CadastrarInformacoesImovel")){
-            CadastrarInformacoesImovelFragment cadastrarInformacoesImovelFragment = new CadastrarInformacoesImovelFragment();
+            CadastrarInformacoesImovelFragment cadastrarInformacoesImovelFragment = (CadastrarInformacoesImovelFragment) fm.findFragmentByTag(nomeTela);
             ft.remove(cadastrarInformacoesImovelFragment);
         }else if(nomeTela.equals("CadastrarComposicaoImovel")){
-            CadastrarComposicaoImovelFragment cadastrarComposicaoImovelFragment = new CadastrarComposicaoImovelFragment();
+            CadastrarComposicaoImovelFragment cadastrarComposicaoImovelFragment = (CadastrarComposicaoImovelFragment) fm.findFragmentByTag(nomeTela);
             ft.remove(cadastrarComposicaoImovelFragment);
         }else if(nomeTela.equals("CadastrarVisitaImovel")){
-            CadastrarVisitaImovelFragment cadastrarVisitaImovelFragment = new CadastrarVisitaImovelFragment();
+            CadastrarVisitaImovelFragment cadastrarVisitaImovelFragment = (CadastrarVisitaImovelFragment) fm.findFragmentByTag(nomeTela);
             ft.remove(cadastrarVisitaImovelFragment);
+        }else if(nomeTela.equals("HistoricoCaptador")){
+            HistoricoCaptadorFragment historicoCaptadorFragment = (HistoricoCaptadorFragment) fm.findFragmentByTag(nomeTela);
+            ft.remove(historicoCaptadorFragment);
+        }else if(nomeTela.equals("MapaHistoricoCaptador")){
+            MapaHistoricoFragment mapaHistoricoFragment = (MapaHistoricoFragment) fm.findFragmentByTag(nomeTela);
+            ft.remove(mapaHistoricoFragment);
         }
     }
 }

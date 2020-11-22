@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -21,7 +22,7 @@ public class LocalizacaoService extends Service {
     private static final String TAG = "BOOMBOOMTESTGPS";
     private LocationManager mLocationManager = null;
     private static final int LOCATION_INTERVAL = 1000;
-    private static final float LOCATION_DISTANCE = 5f;
+    private static final float LOCATION_DISTANCE = 2f;
     private static final Integer captadorID = VariaveisEstaticas.getCaptador().getId();
 
     private class LocationListener implements android.location.LocationListener, HttpResponseInterface {
@@ -48,7 +49,8 @@ public class LocalizacaoService extends Service {
                 RotaCaptador rotaCaptador = new RotaCaptador(location.getLatitude() + "",
                         location.getLongitude() + "",
                         FerramentasBasicas.converterDataParaString(new Date(),
-                                "dd/MM/yyyy HH:mm"),
+                                "dd/MM/yyyy"),
+                        FerramentasBasicas.converterDataParaString(new Date(), "yyyy-MM-dd'T'HH:mm:ss'Z'"),
                         captadorId);
 
                 PostHttpComHeaderServiceAsyncTask postHttpComHeaderAsyncTask = new PostHttpComHeaderServiceAsyncTask(myContext,
@@ -95,13 +97,52 @@ public class LocalizacaoService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.e(TAG, "onStartCommand");
         super.onStartCommand(intent, flags, startId);
+
+        final Handler handler = new Handler();
+        final int[] count = {0};
+
+        final Runnable runnable = new Runnable() {
+            public void run() {
+                Log.e(TAG, "Loop");
+                removerLocationListeners();
+                initializeLocationManager();
+                pegarLocalizacao();
+                if (true) {
+                    handler.postDelayed(this, 30000);
+                }
+            }
+        };
+
+        handler.post(runnable);
+
         return START_STICKY;
     }
 
     @Override
     public void onCreate() {
         Log.e(TAG, "onCreate");
-        initializeLocationManager();
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.e(TAG, "onDestroy");
+        super.onDestroy();
+        removerLocationListeners();
+    }
+
+    private void removerLocationListeners(){
+        if (mLocationManager != null) {
+            for (int i = 0; i < mLocationListeners.length; i++) {
+                try {
+                    mLocationManager.removeUpdates(mLocationListeners[i]);
+                } catch (Exception ex) {
+                    Log.i(TAG, "fail to remove location listners, ignore", ex);
+                }
+            }
+        }
+    }
+
+    private void pegarLocalizacao(){
         try {
             mLocationManager.requestLocationUpdates(
                     LocationManager.NETWORK_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
@@ -119,21 +160,6 @@ public class LocalizacaoService extends Service {
             Log.i(TAG, "fail to request location update, ignore", ex);
         } catch (IllegalArgumentException ex) {
             Log.d(TAG, "gps provider does not exist " + ex.getMessage());
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        Log.e(TAG, "onDestroy");
-        super.onDestroy();
-        if (mLocationManager != null) {
-            for (int i = 0; i < mLocationListeners.length; i++) {
-                try {
-                    mLocationManager.removeUpdates(mLocationListeners[i]);
-                } catch (Exception ex) {
-                    Log.i(TAG, "fail to remove location listners, ignore", ex);
-                }
-            }
         }
     }
 

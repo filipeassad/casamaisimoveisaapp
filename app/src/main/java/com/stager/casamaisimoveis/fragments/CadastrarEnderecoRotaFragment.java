@@ -54,6 +54,7 @@ public class CadastrarEnderecoRotaFragment extends Fragment implements HttpRespo
     public void onResume() {
         super.onResume();
         VariaveisEstaticas.getFragmentInterface().alterarTitulo("Endereço Rota");
+        edtBairroEnderecoRota.setText(VariaveisEstaticas.getRotaSelecionada().getBairro());
     }
 
     private void eventosBotoes(){

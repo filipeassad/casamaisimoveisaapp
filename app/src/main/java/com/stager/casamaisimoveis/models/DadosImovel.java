@@ -177,7 +177,7 @@ public class DadosImovel {
             jsonObject.put("area_construida", this.area_construida);
             jsonObject.put("observacao", this.observacao);
             jsonObject.put("composicoesImovel", Composicao.gerarComposicaoJsonArray(this.composicoes));
-            jsonObject.put("divulgacao", this.visitaImovel.gerarVisitaJson());
+            jsonObject.put("visitaImovel", this.visitaImovel.gerarVisitaJson());
         } catch (JSONException e) {
             e.printStackTrace();
         }

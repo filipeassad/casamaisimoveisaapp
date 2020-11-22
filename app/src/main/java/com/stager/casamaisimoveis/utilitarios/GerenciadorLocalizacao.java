@@ -36,6 +36,7 @@ public class GerenciadorLocalizacao implements LocationListener, HttpResponseInt
                     location.getLongitude() + "",
                     FerramentasBasicas.converterDataParaString(new Date(),
                             "dd/MM/yyyy HH:mm"),
+                    FerramentasBasicas.converterDataParaString(new Date(), "yyyy-MM-dd'T'HH:mm:ss"),
                     VariaveisEstaticas.getCaptador().getId());
 
             PostHttpComHeaderAsyncTask postHttpComHeaderAsyncTask = new PostHttpComHeaderAsyncTask(myContext,

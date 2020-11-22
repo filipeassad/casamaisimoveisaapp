@@ -45,7 +45,7 @@ public class Imovel {
         try {
             jsonObject.put("enderecoImovel", this.enderecoImovel.gerarEnderecoImovelJSON());
             jsonObject.put("proprietarioImovel", this.proprietario.gerarProprietarioJSON());
-            jsonObject.put("enderecoImovel", this.dadosImovel.gerarDadosImovelJson());
+            jsonObject.put("dadosImovel", this.dadosImovel.gerarDadosImovelJson());
         } catch (JSONException e) {
             e.printStackTrace();
         }

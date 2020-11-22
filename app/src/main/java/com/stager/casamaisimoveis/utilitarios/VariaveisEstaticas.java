@@ -11,6 +11,7 @@ import com.stager.casamaisimoveis.models.EnderecoImovel;
 import com.stager.casamaisimoveis.models.EnderecoRota;
 import com.stager.casamaisimoveis.models.Proprietario;
 import com.stager.casamaisimoveis.models.Rota;
+import com.stager.casamaisimoveis.models.RotaCaptador;
 import com.stager.casamaisimoveis.models.VisitaImovel;
 
 import java.util.List;
@@ -27,9 +28,18 @@ public class VariaveisEstaticas {
     private static List<Composicao> composicoesImovelCadastro;
     private static VisitaImovel visitaImovelCadastro;
     private static EnderecoRota enderecoRotaSelecionado;
+    private static RotaCaptador rotaCaptadorHistoricoSelecionado;
 
     private static TelaInicialInterface telaInicialInterface;
     private static FragmentInterface fragmentInterface;
+
+    public static RotaCaptador getRotaCaptadorHistoricoSelecionado() {
+        return rotaCaptadorHistoricoSelecionado;
+    }
+
+    public static void setRotaCaptadorHistoricoSelecionado(RotaCaptador rotaCaptadorHistoricoSelecionado) {
+        VariaveisEstaticas.rotaCaptadorHistoricoSelecionado = rotaCaptadorHistoricoSelecionado;
+    }
 
     public static EnderecoRota getEnderecoRotaSelecionado() {
         return enderecoRotaSelecionado;

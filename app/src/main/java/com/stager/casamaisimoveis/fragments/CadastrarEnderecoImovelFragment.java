@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.stager.casamaisimoveis.R;
 import com.stager.casamaisimoveis.models.EnderecoImovel;
+import com.stager.casamaisimoveis.models.EnderecoRota;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
 
 public class CadastrarEnderecoImovelFragment extends Fragment {
@@ -51,6 +52,14 @@ public class CadastrarEnderecoImovelFragment extends Fragment {
             edtBairroEnderecoImovel.setText(enderecoImovel.getBairro());
             edtRuaEnderecoImovel.setText(enderecoImovel.getRua());
             edtNumeroEnderecoImovel.setText(enderecoImovel.getNumero());
+        }else{
+            if(VariaveisEstaticas.getEnderecoRotaSelecionado() != null){
+                EnderecoRota enderecoRota = VariaveisEstaticas.getEnderecoRotaSelecionado();
+
+                edtBairroEnderecoImovel.setText(enderecoRota.getBairro());
+                edtRuaEnderecoImovel.setText(enderecoRota.getRua());
+                edtNumeroEnderecoImovel.setText(enderecoRota.getNumero());
+            }
         }
     }
 
