@@ -2,10 +2,13 @@ package com.stager.casamaisimoveis.models;
 
 import com.stager.casamaisimoveis.utilitarios.FerramentasBasicas;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class VisitaImovel {
 
@@ -19,6 +22,22 @@ public class VisitaImovel {
         this.data_visita = data_visita;
         this.retorno = retorno;
         this.captador_id = captador_id;
+    }
+
+    public VisitaImovel(JSONObject resposta) {
+        try {
+            this.id = resposta.has("id") ? resposta.getInt("id") : 0;
+            this.data_visita = resposta.getString("data_visita") != null ?
+                    FerramentasBasicas.trocarFormatoDataString(resposta.getString("data_visita"), "yyyy-MM-dd", "dd/MM/yyyy")
+                    : new String();
+            this.retorno = resposta.getString("retorno") != null ?
+                    FerramentasBasicas.trocarFormatoDataString(resposta.getString("retorno"), "yyyy-MM-dd", "dd/MM/yyyy")
+                    : new String();
+            this.captador_id = resposta.has("captador_id") ? resposta.getInt("captador_id") : 0;
+            this.dados_imovel_id = resposta.has("dados_imovel_id") ? resposta.getInt("dados_imovel_id") : 0;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public Integer getId() {
@@ -80,6 +99,29 @@ public class VisitaImovel {
         }
 
         return jsonObject;
+    }
+
+    public static JSONArray gerarVisitaImovelJsonArray(List<VisitaImovel> visitas){
+        JSONArray composicoesJSONArray = new JSONArray();
+
+        for(VisitaImovel visita: visitas){
+            composicoesJSONArray.put(visita.gerarVisitaJson());
+        }
+
+        return composicoesJSONArray;
+    }
+
+    public static List<VisitaImovel> gerarListaVisitasImovelBuscaImovel(JSONArray composicoes){
+        List<VisitaImovel> visitasImovel = new ArrayList<>();
+        try {
+            for(int i = 0; i < composicoes.length(); i++){
+                JSONObject itemResposta = composicoes.getJSONObject(i);
+                visitasImovel.add(new VisitaImovel(itemResposta));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return visitasImovel;
     }
 
 }

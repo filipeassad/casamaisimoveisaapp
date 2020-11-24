@@ -7,19 +7,22 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.stager.casamaisimoveis.R;
-import com.stager.casamaisimoveis.fragments.CadastrarComposicaoImovelFragment;
-import com.stager.casamaisimoveis.fragments.CadastrarDadosAnuncioFragment;
-import com.stager.casamaisimoveis.fragments.CadastrarDadosProprietarioFragment;
-import com.stager.casamaisimoveis.fragments.CadastrarEnderecoRotaFragment;
-import com.stager.casamaisimoveis.fragments.CadastrarInformacoesImovelFragment;
-import com.stager.casamaisimoveis.fragments.CadastrarRotaFragment;
-import com.stager.casamaisimoveis.fragments.CadastrarVisitaImovelFragment;
-import com.stager.casamaisimoveis.fragments.CadastrarEnderecoImovelFragment;
-import com.stager.casamaisimoveis.fragments.HistoricoCaptadorFragment;
-import com.stager.casamaisimoveis.fragments.MapaHistoricoFragment;
-import com.stager.casamaisimoveis.fragments.MapaRotaFragment;
-import com.stager.casamaisimoveis.fragments.RotaFragment;
+import com.stager.casamaisimoveis.fragments.BuscarImovelFragment;
+import com.stager.casamaisimoveis.fragments.cadastrar.CadastrarComposicaoImovelFragment;
+import com.stager.casamaisimoveis.fragments.cadastrar.CadastrarDadosAnuncioFragment;
+import com.stager.casamaisimoveis.fragments.cadastrar.CadastrarDadosProprietarioFragment;
+import com.stager.casamaisimoveis.fragments.rota.CadastrarEnderecoRotaFragment;
+import com.stager.casamaisimoveis.fragments.cadastrar.CadastrarInformacoesImovelFragment;
+import com.stager.casamaisimoveis.fragments.rota.CadastrarRotaFragment;
+import com.stager.casamaisimoveis.fragments.cadastrar.CadastrarVisitaImovelFragment;
+import com.stager.casamaisimoveis.fragments.cadastrar.CadastrarEnderecoImovelFragment;
+import com.stager.casamaisimoveis.fragments.historico.HistoricoCaptadorFragment;
+import com.stager.casamaisimoveis.fragments.historico.MapaHistoricoFragment;
+import com.stager.casamaisimoveis.fragments.rota.MapaRotaFragment;
+import com.stager.casamaisimoveis.fragments.rota.RotaFragment;
 import com.stager.casamaisimoveis.fragments.TelaInicialFragment;
+import com.stager.casamaisimoveis.fragments.visualizar.VisualizarDadosProprietarioFragment;
+import com.stager.casamaisimoveis.fragments.visualizar.VisualizarEnderecoImovelFragment;
 
 public class GerenciadorFragment {
 
@@ -67,6 +70,15 @@ public class GerenciadorFragment {
         }else if(nomeTela.equals("MapaHistoricoCaptador")){
             MapaHistoricoFragment mapaHistoricoFragment = new MapaHistoricoFragment();
             ft.replace(R.id.contFragments, mapaHistoricoFragment);
+        }else if(nomeTela.equals("BuscarImovel")){
+            BuscarImovelFragment buscarImovelFragment = new BuscarImovelFragment();
+            ft.replace(R.id.contFragments, buscarImovelFragment);
+        }else if(nomeTela.equals("VisualizarDadosProprietario")){
+            VisualizarDadosProprietarioFragment visualizarDadosProprietarioFragment = new VisualizarDadosProprietarioFragment();
+            ft.replace(R.id.contFragments, visualizarDadosProprietarioFragment);
+        }else if(nomeTela.equals("VisualizarEnderecoImovel")){
+            VisualizarEnderecoImovelFragment visualizarEnderecoImovelFragment = new VisualizarEnderecoImovelFragment();
+            ft.replace(R.id.contFragments, visualizarEnderecoImovelFragment);
         }
 
         if(fm.findFragmentByTag(nomeTela) != null)
@@ -81,47 +93,6 @@ public class GerenciadorFragment {
     }
 
     public void removerFragmentParaVoltar(FragmentManager fm, String nomeTela){
-        FragmentTransaction ft = fm.beginTransaction();
-
-        if(nomeTela.equals("TelaInicial")){
-            TelaInicialFragment telaInicialFragment = (TelaInicialFragment) fm.findFragmentByTag(nomeTela);
-            ft.remove(telaInicialFragment);
-        }else if(nomeTela.equals("Rota")){
-            RotaFragment rotaFragment = (RotaFragment) fm.findFragmentByTag(nomeTela);
-            ft.remove(rotaFragment);
-        }else if(nomeTela.equals("CadastrarRota")){
-            CadastrarRotaFragment cadastrarRotaFragment = (CadastrarRotaFragment) fm.findFragmentByTag(nomeTela);
-            ft.remove(cadastrarRotaFragment);
-        }else if(nomeTela.equals("MapaRota")){
-            MapaRotaFragment mapaRotaFragment = (MapaRotaFragment) fm.findFragmentByTag(nomeTela);
-            ft.remove(mapaRotaFragment);
-        }else if(nomeTela.equals("CadastrarEnderecoRota")){
-            CadastrarEnderecoRotaFragment cadastrarEnderecoRotaFragment = (CadastrarEnderecoRotaFragment) fm.findFragmentByTag(nomeTela);
-            ft.remove(cadastrarEnderecoRotaFragment);
-        }else if(nomeTela.equals("CadastrarDadosProprietario")){
-            CadastrarDadosProprietarioFragment cadastrarDadosProprietarioFragment = (CadastrarDadosProprietarioFragment) fm.findFragmentByTag(nomeTela);
-            ft.remove(cadastrarDadosProprietarioFragment);
-        }else if(nomeTela.equals("CadastrarEnderecoImovel")){
-            CadastrarEnderecoImovelFragment cadastrarEnderecoImovelFragment = (CadastrarEnderecoImovelFragment) fm.findFragmentByTag(nomeTela);
-            ft.remove(cadastrarEnderecoImovelFragment);
-        }else if(nomeTela.equals("CadastrarDadosAnuncio")){
-            CadastrarDadosAnuncioFragment cadastrarDadosAnuncioFragment = (CadastrarDadosAnuncioFragment) fm.findFragmentByTag(nomeTela);
-            ft.remove(cadastrarDadosAnuncioFragment);
-        }else if(nomeTela.equals("CadastrarInformacoesImovel")){
-            CadastrarInformacoesImovelFragment cadastrarInformacoesImovelFragment = (CadastrarInformacoesImovelFragment) fm.findFragmentByTag(nomeTela);
-            ft.remove(cadastrarInformacoesImovelFragment);
-        }else if(nomeTela.equals("CadastrarComposicaoImovel")){
-            CadastrarComposicaoImovelFragment cadastrarComposicaoImovelFragment = (CadastrarComposicaoImovelFragment) fm.findFragmentByTag(nomeTela);
-            ft.remove(cadastrarComposicaoImovelFragment);
-        }else if(nomeTela.equals("CadastrarVisitaImovel")){
-            CadastrarVisitaImovelFragment cadastrarVisitaImovelFragment = (CadastrarVisitaImovelFragment) fm.findFragmentByTag(nomeTela);
-            ft.remove(cadastrarVisitaImovelFragment);
-        }else if(nomeTela.equals("HistoricoCaptador")){
-            HistoricoCaptadorFragment historicoCaptadorFragment = (HistoricoCaptadorFragment) fm.findFragmentByTag(nomeTela);
-            ft.remove(historicoCaptadorFragment);
-        }else if(nomeTela.equals("MapaHistoricoCaptador")){
-            MapaHistoricoFragment mapaHistoricoFragment = (MapaHistoricoFragment) fm.findFragmentByTag(nomeTela);
-            ft.remove(mapaHistoricoFragment);
-        }
+        fm.popBackStack(nomeTela,1);
     }
 }

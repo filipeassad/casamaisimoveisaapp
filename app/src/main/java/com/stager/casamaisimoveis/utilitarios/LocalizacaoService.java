@@ -1,7 +1,11 @@
 package com.stager.casamaisimoveis.utilitarios;
+
+import android.Manifest;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -22,7 +26,7 @@ public class LocalizacaoService extends Service {
     private static final String TAG = "BOOMBOOMTESTGPS";
     private LocationManager mLocationManager = null;
     private static final int LOCATION_INTERVAL = 1000;
-    private static final float LOCATION_DISTANCE = 2f;
+    private static final float LOCATION_DISTANCE = 10f;
     private static final Integer captadorID = VariaveisEstaticas.getCaptador().getId();
 
     private class LocationListener implements android.location.LocationListener, HttpResponseInterface {
@@ -33,7 +37,7 @@ public class LocalizacaoService extends Service {
 
         private String API_ROTA_CAPTADO = "api/rotaCaptador";
 
-        public LocationListener(String provider , Context context, Integer captadorId) {
+        public LocationListener(String provider, Context context, Integer captadorId) {
             Log.e(TAG, "LocationListener " + provider);
             mLastLocation = new Location(provider);
             this.myContext = context;
@@ -45,14 +49,13 @@ public class LocalizacaoService extends Service {
         public void onLocationChanged(Location location) {
             Log.e(TAG, "onLocationChanged: " + location);
             mLastLocation.set(location);
-            if(FerramentasBasicas.isOnline(this.myContext)){
+            if (FerramentasBasicas.isOnline(this.myContext)) {
                 RotaCaptador rotaCaptador = new RotaCaptador(location.getLatitude() + "",
                         location.getLongitude() + "",
                         FerramentasBasicas.converterDataParaString(new Date(),
                                 "dd/MM/yyyy"),
                         FerramentasBasicas.converterDataParaString(new Date(), "yyyy-MM-dd'T'HH:mm:ss'Z'"),
                         captadorId);
-
                 PostHttpComHeaderServiceAsyncTask postHttpComHeaderAsyncTask = new PostHttpComHeaderServiceAsyncTask(myContext,
                         httpResponseInterface,
                         rotaCaptador.gerarRotaCaptadorJSON(),
@@ -101,19 +104,7 @@ public class LocalizacaoService extends Service {
         final Handler handler = new Handler();
         final int[] count = {0};
 
-        final Runnable runnable = new Runnable() {
-            public void run() {
-                Log.e(TAG, "Loop");
-                removerLocationListeners();
-                initializeLocationManager();
-                pegarLocalizacao();
-                if (true) {
-                    handler.postDelayed(this, 30000);
-                }
-            }
-        };
-
-        handler.post(runnable);
+        pegarLocalizacao();
 
         return START_STICKY;
     }
@@ -130,7 +121,7 @@ public class LocalizacaoService extends Service {
         removerLocationListeners();
     }
 
-    private void removerLocationListeners(){
+    private void removerLocationListeners() {
         if (mLocationManager != null) {
             for (int i = 0; i < mLocationListeners.length; i++) {
                 try {
@@ -142,31 +133,30 @@ public class LocalizacaoService extends Service {
         }
     }
 
-    private void pegarLocalizacao(){
-        try {
-            mLocationManager.requestLocationUpdates(
-                    LocationManager.NETWORK_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
-                    mLocationListeners[1]);
-        } catch (java.lang.SecurityException ex) {
-            Log.i(TAG, "fail to request location update, ignore", ex);
-        } catch (IllegalArgumentException ex) {
-            Log.d(TAG, "network provider does not exist, " + ex.getMessage());
-        }
-        try {
-            mLocationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
-                    mLocationListeners[0]);
-        } catch (java.lang.SecurityException ex) {
-            Log.i(TAG, "fail to request location update, ignore", ex);
-        } catch (IllegalArgumentException ex) {
-            Log.d(TAG, "gps provider does not exist " + ex.getMessage());
-        }
-    }
+    private void pegarLocalizacao() {
 
-    private void initializeLocationManager() {
-        Log.e(TAG, "initializeLocationManager");
-        if (mLocationManager == null) {
-            mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        mLocationManager = (LocationManager) this.getSystemService(this.LOCATION_SERVICE);
+
+        if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Log.e(TAG, "GPS ta liberado.");
+            Criteria criteria = new Criteria();
+            String provider = mLocationManager.getBestProvider(criteria, false);
+
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    || checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+
+            Log.e(TAG, "accesss_fine_location.");
+            try {
+                mLocationManager.requestLocationUpdates(
+                        provider, LOCATION_INTERVAL, LOCATION_DISTANCE,
+                        mLocationListeners[0]);
+            } catch (java.lang.SecurityException ex) {
+                Log.i(TAG, "fail to request location update, ignore", ex);
+            } catch (IllegalArgumentException ex) {
+                Log.d(TAG, "gps provider does not exist " + ex.getMessage());
+            }
         }
     }
 }

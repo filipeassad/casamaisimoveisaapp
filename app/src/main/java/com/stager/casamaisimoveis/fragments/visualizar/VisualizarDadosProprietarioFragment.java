@@ -1,6 +1,7 @@
-package com.stager.casamaisimoveis.fragments;
+package com.stager.casamaisimoveis.fragments.visualizar;
 
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,16 +17,14 @@ import androidx.fragment.app.Fragment;
 
 import com.stager.casamaisimoveis.R;
 import com.stager.casamaisimoveis.adapters.TelefoneProprietarioAdapter;
-import com.stager.casamaisimoveis.interfaces.TelefoneProprietarioAdapterInterface;
 import com.stager.casamaisimoveis.models.Proprietario;
 import com.stager.casamaisimoveis.models.TelefoneProprietario;
-import com.stager.casamaisimoveis.utilitarios.MascaraEditText;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CadastrarDadosProprietarioFragment extends Fragment implements TelefoneProprietarioAdapterInterface {
+public class VisualizarDadosProprietarioFragment extends Fragment {
 
     private Button btnVoltar;
     private Button btnAvancar;
@@ -32,11 +32,11 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
     private EditText edtCpfProprietario;
     private EditText edtTelefoneProprietario;
     private Button btnAdicionar;
+    private TextView txtTelefone;
     private ListView lvTelefoneProprietario;
+    private Button btnEditar;
 
     private List<TelefoneProprietario> telefonesProprietario;
-
-    private TelefoneProprietarioAdapterInterface telefoneProprietarioAdapterInterface;
 
     @Nullable
     @Override
@@ -51,11 +51,15 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
         edtTelefoneProprietario = (EditText) view.findViewById(R.id.edtTelefoneProprietario);
         btnAdicionar = (Button) view.findViewById(R.id.btnAdicionar);
         lvTelefoneProprietario = (ListView) view.findViewById(R.id.lvTelefoneProprietario);
+        txtTelefone = (TextView) view.findViewById(R.id.txtTelefone);
+        btnEditar = (Button) view.findViewById(R.id.btnEditar);
 
-        edtCpfProprietario.addTextChangedListener(MascaraEditText.mask(edtCpfProprietario, MascaraEditText.FORMAT_CPF));
-        edtTelefoneProprietario.addTextChangedListener(MascaraEditText.mask(edtTelefoneProprietario, MascaraEditText.FORMAT_FONE));
+        edtNomeProprietario.setInputType(InputType.TYPE_NULL);
+        edtCpfProprietario.setInputType(InputType.TYPE_NULL);
 
-        telefoneProprietarioAdapterInterface = this;
+        edtTelefoneProprietario.setVisibility(View.GONE);
+        btnAdicionar.setVisibility(View.GONE);
+        btnEditar.setVisibility(View.VISIBLE);
 
         telefonesProprietario = new ArrayList<>();
 
@@ -68,11 +72,11 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
     public void onResume() {
         super.onResume();
 
-        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Proprietário");
+        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Visualizar");
+        txtTelefone.setText("Telefone(s):");
 
-        if(VariaveisEstaticas.getProprietarioCadastro() != null){
-            Proprietario proprietario = VariaveisEstaticas.getProprietarioCadastro();
-
+        if(VariaveisEstaticas.getImovelBusca() != null){
+            Proprietario proprietario = VariaveisEstaticas.getImovelBusca().getProprietario();
             edtNomeProprietario.setText(proprietario.getNome());
             edtCpfProprietario.setText(proprietario.getCpf());
 
@@ -80,7 +84,7 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
             TelefoneProprietarioAdapter telefoneProprietarioAdapter = new TelefoneProprietarioAdapter(getContext(),
                     R.layout.adapter_telefone_item,
                     telefonesProprietario,
-                    telefoneProprietarioAdapterInterface);
+                    null);
             lvTelefoneProprietario.setAdapter(telefoneProprietarioAdapter);
             lvTelefoneProprietario.setLayoutParams(parametrosListView());
         }
@@ -97,67 +101,16 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
         btnAvancar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                avancarFormulario();
+                VariaveisEstaticas.getFragmentInterface().alterarFragment("VisualizarEnderecoImovel");
             }
         });
 
-        btnAdicionar.setOnClickListener(new View.OnClickListener() {
+        btnEditar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                adicionarTelefone();
+
             }
         });
-    }
-
-    private void adicionarTelefone(){
-        VariaveisEstaticas.getFragmentInterface().fecharTeclado();
-
-        if(edtTelefoneProprietario.getText().toString().trim().equals("")){
-            edtTelefoneProprietario.setError("Digite o telefone.");
-            return;
-        }
-
-        TelefoneProprietario telefoneProprietario = new TelefoneProprietario(edtTelefoneProprietario.getText().toString());
-        telefonesProprietario.add(telefoneProprietario);
-        TelefoneProprietarioAdapter telefoneProprietarioAdapter = new TelefoneProprietarioAdapter(getContext(),
-                R.layout.adapter_telefone_item,
-                telefonesProprietario,
-                telefoneProprietarioAdapterInterface);
-        lvTelefoneProprietario.setAdapter(telefoneProprietarioAdapter);
-        lvTelefoneProprietario.setLayoutParams(parametrosListView());
-
-        edtTelefoneProprietario.setText(new String());
-    }
-
-    public void avancarFormulario(){
-        VariaveisEstaticas.getFragmentInterface().fecharTeclado();
-
-        if(edtNomeProprietario.getText().toString().trim().equals("")){
-            edtNomeProprietario.setError("Digite o nome.");
-            return;
-        }
-
-        if(edtCpfProprietario.getText().toString().trim().equals("")){
-            edtCpfProprietario.setError("Digite o CPF.");
-            return;
-        }
-
-        Proprietario proprietario = new Proprietario(edtNomeProprietario.getText().toString(),
-                edtCpfProprietario.getText().toString(),
-                telefonesProprietario);
-        VariaveisEstaticas.setProprietarioCadastro(proprietario);
-        VariaveisEstaticas.getFragmentInterface().alterarFragment("CadastrarEnderecoImovel");
-    }
-
-    @Override
-    public void removerTelefone(TelefoneProprietario telefoneProprietario) {
-        telefonesProprietario.remove(telefoneProprietario);
-        TelefoneProprietarioAdapter telefoneProprietarioAdapter = new TelefoneProprietarioAdapter(getContext(),
-                R.layout.adapter_telefone_item,
-                telefonesProprietario,
-                telefoneProprietarioAdapterInterface);
-        lvTelefoneProprietario.setAdapter(telefoneProprietarioAdapter);
-        lvTelefoneProprietario.setLayoutParams(parametrosListView());
     }
 
     private LinearLayout.LayoutParams parametrosListView(){

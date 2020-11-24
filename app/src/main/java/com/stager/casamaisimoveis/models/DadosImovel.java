@@ -3,6 +3,7 @@ package com.stager.casamaisimoveis.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DadosImovel {
@@ -20,7 +21,7 @@ public class DadosImovel {
     private String area_construida;
     private String observacao;
     private List<Composicao> composicoes;
-    private VisitaImovel visitaImovel;
+    private List<VisitaImovel> visitasImovel;
 
     public DadosImovel(boolean divulgacao, boolean placa, boolean exclusividade, boolean autorizacao_ate_venda) {
         this.divulgacao = divulgacao;
@@ -37,6 +38,27 @@ public class DadosImovel {
         this.area_terreno = area_terreno;
         this.area_construida = area_construida;
         this.observacao = observacao;
+    }
+
+    public DadosImovel(JSONObject resposta) {
+        try {
+            this.id = resposta.has("id") ? resposta.getInt("id") : 0;
+            this.divulgacao = resposta.has("divulgacao") ? resposta.getBoolean("divulgacao") : false;
+            this.placa = resposta.has("placa") ? resposta.getBoolean("placa") : false;
+            this.exclusividade = resposta.has("exclusividade") ? resposta.getBoolean("exclusividade") : false;
+            this.autorizacao_ate_venda = resposta.has("autorizacao_ate_venda") ? resposta.getBoolean("autorizacao_ate_venda") : false;
+            this.tipo = resposta.has("tipo") ? resposta.getInt("tipo") : 0;
+            this.valor = resposta.has("valor") ? resposta.getString("valor") : new String();
+            this.honorario = resposta.has("honorario") ? resposta.getString("honorario") : new String();
+            this.fase_obra = resposta.has("fase_obra") ? resposta.getInt("fase_obra") : 0;
+            this.area_terreno = resposta.has("area_terreno") ? resposta.getString("area_terreno") : new String();
+            this.area_construida = resposta.has("area_construida") ? resposta.getString("area_construida") : new String();
+            this.observacao = resposta.has("observacao") ? resposta.getString("observacao") : new String();
+            this.composicoes = resposta.has("composicoesImovel") ? Composicao.gerarListaComposicoesImovelBuscaImovel(resposta.getJSONArray("composicoesImovel")) : new ArrayList<Composicao>();
+            this.visitasImovel = resposta.has("visitasImovel") ? VisitaImovel.gerarListaVisitasImovelBuscaImovel(resposta.getJSONArray("visitasImovel")) : new ArrayList<VisitaImovel>();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public Integer getId() {
@@ -143,12 +165,12 @@ public class DadosImovel {
         this.composicoes = composicoes;
     }
 
-    public VisitaImovel getVisitaImovel() {
-        return visitaImovel;
+    public List<VisitaImovel> getVisitasImovel() {
+        return visitasImovel;
     }
 
-    public void setVisitaImovel(VisitaImovel visitaImovel) {
-        this.visitaImovel = visitaImovel;
+    public void setVisitasImovel(List<VisitaImovel> visitasImovel) {
+        this.visitasImovel = visitasImovel;
     }
 
     public void setDadosImovel(Integer tipo, Integer fase_obra, String valor, String honorario, String area_terreno, String area_construida, String observacao){
@@ -163,7 +185,6 @@ public class DadosImovel {
 
     public JSONObject gerarDadosImovelJson(){
         JSONObject jsonObject = new JSONObject();
-
         try {
             jsonObject.put("divulgacao", this.divulgacao);
             jsonObject.put("placa", this.placa);
@@ -177,7 +198,7 @@ public class DadosImovel {
             jsonObject.put("area_construida", this.area_construida);
             jsonObject.put("observacao", this.observacao);
             jsonObject.put("composicoesImovel", Composicao.gerarComposicaoJsonArray(this.composicoes));
-            jsonObject.put("visitaImovel", this.visitaImovel.gerarVisitaJson());
+            jsonObject.put("visitasImovel", VisitaImovel.gerarVisitaImovelJsonArray(this.visitasImovel));
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -1,5 +1,7 @@
 package com.stager.casamaisimoveis.models;
 
+import android.util.Log;
+
 import com.stager.casamaisimoveis.utilitarios.FerramentasBasicas;
 
 import org.json.JSONArray;
@@ -28,6 +30,23 @@ public class RotaCaptador {
         this.data_rota = data_rota;
         this.data_hora_rota = data_hora_rota;
         this.captador_id = captador_id;
+    }
+
+    public RotaCaptador(JSONObject resposta) {
+        try {
+            this.id = resposta.has("id") ? resposta.getInt("id") : 0;
+            this.latitude = resposta.has("latitude") ? resposta.getString("latitude") : new String();
+            this.longitude = resposta.has("longitude") ? resposta.getString("longitude") : new String();
+            this.data_rota = resposta.getString("data_rota") != null ?
+                    FerramentasBasicas.trocarFormatoDataString(resposta.getString("data_rota"), "yyyy-MM-dd", "dd/MM/yyyy")
+                    : new String();
+            this.data_hora_rota = resposta.getString("data_hora_rota") != null ?
+                    FerramentasBasicas.trocarFormatoDataString(resposta.getString("data_hora_rota"), "yyyy-MM-dd'T'HH:mm:ss", "HH:mm:ss")
+                    : new String();
+            this.captador_id = resposta.has("captador_id") ? resposta.getInt("captador_id") : 0;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public Integer getId() {
@@ -136,23 +155,7 @@ public class RotaCaptador {
 
                 for(int i = 0; i < arrayResposta.length(); i++){
                     JSONObject itemResposta = arrayResposta.getJSONObject(i);
-                    RotaCaptador rotaCaptador = new RotaCaptador();
-
-                    rotaCaptador.setId(itemResposta.has("id") ? itemResposta.getInt("id") : 0);
-                    rotaCaptador.setLatitude(itemResposta.has("latitude") ? itemResposta.getString("latitude") : new String());
-                    rotaCaptador.setLongitude(itemResposta.has("longitude") ? itemResposta.getString("longitude") : new String());
-
-                    String dataRota = itemResposta.getString("data_rota") != null ? itemResposta.getString("data_rota") : new String();
-                    Date dataRotaConvertida = FerramentasBasicas.converterStringParaData(dataRota, "yyyy-MM-dd");
-                    rotaCaptador.setData_rota(FerramentasBasicas.converterDataParaString(dataRotaConvertida, "dd/MM/yyyy"));
-
-                    String dataHoraRota = itemResposta.getString("data_hora_rota") != null ? itemResposta.getString("data_hora_rota") : new String();
-                    Date dataHoraRotaConvertida = FerramentasBasicas.converterStringParaData(dataHoraRota, "yyyy-MM-dd'T'HH:mm:ss'Z'");
-                    rotaCaptador.setData_hora_rota(FerramentasBasicas.converterDataParaString(dataHoraRotaConvertida, "dd/MM/yyyy HH:mm:ss"));
-
-                    rotaCaptador.setCaptador_id(itemResposta.has("captador_id") ? itemResposta.getInt("captador_id") : 0);
-
-                    rotasCaptador.add(rotaCaptador);
+                    rotasCaptador.add(new RotaCaptador(itemResposta));
                 }
             }
         } catch (JSONException e) {

@@ -1,9 +1,10 @@
-package com.stager.casamaisimoveis.fragments;
+package com.stager.casamaisimoveis.fragments.historico;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,9 +40,10 @@ public class MapaHistoricoFragment extends Fragment implements OnMapReadyCallbac
 
     private GoogleMap googleMapsFragmentHistorico;
     private TextView txtDataHistorico;
+    private TextView txtNomeUsuario;
 
     private HttpResponseInterface httpResponseInterface;
-    private String API_ROTAS_CAPTADOR = "/api/rotasCaptador/";
+    private String API_ROTAS_CAPTADOR = "api/rotasCaptador/";
 
     @Nullable
     @Override
@@ -49,7 +51,9 @@ public class MapaHistoricoFragment extends Fragment implements OnMapReadyCallbac
         View view = inflater.inflate(R.layout.fragment_mapa_historico, container, false);
 
         txtDataHistorico = (TextView) view.findViewById(R.id.txtDataHistorico);
-        txtDataHistorico.setText(VariaveisEstaticas.getRotaCaptadorHistoricoSelecionado().getData_rota());
+        txtNomeUsuario = (TextView) view.findViewById(R.id.txtNomeUsuario);
+
+
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.googleMapsFragmentHistorico);
         mapFragment.getMapAsync(this);
@@ -63,6 +67,8 @@ public class MapaHistoricoFragment extends Fragment implements OnMapReadyCallbac
     public void onResume() {
         super.onResume();
         VariaveisEstaticas.getFragmentInterface().alterarTitulo("Mapa Histórico");
+        txtDataHistorico.setText(VariaveisEstaticas.getRotaCaptadorHistoricoSelecionado().getData_rota());
+        txtNomeUsuario.setText(VariaveisEstaticas.getCaptador().getNome());
     }
 
     private void carregarRotasCaptador(){

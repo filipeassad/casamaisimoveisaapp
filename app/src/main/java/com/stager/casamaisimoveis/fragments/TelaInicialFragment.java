@@ -21,6 +21,7 @@ public class TelaInicialFragment extends Fragment implements TelaInicialInterfac
     private TextView txtProfissaoUsuario;
     private LinearLayout llRota;
     private LinearLayout llHitorico;
+    private LinearLayout llBuscarImovel;
 
     private String FRAGMENT_ROTA = "Rota";
 
@@ -33,6 +34,7 @@ public class TelaInicialFragment extends Fragment implements TelaInicialInterfac
         txtProfissaoUsuario = (TextView) view.findViewById(R.id.txtProfissaoUsuario);
         llRota = (LinearLayout) view.findViewById(R.id.llRota);
         llHitorico = (LinearLayout) view.findViewById(R.id.llHitorico);
+        llBuscarImovel = (LinearLayout) view.findViewById(R.id.llBuscarImovel);
 
         VariaveisEstaticas.setTelaInicialInterface(this);
         eventosBotoes();
@@ -58,6 +60,13 @@ public class TelaInicialFragment extends Fragment implements TelaInicialInterfac
             @Override
             public void onClick(View view) {
                 VariaveisEstaticas.getFragmentInterface().alterarFragment("HistoricoCaptador");
+            }
+        });
+
+        llBuscarImovel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VariaveisEstaticas.getFragmentInterface().alterarFragment("BuscarImovel");
             }
         });
     }

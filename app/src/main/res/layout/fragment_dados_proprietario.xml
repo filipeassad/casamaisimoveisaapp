@@ -51,6 +51,19 @@
 
             </FrameLayout>
 
+            <Button
+                android:id="@+id/btnEditar"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Editar"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:background="@drawable/selector_botao_arrendondado_azul"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:visibility="gone"></Button>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -106,6 +119,7 @@
                 android:inputType="phone"></EditText>
 
             <TextView
+                android:id="@+id/txtTelefone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Telefone:"

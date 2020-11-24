@@ -1,4 +1,4 @@
-package com.stager.casamaisimoveis.fragments;
+package com.stager.casamaisimoveis.fragments.cadastrar;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -169,8 +169,8 @@ public class CadastrarComposicaoImovelFragment extends Fragment implements Compo
     }
 
     private LinearLayout.LayoutParams parametrosListView(){
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (200 * composicoesImovel.size()));
-        layoutParams.setMargins(0,50,0,0);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (250 * composicoesImovel.size()));
+        layoutParams.setMargins(0,50,0,10);
 
         return layoutParams;
     }

@@ -6,6 +6,8 @@ import android.net.NetworkInfo;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class FerramentasBasicas {
 
@@ -41,6 +43,19 @@ public class FerramentasBasicas {
 
         }
         return new Date();
+    }
+
+    public static String trocarFormatoDataString(String data, String formatoantigo, String formatoNovo){
+        try{
+            SimpleDateFormat format = new SimpleDateFormat(formatoantigo);
+            format.setTimeZone(TimeZone.getTimeZone("GMT"));
+            Date dataGerada = format.parse(data);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formatoNovo);
+            return simpleDateFormat.format(dataGerada);
+        }catch (Exception e){
+
+        }
+        return "";
     }
 
 }

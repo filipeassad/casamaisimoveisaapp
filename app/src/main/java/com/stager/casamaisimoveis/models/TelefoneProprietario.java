@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TelefoneProprietario {
@@ -11,6 +12,16 @@ public class TelefoneProprietario {
     private Integer id;
     private String numero;
     private Integer proprietario_id;
+
+    public TelefoneProprietario(JSONObject resposta) {
+        try {
+            this.id = resposta.has("id") ? resposta.getInt("id") : 0;
+            this.numero =  resposta.has("numero") ? resposta.getString("numero") : new String();
+            this.proprietario_id = resposta.has("proprietario_id") ? resposta.getInt("proprietario_id") : 0;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     public TelefoneProprietario(String numero) {
         this.numero = numero;
@@ -54,6 +65,19 @@ public class TelefoneProprietario {
         }
 
         return telefonesJSONArray;
+    }
+
+    public static List<TelefoneProprietario> gerarListaTelefonesProprietarioBuscaImovel(JSONArray telefones){
+        List<TelefoneProprietario> telefonesProprietario = new ArrayList<>();
+        try {
+            for(int i = 0; i < telefones.length(); i++){
+                JSONObject itemResposta = telefones.getJSONObject(i);
+                telefonesProprietario.add(new TelefoneProprietario(itemResposta));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return telefonesProprietario;
     }
 
 }

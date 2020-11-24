@@ -47,13 +47,16 @@ public class TelefoneProprietarioAdapter extends ArrayAdapter<TelefoneProprietar
 
         txtTelefoneProprietario.setText(telefoneProprietario.getNumero());
 
-        btnRemoverTelefone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                telefoneProprietarioAdapterInterface.removerTelefone(telefoneProprietario);
-            }
-        });
-
+        if(telefoneProprietarioAdapterInterface != null){
+            btnRemoverTelefone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    telefoneProprietarioAdapterInterface.removerTelefone(telefoneProprietario);
+                }
+            });
+        }else{
+            btnRemoverTelefone.setVisibility(View.GONE);
+        }
         return convertView;
     }
 }

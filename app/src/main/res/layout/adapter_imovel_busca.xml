@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:gravity="left|center"
+    android:background="@drawable/shape_item_rota">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/mapa_campo_grande"
+        app:civ_border_width="1dp"
+        app:civ_border_color="#ffffff"
+        android:layout_marginLeft="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="left|center"
+        android:layout_marginLeft="10dp"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/txtProprietario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Proprietário: Filipe Assad Baraúna"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="#ffffff">
+        </TextView>
+
+        <TextView
+            android:id="@+id/txtCPFProprietario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CPF: 000.000.000-00"
+            android:textSize="10sp"
+            android:textColor="#ffffff">
+        </TextView>
+
+        <TextView
+            android:id="@+id/txtBairroImovel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bairro: Vila Marli"
+            android:textSize="10sp"
+            android:textColor="#ffffff">
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center">
+
+            <TextView
+                android:id="@+id/txtRuaEnderecoImovel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rua: Lindóia"
+                android:textSize="10sp"
+                android:textColor="#ffffff">
+            </TextView>
+
+            <TextView
+                android:id="@+id/txtNumeroEnderecoImovel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Número: 1812"
+                android:textSize="10sp"
+                android:textColor="#ffffff"
+                android:layout_marginLeft="10dp">
+            </TextView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

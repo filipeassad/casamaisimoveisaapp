@@ -78,6 +78,8 @@ public class EnderecoRota {
         JSONObject rotaJson = new JSONObject();
 
         try {
+            if(this.id != null)
+                rotaJson.put("id", this.id);
             rotaJson.put("bairro", this.bairro);
             rotaJson.put("rua", this.rua);
             rotaJson.put("numero", this.numero);

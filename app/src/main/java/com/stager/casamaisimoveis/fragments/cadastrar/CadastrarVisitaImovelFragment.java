@@ -1,4 +1,4 @@
-package com.stager.casamaisimoveis.fragments;
+package com.stager.casamaisimoveis.fragments.cadastrar;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -29,7 +29,9 @@ import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class CadastrarVisitaImovelFragment extends Fragment implements HttpResponseInterface{
 
@@ -118,14 +120,24 @@ public class CadastrarVisitaImovelFragment extends Fragment implements HttpRespo
         DadosImovel dadosImovel = VariaveisEstaticas.getDadosImovelCadastro();
 
         dadosImovel.setComposicoes(VariaveisEstaticas.getComposicoesImovelCadastro());
-        dadosImovel.setVisitaImovel(VariaveisEstaticas.getVisitaImovelCadastro());
+        List<VisitaImovel> visitasImoveis = new ArrayList<>();
+        visitasImoveis.add(VariaveisEstaticas.getVisitaImovelCadastro());
+        dadosImovel.setVisitasImovel(visitasImoveis);
 
         Imovel imovel = new Imovel(enderecoImovel, proprietario, dadosImovel);
+        PostHttpComHeaderAsyncTask postHttpComHeaderAsyncTask;
+        if(VariaveisEstaticas.getEnderecoRotaSelecionado() != null){
+            postHttpComHeaderAsyncTask = new PostHttpComHeaderAsyncTask(getContext(),
+                    imovel.gerarImovelComEnderecoRotaJson(VariaveisEstaticas.getEnderecoRotaSelecionado()),
+                    httpResponseInterface,
+                    API_IMOVEL);
+        }else{
+            postHttpComHeaderAsyncTask = new PostHttpComHeaderAsyncTask(getContext(),
+                    imovel.gerarImovelJson(),
+                    httpResponseInterface,
+                    API_IMOVEL);
+        }
 
-        PostHttpComHeaderAsyncTask postHttpComHeaderAsyncTask = new PostHttpComHeaderAsyncTask(getContext(),
-                imovel.gerarImovelJson(),
-                httpResponseInterface,
-                API_IMOVEL);
         postHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_IMOVEL);
     }
 
@@ -155,6 +167,7 @@ public class CadastrarVisitaImovelFragment extends Fragment implements HttpRespo
                     VariaveisEstaticas.setDadosImovelCadastro(null);
                     VariaveisEstaticas.setComposicoesImovelCadastro(null);
                     VariaveisEstaticas.setVisitaImovelCadastro(null);
+                    VariaveisEstaticas.setEnderecoRotaSelecionado(null);
                     VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarDadosProprietario");
                     VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarEnderecoImovel");
                     VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarDadosAnuncio");

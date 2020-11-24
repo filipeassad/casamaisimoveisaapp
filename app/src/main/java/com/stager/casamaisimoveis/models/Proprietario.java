@@ -3,6 +3,7 @@ package com.stager.casamaisimoveis.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Proprietario {
@@ -16,6 +17,17 @@ public class Proprietario {
         this.nome = nome;
         this.cpf = cpf;
         this.telefones = telefones;
+    }
+
+    public Proprietario(JSONObject resposta) {
+        try {
+            this.id = resposta.has("id") ? resposta.getInt("id") : 0;
+            this.nome = resposta.has("nome") ? resposta.getString("nome") : new String();
+            this.cpf = resposta.has("cpf") ? resposta.getString("cpf") : new String();
+            this.telefones = resposta.has("telefones") ? TelefoneProprietario.gerarListaTelefonesProprietarioBuscaImovel(resposta.getJSONArray("telefones")) : new ArrayList<TelefoneProprietario>();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public Integer getId() {

@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Composicao {
@@ -18,6 +19,17 @@ public class Composicao {
     public Composicao(Integer ambiente_id, Integer quantidade) {
         this.ambiente_id = ambiente_id;
         this.quantidade = quantidade;
+    }
+
+    public Composicao(JSONObject resposta) {
+        try {
+            this.id = resposta.has("id") ? resposta.getInt("id") : 0;
+            this.ambiente_id = resposta.has("ambiente") ? resposta.getInt("ambiente") : 0;
+            this.quantidade = resposta.has("quantidade") ? resposta.getInt("quantidade") : 0;
+            this.dados_imovel_id = resposta.has("dados_imovel_id") ? resposta.getInt("dados_imovel_id") : 0;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public Integer getId() {
@@ -63,7 +75,7 @@ public class Composicao {
         for(Composicao composicao: composicoes){
             JSONObject composicaoJSONObject = new JSONObject();
             try {
-                composicaoJSONObject.put("ambiente_id", composicao.getAmbiente_id());
+                composicaoJSONObject.put("ambiente", composicao.getAmbiente_id());
                 composicaoJSONObject.put("quantidade", composicao.getQuantidade());
                 composicoesJSONArray.put(composicaoJSONObject);
             } catch (JSONException e) {
@@ -72,5 +84,18 @@ public class Composicao {
         }
 
         return composicoesJSONArray;
+    }
+
+    public static List<Composicao> gerarListaComposicoesImovelBuscaImovel(JSONArray composicoes){
+        List<Composicao> composicoesImovel = new ArrayList<>();
+        try {
+            for(int i = 0; i < composicoes.length(); i++){
+                JSONObject itemResposta = composicoes.getJSONObject(i);
+                composicoesImovel.add(new Composicao(itemResposta));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return composicoesImovel;
     }
 }

@@ -1,7 +1,12 @@
 package com.stager.casamaisimoveis.models;
 
+import com.stager.casamaisimoveis.utilitarios.FerramentasBasicas;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Date;
 
 public class EnderecoImovel {
 
@@ -14,6 +19,19 @@ public class EnderecoImovel {
         this.bairro = bairro;
         this.rua = rua;
         this.numero = numero;
+    }
+
+    public EnderecoImovel(JSONObject resposta) {
+        try {
+
+            this.id = resposta.has("id") ? resposta.getInt("id") : 0;
+            this.bairro = resposta.getString("bairro") != null ? resposta.getString("bairro") : new String();
+            this.rua = resposta.getString("rua") != null ? resposta.getString("rua") : new String();
+            this.numero = resposta.getString("numero") != null ? resposta.getString("numero") : new String();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getBairro() {

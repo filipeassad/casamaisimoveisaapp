@@ -1,5 +1,6 @@
 package com.stager.casamaisimoveis.activitys;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -44,7 +45,8 @@ import java.util.List;
 
 public class FragmentPrincipal extends FragmentActivity implements FragmentInterface, HttpResponseInterface {
 
-    static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 24;
+    static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 24;
+    static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 25;
 
     private LinearLayout llMenu;
     private TextView ttTituloFragment;
@@ -84,7 +86,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
 
         getNavMenu();
         inserirPrimeiroFragment();
-        buscarDadosUsuario(VariaveisEstaticas.getAutenticacao());
+
 
         eventosBotoes();
     }
@@ -92,7 +94,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
     @Override
     protected void onResume() {
         super.onResume();
-        verificarPermissaoLocalizacao();
+        buscarDadosUsuario(VariaveisEstaticas.getAutenticacao());
     }
 
     private void buscarDadosUsuario(Autenticacao autenticacao){
@@ -126,6 +128,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
 
         List<String> listString = new ArrayList<>();
 
+        listString.add("TelaInicial");
         listString.add("Rota");
         listString.add("Histórico");
         listString.add("Imóveis");
@@ -138,12 +141,14 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                if(((String) parent.getItemAtPosition(position)).equals("Rota")){
+                if(((String) parent.getItemAtPosition(position)).equals("Tela Inicial")){
+                    alterarFragment("Tela Inicial");
+                }else if(((String) parent.getItemAtPosition(position)).equals("Rota")){
                     alterarFragment("Rota");
                 }else if(((String) parent.getItemAtPosition(position)).equals("Histórico")){
-                    alterarFragment("Histórico");
+                    alterarFragment("HistoricoCaptador");
                 }else if(((String) parent.getItemAtPosition(position)).equals("Imóveis")){
-                    alterarFragment("Imóveis");
+                    alterarFragment("BuscarImovel");
                 }else if(((String) parent.getItemAtPosition(position)).equals("Sair")){
                     sair();
                 }
@@ -257,8 +262,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
             VariaveisEstaticas.setCaptador(captadorLogado);
             inserirDadosUsuario(captadorLogado.getNome(), "Captador");
             VariaveisEstaticas.getTelaInicialInterface().carregarDadosUsuario();
-            Intent serviceIntent = new Intent(this, LocalizacaoService.class);
-            this.startService(serviceIntent);
+            verificarPermissaoLocalizacao();
         }
     }
 
@@ -282,18 +286,24 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION )
                 != PackageManager.PERMISSION_GRANTED ) {
 
-            ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
-                    MY_PERMISSIONS_REQUEST_READ_CONTACTS );
+            ActivityCompat.requestPermissions( this, new String[] { android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                            android.Manifest.permission.ACCESS_FINE_LOCATION },
+                    MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION );
+        }
+        else{
+            Intent serviceIntent = new Intent(this, LocalizacaoService.class);
+            this.startService(serviceIntent);
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
+            case MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
+                    Intent serviceIntent = new Intent(this, LocalizacaoService.class);
+                    this.startService(serviceIntent);
                 } else {
                     this.finish();
                 }

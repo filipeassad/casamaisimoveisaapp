@@ -1,4 +1,4 @@
-package com.stager.casamaisimoveis.fragments;
+package com.stager.casamaisimoveis.fragments.rota;
 
 import android.Manifest;
 import android.content.Intent;
@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -49,6 +51,8 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
 
     private GoogleMap googleMapsFragment;
 
+
+    private TextView edtBairroRota;
     private Button btnNovoEndereco;
     private HttpResponseInterface httpResponseInterface;
     private String API_ENDERECOS_ROTAS = "api/enderecosRota/";
@@ -62,13 +66,14 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mapa_rota, container, false);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.googleMapsFragment);
-        mapFragment.getMapAsync(this);
+        edtBairroRota = (TextView) view.findViewById(R.id.edtBairroRota);
+        btnNovoEndereco = (Button) view.findViewById(R.id.btnNovoEndereco);
 
         httpResponseInterface = this;
         mapaRotaInterface = this;
 
-        btnNovoEndereco = (Button) view.findViewById(R.id.btnNovoEndereco);
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.googleMapsFragment);
+        mapFragment.getMapAsync(this);
 
         enderecosRota = new ArrayList<>();
         marcasEnderecoRota = new HashMap<>();
@@ -82,6 +87,10 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
     public void onResume() {
         super.onResume();
         VariaveisEstaticas.getFragmentInterface().alterarTitulo("Mapa Rota");
+
+        if(VariaveisEstaticas.getRotaSelecionada() != null){
+            edtBairroRota.setText("Bairro: " + VariaveisEstaticas.getRotaSelecionada().getBairro());
+        }
     }
 
     private void carregarEnderecos(){

@@ -1,4 +1,4 @@
-package com.stager.casamaisimoveis.fragments;
+package com.stager.casamaisimoveis.fragments.cadastrar;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
