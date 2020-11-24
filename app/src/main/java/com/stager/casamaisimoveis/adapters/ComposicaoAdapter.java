@@ -47,12 +47,16 @@ public class ComposicaoAdapter extends ArrayAdapter<Composicao> {
         txtNomeAmbiente.setText(composicao.getNomeComposicao());
         txtQuantidadeAmbinte.setText("Quantidade: " + composicao.getQuantidade());
 
-        btnRemoverAmbiente.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                composicaoInterface.removerComposicao(composicao);
-            }
-        });
+        if(composicaoInterface != null){
+            btnRemoverAmbiente.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    composicaoInterface.removerComposicao(composicao);
+                }
+            });
+        }else{
+            btnRemoverAmbiente.setVisibility(View.GONE);
+        }
 
         return convertView;
     }

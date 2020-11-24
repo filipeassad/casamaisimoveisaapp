@@ -43,6 +43,7 @@ public class CadastrarVisitaImovelFragment extends Fragment implements HttpRespo
     private EditText edtDataRetorno;
     private HttpResponseInterface httpResponseInterface;
     private String API_IMOVEL = "api/cadastrarImovel";
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

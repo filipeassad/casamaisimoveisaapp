@@ -17,6 +17,16 @@ public class Captador {
         return id;
     }
 
+    public Captador(JSONObject resposta) {
+        try {
+            this.id = resposta.has("id") ? resposta.getInt("id") : 0;
+            this.nome = resposta.getString("nome") != null ? resposta.getString("nome") : new String();
+            this.usuario_id = resposta.has("usuario_id") ? resposta.getInt("usuario_id") : 0;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }

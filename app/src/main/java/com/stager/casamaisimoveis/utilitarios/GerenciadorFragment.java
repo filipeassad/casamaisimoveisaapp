@@ -21,8 +21,12 @@ import com.stager.casamaisimoveis.fragments.historico.MapaHistoricoFragment;
 import com.stager.casamaisimoveis.fragments.rota.MapaRotaFragment;
 import com.stager.casamaisimoveis.fragments.rota.RotaFragment;
 import com.stager.casamaisimoveis.fragments.TelaInicialFragment;
+import com.stager.casamaisimoveis.fragments.visualizar.VisualizarComposicaoImovelFragment;
+import com.stager.casamaisimoveis.fragments.visualizar.VisualizarDadosAnuncioFragment;
 import com.stager.casamaisimoveis.fragments.visualizar.VisualizarDadosProprietarioFragment;
 import com.stager.casamaisimoveis.fragments.visualizar.VisualizarEnderecoImovelFragment;
+import com.stager.casamaisimoveis.fragments.visualizar.VisualizarInformacoesImovelFragment;
+import com.stager.casamaisimoveis.fragments.visualizar.VisualizarVisitaImovelFragment;
 
 public class GerenciadorFragment {
 
@@ -79,6 +83,18 @@ public class GerenciadorFragment {
         }else if(nomeTela.equals("VisualizarEnderecoImovel")){
             VisualizarEnderecoImovelFragment visualizarEnderecoImovelFragment = new VisualizarEnderecoImovelFragment();
             ft.replace(R.id.contFragments, visualizarEnderecoImovelFragment);
+        }else if(nomeTela.equals("VisualizarDadosAnuncio")){
+            VisualizarDadosAnuncioFragment visualizarDadosAnuncioFragment = new VisualizarDadosAnuncioFragment();
+            ft.replace(R.id.contFragments, visualizarDadosAnuncioFragment);
+        }else if(nomeTela.equals("VisualizarInformacoesImovel")){
+            VisualizarInformacoesImovelFragment visualizarInformacoesImovelFragment = new VisualizarInformacoesImovelFragment();
+            ft.replace(R.id.contFragments, visualizarInformacoesImovelFragment);
+        }else if(nomeTela.equals("VisualizarComposicaoImovel")){
+            VisualizarComposicaoImovelFragment visualizarComposicaoImovelFragment = new VisualizarComposicaoImovelFragment();
+            ft.replace(R.id.contFragments, visualizarComposicaoImovelFragment);
+        }else if(nomeTela.equals("VisualizarVisitaImovel")){
+            VisualizarVisitaImovelFragment visualizarVisitaImovelFragment = new VisualizarVisitaImovelFragment();
+            ft.replace(R.id.contFragments, visualizarVisitaImovelFragment);
         }
 
         if(fm.findFragmentByTag(nomeTela) != null)

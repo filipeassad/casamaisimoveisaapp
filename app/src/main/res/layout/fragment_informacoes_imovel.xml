@@ -51,6 +51,19 @@
 
             </FrameLayout>
 
+            <Button
+                android:id="@+id/btnEditar"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Editar"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:background="@drawable/selector_botao_arrendondado_azul"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:visibility="gone"></Button>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -88,6 +101,44 @@
 
             <Spinner
                 android:id="@+id/spFaseObra"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/shape_edittext_form"
+                android:textColor="#c4c4c4"
+                android:paddingLeft="10dp"></Spinner>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Esgoto:"
+                android:textColor="#0D5ED9"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"></TextView>
+
+            <Spinner
+                android:id="@+id/spEsgoto"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/shape_edittext_form"
+                android:textColor="#c4c4c4"
+                android:paddingLeft="10dp"></Spinner>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tipo Rua:"
+                android:textColor="#0D5ED9"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"></TextView>
+
+            <Spinner
+                android:id="@+id/spTipoRua"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"

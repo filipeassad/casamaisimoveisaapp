@@ -29,6 +29,8 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
     private Button btnAvancar;
     private Spinner spTipoImovel;
     private Spinner spFaseObra;
+    private Spinner spEsgoto;
+    private Spinner spTipoRua;
     private EditText edtValor;
     private EditText edtHonorario;
     private EditText edtAreaTerreno;
@@ -37,9 +39,13 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
 
     private List<ItemSpinner> tiposImovel;
     private List<ItemSpinner> fasesObra;
+    private List<ItemSpinner> esgotos;
+    private List<ItemSpinner> tiposRua;
 
     private ItemSpinner tipoImovelSelecionado;
     private ItemSpinner faseImovelSelecionado;
+    private ItemSpinner esgotoImovelSelecionado;
+    private ItemSpinner tipoRuaImovelSelecionado;
 
     @Nullable
     @Override
@@ -51,6 +57,8 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
 
         spTipoImovel = (Spinner) view.findViewById(R.id.spTipoImovel);
         spFaseObra = (Spinner) view.findViewById(R.id.spFaseObra);
+        spEsgoto = (Spinner) view.findViewById(R.id.spEsgoto);
+        spTipoRua = (Spinner) view.findViewById(R.id.spTipoRua);
 
         edtValor = (EditText) view.findViewById(R.id.edtValor);
         edtHonorario = (EditText) view.findViewById(R.id.edtHonorario);
@@ -75,6 +83,8 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
 
             spTipoImovel.setSelection(dadosImovel.getTipo() != null ? dadosImovel.getTipo(): 0);
             spFaseObra.setSelection(dadosImovel.getFase_obra() != null ? dadosImovel.getTipo(): 0);
+            spEsgoto.setSelection(dadosImovel.getEsgoto() != null ? dadosImovel.getEsgoto(): 0);
+            spTipoRua.setSelection(dadosImovel.getTipo_rua() != null ? dadosImovel.getTipo_rua(): 0);
 
             edtValor.setText(dadosImovel.getValor() != null ? dadosImovel.getValor(): "");
             edtHonorario.setText(dadosImovel.getHonorario() != null ? dadosImovel.getHonorario(): "");
@@ -113,6 +123,16 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
             return;
         }
 
+        if(esgotoImovelSelecionado == null || (esgotoImovelSelecionado != null && esgotoImovelSelecionado.getId() == 0)){
+            Toast.makeText(getContext(), "Selecione o tipo de esgoto", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(tipoRuaImovelSelecionado == null || (tipoRuaImovelSelecionado != null && tipoRuaImovelSelecionado.getId() == 0)){
+            Toast.makeText(getContext(), "Selecione o tipo de rua", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if(edtValor.getText().toString().trim().equals("")){
             edtValor.setError("Digite o valor.");
             return;
@@ -136,6 +156,8 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
         if(VariaveisEstaticas.getDadosImovelCadastro() != null){
             VariaveisEstaticas.getDadosImovelCadastro().setDadosImovel(tipoImovelSelecionado.getId(),
                     faseImovelSelecionado.getId(),
+                    esgotoImovelSelecionado.getId(),
+                    tipoRuaImovelSelecionado.getId(),
                     edtValor.getText().toString(),
                     edtHonorario.getText().toString(),
                     edtAreaTerreno.getText().toString(),
@@ -144,6 +166,8 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
         }else{
             DadosImovel dadosImovel = new DadosImovel(tipoImovelSelecionado.getId(),
                     faseImovelSelecionado.getId(),
+                    esgotoImovelSelecionado.getId(),
+                    tipoRuaImovelSelecionado.getId(),
                     edtValor.getText().toString(),
                     edtHonorario.getText().toString(),
                     edtAreaTerreno.getText().toString(),
@@ -159,6 +183,8 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
         MontarSpinners montarSpinners = new MontarSpinners();
         tiposImovel = montarSpinners.listarTiposImovel();
         fasesObra = montarSpinners.listarFaseImovel();
+        esgotos = montarSpinners.listarTipoEsgoto();
+        tiposRua = montarSpinners.listarTipoRua();
 
         ArrayAdapter adapterTipoImovel = new ArrayAdapter(getContext(),
                 R.layout.adapter_item_spinner,
@@ -197,6 +223,45 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
 
             }
         });
+
+        ArrayAdapter adapterTipoEsgoto = new ArrayAdapter(getContext(),
+                R.layout.adapter_item_spinner,
+                esgotos);
+
+        adapterTipoEsgoto.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spEsgoto.setAdapter(adapterTipoEsgoto);
+
+        spEsgoto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int posicao, long l) {
+                esgotoImovelSelecionado = (ItemSpinner) adapterView.getItemAtPosition(posicao);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        ArrayAdapter adapterTipoRua = new ArrayAdapter(getContext(),
+                R.layout.adapter_item_spinner,
+                tiposRua);
+
+        adapterTipoRua.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spTipoRua.setAdapter(adapterTipoRua);
+
+        spTipoRua.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int posicao, long l) {
+                tipoRuaImovelSelecionado = (ItemSpinner) adapterView.getItemAtPosition(posicao);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
     }
 
 }

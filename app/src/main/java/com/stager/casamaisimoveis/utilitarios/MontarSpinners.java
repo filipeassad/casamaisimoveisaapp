@@ -21,21 +21,39 @@ public class MontarSpinners {
     }
 
     public List<ItemSpinner> listarFaseImovel(){
-        List<ItemSpinner> tiposImovel = new ArrayList<>();
+        List<ItemSpinner> tiposFaseObra = new ArrayList<>();
 
-        tiposImovel.add(new ItemSpinner(0, "Selecione"));
-        tiposImovel.add(new ItemSpinner(1, "Início"));
-        tiposImovel.add(new ItemSpinner(2, "Laje"));
-        tiposImovel.add(new ItemSpinner(3, "Reboco"));
-        tiposImovel.add(new ItemSpinner(4, "Pintura"));
-        tiposImovel.add(new ItemSpinner(5, "Final de Obra"));
-        tiposImovel.add(new ItemSpinner(6, "Obra Pronta"));
-        tiposImovel.add(new ItemSpinner(7, "Rede de Esgoto"));
-        tiposImovel.add(new ItemSpinner(8, "Fossa"));
-        tiposImovel.add(new ItemSpinner(9, "Rua de Asfalto"));
-        tiposImovel.add(new ItemSpinner(10, "Rua de Terra"));
+        tiposFaseObra.add(new ItemSpinner(0, "Selecione"));
+        tiposFaseObra.add(new ItemSpinner(1, "Início"));
+        tiposFaseObra.add(new ItemSpinner(2, "Laje"));
+        tiposFaseObra.add(new ItemSpinner(3, "Reboco"));
+        tiposFaseObra.add(new ItemSpinner(4, "Pintura"));
+        tiposFaseObra.add(new ItemSpinner(5, "Final de Obra"));
+        tiposFaseObra.add(new ItemSpinner(6, "Obra Pronta"));
+        tiposFaseObra.add(new ItemSpinner(9, "Rua de Asfalto"));
+        tiposFaseObra.add(new ItemSpinner(10, "Rua de Terra"));
 
-        return tiposImovel;
+        return tiposFaseObra;
+    }
+
+    public List<ItemSpinner> listarTipoEsgoto(){
+        List<ItemSpinner> tiposEsgoto = new ArrayList<>();
+
+        tiposEsgoto.add(new ItemSpinner(0, "Selecione"));
+        tiposEsgoto.add(new ItemSpinner(1, "Rede de Esgoto"));
+        tiposEsgoto.add(new ItemSpinner(2, "Fossa"));
+
+        return tiposEsgoto;
+    }
+
+    public List<ItemSpinner> listarTipoRua(){
+        List<ItemSpinner> tiposRua = new ArrayList<>();
+
+        tiposRua.add(new ItemSpinner(0, "Selecione"));
+        tiposRua.add(new ItemSpinner(1, "Rua de Asfalto"));
+        tiposRua.add(new ItemSpinner(2, "Rua de Terra"));
+
+        return tiposRua;
     }
 
     public List<ItemSpinner> listarAmbiente(){

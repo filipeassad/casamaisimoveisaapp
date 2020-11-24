@@ -128,7 +128,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
 
         List<String> listString = new ArrayList<>();
 
-        listString.add("TelaInicial");
+        listString.add("Tela Inicial");
         listString.add("Rota");
         listString.add("Histórico");
         listString.add("Imóveis");
@@ -142,7 +142,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 if(((String) parent.getItemAtPosition(position)).equals("Tela Inicial")){
-                    alterarFragment("Tela Inicial");
+                    alterarFragment("TelaInicial");
                 }else if(((String) parent.getItemAtPosition(position)).equals("Rota")){
                     alterarFragment("Rota");
                 }else if(((String) parent.getItemAtPosition(position)).equals("Histórico")){

@@ -18,6 +18,8 @@ public class VisitaImovel {
     private Integer captador_id;
     private Integer dados_imovel_id;
 
+    private Captador captador;
+
     public VisitaImovel(String data_visita, String retorno, Integer captador_id) {
         this.data_visita = data_visita;
         this.retorno = retorno;
@@ -35,6 +37,7 @@ public class VisitaImovel {
                     : new String();
             this.captador_id = resposta.has("captador_id") ? resposta.getInt("captador_id") : 0;
             this.dados_imovel_id = resposta.has("dados_imovel_id") ? resposta.getInt("dados_imovel_id") : 0;
+            this.captador = resposta.has("captador") ? new Captador(resposta.getJSONObject("captador")) : new Captador();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -78,6 +81,14 @@ public class VisitaImovel {
 
     public void setDados_imovel_id(Integer dados_imovel_id) {
         this.dados_imovel_id = dados_imovel_id;
+    }
+
+    public Captador getCaptador() {
+        return captador;
+    }
+
+    public void setCaptador(Captador captador) {
+        this.captador = captador;
     }
 
     public JSONObject gerarVisitaJson(){

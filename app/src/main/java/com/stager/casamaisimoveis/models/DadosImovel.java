@@ -17,6 +17,8 @@ public class DadosImovel {
     private String valor;
     private String honorario;
     private Integer fase_obra;
+    private Integer esgoto;
+    private Integer tipo_rua;
     private String area_terreno;
     private String area_construida;
     private String observacao;
@@ -30,11 +32,13 @@ public class DadosImovel {
         this.autorizacao_ate_venda = autorizacao_ate_venda;
     }
 
-    public DadosImovel(Integer tipo, Integer fase_obra, String valor, String honorario, String area_terreno, String area_construida, String observacao) {
+    public DadosImovel(Integer tipo, Integer fase_obra, Integer esgoto, Integer tipo_rua, String valor, String honorario, String area_terreno, String area_construida, String observacao) {
         this.tipo = tipo;
         this.valor = valor;
         this.honorario = honorario;
         this.fase_obra = fase_obra;
+        this.esgoto = esgoto;
+        this.tipo_rua = tipo_rua;
         this.area_terreno = area_terreno;
         this.area_construida = area_construida;
         this.observacao = observacao;
@@ -51,6 +55,8 @@ public class DadosImovel {
             this.valor = resposta.has("valor") ? resposta.getString("valor") : new String();
             this.honorario = resposta.has("honorario") ? resposta.getString("honorario") : new String();
             this.fase_obra = resposta.has("fase_obra") ? resposta.getInt("fase_obra") : 0;
+            this.esgoto = resposta.has("esgoto") ? resposta.getInt("esgoto") : 0;
+            this.tipo_rua = resposta.has("tipo_rua") ? resposta.getInt("tipo_rua") : 0;
             this.area_terreno = resposta.has("area_terreno") ? resposta.getString("area_terreno") : new String();
             this.area_construida = resposta.has("area_construida") ? resposta.getString("area_construida") : new String();
             this.observacao = resposta.has("observacao") ? resposta.getString("observacao") : new String();
@@ -133,6 +139,22 @@ public class DadosImovel {
         this.fase_obra = fase_obra;
     }
 
+    public Integer getEsgoto() {
+        return esgoto;
+    }
+
+    public void setEsgoto(Integer esgoto) {
+        this.esgoto = esgoto;
+    }
+
+    public Integer getTipo_rua() {
+        return tipo_rua;
+    }
+
+    public void setTipo_rua(Integer tipo_rua) {
+        this.tipo_rua = tipo_rua;
+    }
+
     public String getArea_terreno() {
         return area_terreno;
     }
@@ -173,9 +195,11 @@ public class DadosImovel {
         this.visitasImovel = visitasImovel;
     }
 
-    public void setDadosImovel(Integer tipo, Integer fase_obra, String valor, String honorario, String area_terreno, String area_construida, String observacao){
+    public void setDadosImovel(Integer tipo, Integer fase_obra, Integer esgoto, Integer tipo_rua, String valor, String honorario, String area_terreno, String area_construida, String observacao){
         this.tipo = tipo;
         this.fase_obra = fase_obra;
+        this.esgoto = esgoto;
+        this.tipo_rua = tipo_rua;
         this.valor = valor;
         this.honorario = honorario;
         this.area_terreno = area_terreno;
@@ -194,6 +218,8 @@ public class DadosImovel {
             jsonObject.put("valor", this.valor);
             jsonObject.put("honorario", this.honorario);
             jsonObject.put("fase_obra", this.fase_obra);
+            jsonObject.put("esgoto", this.esgoto);
+            jsonObject.put("tipo_rua", this.tipo_rua);
             jsonObject.put("area_terreno", this.area_terreno);
             jsonObject.put("area_construida", this.area_construida);
             jsonObject.put("observacao", this.observacao);
