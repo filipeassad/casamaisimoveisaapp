@@ -1,5 +1,6 @@
 package com.stager.casamaisimoveis.fragments.alterar;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -130,6 +131,11 @@ public class AlterarEnderecoImovelFragment extends Fragment implements HttpRespo
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void retornoImagemBitmap(Bitmap imagem, String rotaAPI) {
+
     }
 
     private void retornoAlteracaoEnderecoImovel(JSONObject resposta){

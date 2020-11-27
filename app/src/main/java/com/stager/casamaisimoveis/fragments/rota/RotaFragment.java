@@ -1,5 +1,6 @@
 package com.stager.casamaisimoveis.fragments.rota;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,6 +87,11 @@ public class RotaFragment extends Fragment implements HttpResponseInterface {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void retornoImagemBitmap(Bitmap imagem, String rotaAPI) {
+
     }
 
     private void retornRota(JSONObject resposta){

@@ -1,5 +1,6 @@
 package com.stager.casamaisimoveis.fragments;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -107,6 +108,11 @@ public class BuscarImovelFragment extends Fragment implements HttpResponseInterf
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void retornoImagemBitmap(Bitmap imagem, String rotaAPI) {
+
     }
 
     private void retornoBuscaImovel(JSONObject resposta){

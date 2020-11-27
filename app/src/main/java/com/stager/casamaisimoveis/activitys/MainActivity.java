@@ -2,6 +2,7 @@ package com.stager.casamaisimoveis.activitys;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -118,6 +119,11 @@ public class MainActivity extends Activity implements HttpResponseInterface{
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void retornoImagemBitmap(Bitmap imagem, String rotaAPI) {
+
     }
 
     private void retornoApiLogin(JSONObject resposta){

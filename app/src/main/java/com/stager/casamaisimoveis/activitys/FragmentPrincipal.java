@@ -32,6 +32,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.stager.casamaisimoveis.R;
 import com.stager.casamaisimoveis.adapters.MenuAdapter;
 import com.stager.casamaisimoveis.api.GetHttpComHeaderAsyncTask;
+import com.stager.casamaisimoveis.api.GetHttpImagemAsyncTask;
 import com.stager.casamaisimoveis.api.OkPostHttpImagem;
 import com.stager.casamaisimoveis.fragments.TelaInicialFragment;
 import com.stager.casamaisimoveis.interfaces.FragmentInterface;
@@ -79,6 +80,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
 
     private final String API_CAPTADOR = "api/captador";
     private final String API_COORDENACAO = "api/coordenador";
+    private final String API_IMAGEM_USUARIO = "getImagemUsuario";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -275,6 +277,16 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         }
     }
 
+    @Override
+    public void retornoImagemBitmap(Bitmap imagem, String rotaAPI) {
+        if(imagem != null && rotaAPI.equals(API_IMAGEM_USUARIO)){
+            if(VariaveisEstaticas.getAutenticacao() != null){
+                VariaveisEstaticas.getAutenticacao().setImagemUsuario(imagem);
+                VariaveisEstaticas.getTelaInicialInterface().carregarDadosUsuario();
+            }
+        }
+    }
+
     private void retornoCaptador(JSONObject resposta){
         Captador captadorLogado = new Captador();
         captadorLogado.setCaptador(resposta);
@@ -282,6 +294,14 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         if(captadorLogado.getId() != null){
             VariaveisEstaticas.setCaptador(captadorLogado);
             inserirDadosUsuario(captadorLogado.getNome(), "Captador");
+
+            if(VariaveisEstaticas.getAutenticacao().getLinkImagem() != null){
+                GetHttpImagemAsyncTask getHttpImagemAsyncTask = new GetHttpImagemAsyncTask(this,
+                        httpResponseInterface,
+                        API_IMAGEM_USUARIO);
+                getHttpImagemAsyncTask.execute(VariaveisEstaticas.getAutenticacao().getLinkImagem());
+            }
+
             VariaveisEstaticas.getTelaInicialInterface().carregarDadosUsuario();
             verificarPermissaoLocalizacao();
         }

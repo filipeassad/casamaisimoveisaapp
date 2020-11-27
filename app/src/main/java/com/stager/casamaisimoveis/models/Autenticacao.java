@@ -92,6 +92,7 @@ public class Autenticacao {
             this.token = jsonObject.getString("token") != null ? jsonObject.getString("token") : new String();
             this.captador = jsonObject.getBoolean("captador");
             this.usuario_id = jsonObject.has("usuario_id") ? jsonObject.getInt("usuario_id") : 0;
+            this.linkImagem = jsonObject.has("url_imagem") ? jsonObject.getString("url_imagem") : "";
             this.ativo = true;
         } catch (JSONException e) {
             e.printStackTrace();

@@ -3,6 +3,7 @@ package com.stager.casamaisimoveis.fragments.rota;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -167,6 +168,11 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void retornoImagemBitmap(Bitmap imagem, String rotaAPI) {
+
     }
 
     private void retornoEnderecosRota(JSONObject resposta){

@@ -2,6 +2,7 @@ package com.stager.casamaisimoveis.fragments.historico;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -109,6 +110,11 @@ public class MapaHistoricoFragment extends Fragment implements OnMapReadyCallbac
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void retornoImagemBitmap(Bitmap imagem, String rotaAPI) {
+
     }
 
     private void retornoRotaCaptador(JSONObject resposta){
