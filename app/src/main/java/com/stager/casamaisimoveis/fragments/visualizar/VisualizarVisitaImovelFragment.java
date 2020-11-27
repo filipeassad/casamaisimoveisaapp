@@ -1,5 +1,6 @@
 package com.stager.casamaisimoveis.fragments.visualizar;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -7,19 +8,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.stager.casamaisimoveis.R;
+import com.stager.casamaisimoveis.api.GetHttpComHeaderAsyncTask;
+import com.stager.casamaisimoveis.api.GetHttpImagemAsyncTask;
+import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
 import com.stager.casamaisimoveis.models.VisitaImovel;
+import com.stager.casamaisimoveis.utilitarios.FerramentasBasicas;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
-public class VisualizarVisitaImovelFragment extends Fragment {
+public class VisualizarVisitaImovelFragment extends Fragment implements HttpResponseInterface {
 
     private Button btnVoltar;
     private Button btnSalvar;
@@ -28,6 +38,10 @@ public class VisualizarVisitaImovelFragment extends Fragment {
     private TextView txtDataVisita;
     private EditText edtDataRetorno;
     private Button btnEditar;
+    private ImageView ivImagemCaptador;
+
+    HttpResponseInterface httpResponseInterface;
+    private String API_IMAGEM_CAPTADOR = "api/captador/imagemUsuario/";
 
     @Nullable
     @Override
@@ -41,9 +55,12 @@ public class VisualizarVisitaImovelFragment extends Fragment {
         txtDataVisita = (TextView) view.findViewById(R.id.txtDataVisita);
         edtDataRetorno = (EditText) view.findViewById(R.id.edtDataRetorno);
         btnEditar = (Button) view.findViewById(R.id.btnEditar);
+        ivImagemCaptador = (ImageView) view.findViewById(R.id.ivImagemCaptador);
 
         btnSalvar.setText("Sair");
         btnEditar.setText("Nova Visita");
+
+        httpResponseInterface = this;
 
         edtDataRetorno.setInputType(InputType.TYPE_NULL);
         btnEditar.setVisibility(View.VISIBLE);
@@ -66,6 +83,9 @@ public class VisualizarVisitaImovelFragment extends Fragment {
             edtDataRetorno.setText(visitaImovel.getRetorno());
             txtNomeCaptador.setText(visitaImovel.getCaptador().getNome());
             txtProfissao.setText("Captador");
+
+            GetHttpComHeaderAsyncTask getHttpComHeaderAsyncTask = new GetHttpComHeaderAsyncTask(getContext(),httpResponseInterface, API_IMAGEM_CAPTADOR);
+            getHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_IMAGEM_CAPTADOR + visitaImovel.getCaptador().getId());
         }
     }
 
@@ -90,5 +110,43 @@ public class VisualizarVisitaImovelFragment extends Fragment {
                 VariaveisEstaticas.getFragmentInterface().alterarFragment("AlterarVisitaImovel");
             }
         });
+    }
+
+    @Override
+    public void retornoJsonObject(JSONObject jsonObject, String rotaApi) {
+        try {
+            if(jsonObject.has("erro")){
+                Toast.makeText(getContext(), jsonObject.getString("erro"), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if(rotaApi.equals(API_IMAGEM_CAPTADOR))
+                retornoCadastroVisita(jsonObject);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void retornoImagemBitmap(Bitmap imagem, String rotaAPI) {
+        if(imagem != null){
+            ivImagemCaptador.setImageBitmap(imagem);
+        }
+    }
+
+    private void retornoCadastroVisita(JSONObject resposta){
+
+        if(resposta.has("imagemUsuario")){
+            try {
+                JSONObject imagemUsuario = resposta.getJSONObject("imagemUsuario");
+                if(imagemUsuario != null){
+                    GetHttpImagemAsyncTask  getHttpImagemAsyncTask  = new GetHttpImagemAsyncTask(getContext(), httpResponseInterface, imagemUsuario.getString("url_imagem"));
+                    getHttpImagemAsyncTask.execute(imagemUsuario.getString("url_imagem"));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

@@ -5,6 +5,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -82,6 +83,11 @@ public class LocalizacaoService extends Service {
 
         @Override
         public void retornoJsonObject(JSONObject jsonObject, String rotaApi) {
+
+        }
+
+        @Override
+        public void retornoImagemBitmap(Bitmap imagem, String rotaAPI) {
 
         }
     }

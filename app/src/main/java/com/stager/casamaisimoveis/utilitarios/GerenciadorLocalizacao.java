@@ -1,6 +1,7 @@
 package com.stager.casamaisimoveis.utilitarios;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
@@ -64,6 +65,11 @@ public class GerenciadorLocalizacao implements LocationListener, HttpResponseInt
 
     @Override
     public void retornoJsonObject(JSONObject jsonObject, String rotaApi) {
+
+    }
+
+    @Override
+    public void retornoImagemBitmap(Bitmap imagem, String rotaAPI) {
 
     }
 }

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class CadastrarVisitaImovelFragment extends Fragment implements HttpRespo
     private TextView txtProfissao;
     private TextView txtDataVisita;
     private EditText edtDataRetorno;
+    private ImageView ivImagemCaptador;
     private HttpResponseInterface httpResponseInterface;
     private String API_IMOVEL = "api/cadastrarImovel";
 
@@ -56,6 +58,7 @@ public class CadastrarVisitaImovelFragment extends Fragment implements HttpRespo
         txtProfissao = (TextView) view.findViewById(R.id.txtProfissao);
         txtDataVisita = (TextView) view.findViewById(R.id.txtDataVisita);
         edtDataRetorno = (EditText) view.findViewById(R.id.edtDataRetorno);
+        ivImagemCaptador = (ImageView) view.findViewById(R.id.ivImagemCaptador);
 
         edtDataRetorno.addTextChangedListener(MascaraEditText.mask(edtDataRetorno, MascaraEditText.FORMAT_DATE));
 
@@ -76,6 +79,8 @@ public class CadastrarVisitaImovelFragment extends Fragment implements HttpRespo
             Captador captador = VariaveisEstaticas.getCaptador();
             txtNomeCaptador.setText(captador.getNome());
             txtProfissao.setText("Captador");
+            if(VariaveisEstaticas.getAutenticacao().getImagemUsuario() != null)
+                ivImagemCaptador.setImageBitmap(VariaveisEstaticas.getAutenticacao().getImagemUsuario());
         }
 
         if(VariaveisEstaticas.getVisitaImovelCadastro() != null){

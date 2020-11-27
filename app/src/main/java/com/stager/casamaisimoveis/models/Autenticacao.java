@@ -2,6 +2,7 @@ package com.stager.casamaisimoveis.models;
 
 import android.graphics.Bitmap;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -97,6 +98,24 @@ public class Autenticacao {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public static Autenticacao getAutenticacaoJsonUsuario(JSONObject jsonObject){
+        Autenticacao autenticacao = new Autenticacao();
+        try {
+            JSONArray jsonArray = jsonObject.getJSONArray("array");
+            if(jsonArray.length() > 0){
+                JSONObject itemArray = jsonArray.getJSONObject(0);
+                if(itemArray.has("imagemUsuario")){
+                    JSONObject imagemUsuario = itemArray.getJSONObject("imagemUsuario");
+                    autenticacao.setLinkImagem(imagemUsuario.getString("url_imagem") != null ? imagemUsuario.getString("url_imagem") : null);
+                }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return autenticacao;
     }
 
     public boolean tokenEhValido(JSONObject jsonObject){

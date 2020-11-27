@@ -52,6 +52,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.temporal.ValueRange;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,6 +82,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
     private final String API_CAPTADOR = "api/captador";
     private final String API_COORDENACAO = "api/coordenador";
     private final String API_IMAGEM_USUARIO = "getImagemUsuario";
+    private final String API_USUARIO = "api/usuario";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,7 +102,6 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         getNavMenu();
         inserirPrimeiroFragment();
 
-
         eventosBotoes();
     }
 
@@ -111,13 +112,8 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
     }
 
     private void buscarDadosUsuario(Autenticacao autenticacao){
-        if(autenticacao.isCaptador()){
-            GetHttpComHeaderAsyncTask getHttpComHeaderAsyncTask = new GetHttpComHeaderAsyncTask(this, httpResponseInterface, API_CAPTADOR);
-            getHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_CAPTADOR + "/" + autenticacao.getUsuario_id());
-        }else{
-            GetHttpComHeaderAsyncTask getHttpComHeaderAsyncTask = new GetHttpComHeaderAsyncTask(this, httpResponseInterface, API_COORDENACAO);
-            getHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_CAPTADOR + "/" + autenticacao.getUsuario_id());
-        }
+        GetHttpComHeaderAsyncTask getHttpComHeaderAsyncTask = new GetHttpComHeaderAsyncTask(this, httpResponseInterface, API_USUARIO);
+        getHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_USUARIO + "/" + autenticacao.getUsuario_id());
     }
 
     private void inserirPrimeiroFragment(){
@@ -271,6 +267,9 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
                 retornoCaptador(jsonObject);
             else if(rotaApi.equals(API_COORDENACAO))
                 retornoCoordenador(jsonObject);
+            else if(rotaApi.equals(API_USUARIO))
+                retornoUsusario(jsonObject);
+
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -283,7 +282,13 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
             if(VariaveisEstaticas.getAutenticacao() != null){
                 VariaveisEstaticas.getAutenticacao().setImagemUsuario(imagem);
                 VariaveisEstaticas.getTelaInicialInterface().carregarDadosUsuario();
+                ivImagemUsuario.setImageBitmap(imagem);
             }
+        }
+
+        if(imagem == null){
+            ivImagemUsuario.setImageBitmap(BitmapFactory.decodeResource(this.getResources(),
+                    R.drawable.usuario));
         }
     }
 
@@ -294,16 +299,27 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         if(captadorLogado.getId() != null){
             VariaveisEstaticas.setCaptador(captadorLogado);
             inserirDadosUsuario(captadorLogado.getNome(), "Captador");
-
             if(VariaveisEstaticas.getAutenticacao().getLinkImagem() != null){
                 GetHttpImagemAsyncTask getHttpImagemAsyncTask = new GetHttpImagemAsyncTask(this,
                         httpResponseInterface,
                         API_IMAGEM_USUARIO);
                 getHttpImagemAsyncTask.execute(VariaveisEstaticas.getAutenticacao().getLinkImagem());
             }
-
             VariaveisEstaticas.getTelaInicialInterface().carregarDadosUsuario();
             verificarPermissaoLocalizacao();
+        }
+    }
+
+    private void retornoUsusario(JSONObject resposta){
+        Autenticacao autenticacao = Autenticacao.getAutenticacaoJsonUsuario(resposta);
+        VariaveisEstaticas.getAutenticacao().setLinkImagem(autenticacao.getLinkImagem());
+
+        if(VariaveisEstaticas.getAutenticacao().isCaptador()){
+            GetHttpComHeaderAsyncTask getHttpComHeaderAsyncTask = new GetHttpComHeaderAsyncTask(this, httpResponseInterface, API_CAPTADOR);
+            getHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_CAPTADOR + "/" + VariaveisEstaticas.getAutenticacao().getUsuario_id());
+        }else{
+            GetHttpComHeaderAsyncTask getHttpComHeaderAsyncTask = new GetHttpComHeaderAsyncTask(this, httpResponseInterface, API_COORDENACAO);
+            getHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_CAPTADOR + "/" + VariaveisEstaticas.getAutenticacao().getUsuario_id());
         }
     }
 
