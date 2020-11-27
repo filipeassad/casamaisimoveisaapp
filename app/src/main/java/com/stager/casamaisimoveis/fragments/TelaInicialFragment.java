@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ public class TelaInicialFragment extends Fragment implements TelaInicialInterfac
     private LinearLayout llRota;
     private LinearLayout llHitorico;
     private LinearLayout llBuscarImovel;
+    private ImageView ivImagemUsuario;
 
     private String FRAGMENT_ROTA = "Rota";
 
@@ -35,6 +37,7 @@ public class TelaInicialFragment extends Fragment implements TelaInicialInterfac
         llRota = (LinearLayout) view.findViewById(R.id.llRota);
         llHitorico = (LinearLayout) view.findViewById(R.id.llHitorico);
         llBuscarImovel = (LinearLayout) view.findViewById(R.id.llBuscarImovel);
+        ivImagemUsuario = (ImageView) view.findViewById(R.id.ivImagemUsuario);
 
         VariaveisEstaticas.setTelaInicialInterface(this);
         eventosBotoes();
@@ -79,6 +82,10 @@ public class TelaInicialFragment extends Fragment implements TelaInicialInterfac
         }else{
             txtNomeUsuario.setText(VariaveisEstaticas.getCaptador().getNome());
             txtProfissaoUsuario.setText("Captador");
+        }
+
+        if(VariaveisEstaticas.getAutenticacao().getImagemUsuario() != null){
+            ivImagemUsuario.setImageBitmap(VariaveisEstaticas.getAutenticacao().getImagemUsuario());
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.stager.casamaisimoveis.fragments.cadastrar;
+package com.stager.casamaisimoveis.fragments.alterar;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,14 +16,20 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.stager.casamaisimoveis.R;
+import com.stager.casamaisimoveis.api.PutHttpComHeaderAsyncTask;
+import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
 import com.stager.casamaisimoveis.models.DadosImovel;
 import com.stager.casamaisimoveis.models.ItemSpinner;
+import com.stager.casamaisimoveis.utilitarios.FerramentasBasicas;
 import com.stager.casamaisimoveis.utilitarios.MontarSpinners;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
-public class CadastrarInformacoesImovelFragment extends Fragment {
+public class AlterarInformacoesImovelFragment extends Fragment implements HttpResponseInterface {
 
     private Button btnVoltar;
     private Button btnAvancar;
@@ -47,6 +53,9 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
     private ItemSpinner esgotoImovelSelecionado;
     private ItemSpinner tipoRuaImovelSelecionado;
 
+    private HttpResponseInterface httpResponseInterface;
+    private String API_DADOS_IMOVEL = "api/dadosImovel/";
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,6 +75,10 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
         edtAreaConstruida = (EditText) view.findViewById(R.id.edtAreaConstruida);
         edtObservacao = (EditText) view.findViewById(R.id.edtObservacao);
 
+        btnAvancar.setText("Salvar");
+
+        httpResponseInterface = this;
+
         eventosBotoes();
         carregarSpinners();
 
@@ -76,10 +89,10 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Cadastrar");
+        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Alterar");
 
-        if(VariaveisEstaticas.getDadosImovelCadastro() != null){
-            DadosImovel dadosImovel = VariaveisEstaticas.getDadosImovelCadastro();
+        if(VariaveisEstaticas.getImovelBusca() != null){
+            DadosImovel dadosImovel = VariaveisEstaticas.getImovelBusca().getDadosImovel();
 
             spTipoImovel.setSelection(dadosImovel.getTipo() != null ? dadosImovel.getTipo(): 0);
             spFaseObra.setSelection(dadosImovel.getFase_obra() != null ? dadosImovel.getTipo(): 0);
@@ -153,30 +166,26 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
             return;
         }
 
-        if(VariaveisEstaticas.getDadosImovelCadastro() != null){
-            VariaveisEstaticas.getDadosImovelCadastro().setDadosImovel(tipoImovelSelecionado.getId(),
-                    faseImovelSelecionado.getId(),
-                    esgotoImovelSelecionado.getId(),
-                    tipoRuaImovelSelecionado.getId(),
-                    edtValor.getText().toString(),
-                    edtHonorario.getText().toString(),
-                    edtAreaTerreno.getText().toString(),
-                    edtAreaConstruida.getText().toString(),
-                    edtObservacao.getText().toString());
-        }else{
-            DadosImovel dadosImovel = new DadosImovel(tipoImovelSelecionado.getId(),
-                    faseImovelSelecionado.getId(),
-                    esgotoImovelSelecionado.getId(),
-                    tipoRuaImovelSelecionado.getId(),
-                    edtValor.getText().toString(),
-                    edtHonorario.getText().toString(),
-                    edtAreaTerreno.getText().toString(),
-                    edtAreaConstruida.getText().toString(),
-                    edtObservacao.getText().toString());
-            VariaveisEstaticas.setDadosImovelCadastro(dadosImovel);
-        }
 
-        VariaveisEstaticas.getFragmentInterface().alterarFragment("CadastrarComposicaoImovel");
+        DadosImovel dadosImovel = VariaveisEstaticas.getImovelBusca().getDadosImovel();
+
+        dadosImovel.setTipo(tipoImovelSelecionado.getId());
+        dadosImovel.setFase_obra(faseImovelSelecionado.getId());
+        dadosImovel.setEsgoto(esgotoImovelSelecionado.getId());
+        dadosImovel.setTipo_rua(tipoRuaImovelSelecionado.getId());
+        dadosImovel.setValor(edtValor.getText().toString());
+        dadosImovel.setHonorario(edtHonorario.getText().toString());
+        dadosImovel.setArea_terreno(edtAreaTerreno.getText().toString());
+        dadosImovel.setArea_construida(edtAreaConstruida.getText().toString());
+        dadosImovel.setObservacao(edtObservacao.getText().toString());
+
+        PutHttpComHeaderAsyncTask putHttpComHeaderAsyncTask = new PutHttpComHeaderAsyncTask(getContext(),
+                dadosImovel.gerarDadosImovelJson(),
+                httpResponseInterface,
+                API_DADOS_IMOVEL);
+
+        putHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_DADOS_IMOVEL + dadosImovel.getId());
+
     }
 
     private void carregarSpinners(){
@@ -264,4 +273,31 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
 
     }
 
+    @Override
+    public void retornoJsonObject(JSONObject jsonObject, String rotaApi) {
+        try {
+            if(jsonObject.has("erro")){
+                Toast.makeText(getContext(), jsonObject.getString("erro"), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if(rotaApi.equals(API_DADOS_IMOVEL))
+                retornoAlteracaoDadosImovel(jsonObject);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void retornoAlteracaoDadosImovel(JSONObject resposta){
+        if(resposta.has("sucesso")){
+            try {
+                Toast.makeText(getContext(), resposta.getString("mensagem"), Toast.LENGTH_SHORT).show();
+                if(resposta.getBoolean("sucesso"))
+                    VariaveisEstaticas.getFragmentInterface().voltar();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

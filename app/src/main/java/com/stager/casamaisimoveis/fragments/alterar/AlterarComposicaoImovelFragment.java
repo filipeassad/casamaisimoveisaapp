@@ -1,4 +1,4 @@
-package com.stager.casamaisimoveis.fragments.cadastrar;
+package com.stager.casamaisimoveis.fragments.alterar;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,17 +19,23 @@ import androidx.fragment.app.Fragment;
 
 import com.stager.casamaisimoveis.R;
 import com.stager.casamaisimoveis.adapters.ComposicaoAdapter;
-import com.stager.casamaisimoveis.adapters.TelefoneProprietarioAdapter;
+import com.stager.casamaisimoveis.api.PutHttpComHeaderAsyncTask;
 import com.stager.casamaisimoveis.interfaces.ComposicaoInterface;
+import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
 import com.stager.casamaisimoveis.models.Composicao;
+import com.stager.casamaisimoveis.models.DadosImovel;
 import com.stager.casamaisimoveis.models.ItemSpinner;
+import com.stager.casamaisimoveis.utilitarios.FerramentasBasicas;
 import com.stager.casamaisimoveis.utilitarios.MontarSpinners;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CadastrarComposicaoImovelFragment extends Fragment implements ComposicaoInterface {
+public class AlterarComposicaoImovelFragment extends Fragment implements ComposicaoInterface, HttpResponseInterface {
 
     private Button btnVoltar;
     private Button btnAvancar;
@@ -44,6 +50,8 @@ public class CadastrarComposicaoImovelFragment extends Fragment implements Compo
     private List<Composicao> composicoesImovel;
 
     private ComposicaoInterface composicaoInterface;
+    private HttpResponseInterface httpResponseInterface;
+    private String API_COMPOSICAO_IMOVEL = "api/alterarComposicoes/";
 
     @Nullable
     @Override
@@ -58,8 +66,12 @@ public class CadastrarComposicaoImovelFragment extends Fragment implements Compo
         edtQuantidade = (EditText) view.findViewById(R.id.edtQuantidade);
         lvAmbientes = (ListView) view.findViewById(R.id.lvAmbientes);
 
+        btnAvancar.setText("Salvar");
+
         composicoesImovel = new ArrayList<>();
         composicaoInterface = this;
+        httpResponseInterface = this;
+
         eventosBotoes();
         carregarSpinner();
         return view;
@@ -69,10 +81,10 @@ public class CadastrarComposicaoImovelFragment extends Fragment implements Compo
     public void onResume() {
         super.onResume();
 
-        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Cadastrar");
+        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Alterar");
 
-        if(VariaveisEstaticas.getComposicoesImovelCadastro() != null){
-            composicoesImovel = VariaveisEstaticas.getComposicoesImovelCadastro();
+        if(VariaveisEstaticas.getImovelBusca() != null){
+            composicoesImovel = VariaveisEstaticas.getImovelBusca().getDadosImovel().getComposicoes();
             ComposicaoAdapter composicaoAdapter = new ComposicaoAdapter(getContext(),
                     R.layout.adapter_ambiente_imovel,
                     composicoesImovel,
@@ -113,8 +125,21 @@ public class CadastrarComposicaoImovelFragment extends Fragment implements Compo
             return;
         }
 
-        VariaveisEstaticas.setComposicoesImovelCadastro(composicoesImovel);
-        VariaveisEstaticas.getFragmentInterface().alterarFragment("CadastrarVisitaImovel");
+        DadosImovel dadosImovel = VariaveisEstaticas.getImovelBusca().getDadosImovel();
+        dadosImovel.setComposicoes(composicoesImovel);
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("composicoes", Composicao.gerarComposicaoJsonArray(dadosImovel.getComposicoes()));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        PutHttpComHeaderAsyncTask putHttpComHeaderAsyncTask = new PutHttpComHeaderAsyncTask(getContext(),
+                jsonObject,
+                httpResponseInterface,
+                API_COMPOSICAO_IMOVEL);
+
+        putHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_COMPOSICAO_IMOVEL + dadosImovel.getId());
     }
 
     private void carregarSpinner(){
@@ -154,7 +179,7 @@ public class CadastrarComposicaoImovelFragment extends Fragment implements Compo
             return;
         }
 
-        Composicao composicao = new Composicao(ambienteSelecionado.getId(), Integer.parseInt(edtQuantidade.getText().toString()));
+        Composicao composicao = new Composicao(ambienteSelecionado.getId(), Integer.parseInt(edtQuantidade.getText().toString()), VariaveisEstaticas.getImovelBusca().getDadosImovel().getId());
         composicoesImovel.add(composicao);
 
         ComposicaoAdapter composicaoAdapter = new ComposicaoAdapter(getContext(),
@@ -184,5 +209,33 @@ public class CadastrarComposicaoImovelFragment extends Fragment implements Compo
                 composicaoInterface);
         lvAmbientes.setAdapter(composicaoAdapter);
         lvAmbientes.setLayoutParams(parametrosListView());
+    }
+
+    @Override
+    public void retornoJsonObject(JSONObject jsonObject, String rotaApi) {
+        try {
+            if(jsonObject.has("erro")){
+                Toast.makeText(getContext(), jsonObject.getString("erro"), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if(rotaApi.equals(API_COMPOSICAO_IMOVEL))
+                retornoAlteracaoComposicoes(jsonObject);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void retornoAlteracaoComposicoes(JSONObject resposta){
+        if(resposta.has("sucesso")){
+            try {
+                Toast.makeText(getContext(), resposta.getString("mensagem"), Toast.LENGTH_SHORT).show();
+                if(resposta.getBoolean("sucesso"))
+                    VariaveisEstaticas.getFragmentInterface().voltar();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

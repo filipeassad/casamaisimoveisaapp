@@ -63,16 +63,18 @@ public class Proprietario {
     }
 
     public JSONObject gerarProprietarioJSON(){
-        JSONObject rotaJson = new JSONObject();
+        JSONObject proprietarioJson = new JSONObject();
 
         try {
-            rotaJson.put("nome", this.nome);
-            rotaJson.put("cpf", this.cpf);
-            rotaJson.put("telefones", TelefoneProprietario.gerarTelefoneProprietarioJSONArray(this.telefones));
+            if(this.id != null)
+                proprietarioJson.put("id", this.id);
+            proprietarioJson.put("nome", this.nome);
+            proprietarioJson.put("cpf", this.cpf);
+            proprietarioJson.put("telefones", TelefoneProprietario.gerarTelefoneProprietarioJSONArray(this.telefones));
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        return rotaJson;
+        return proprietarioJson;
     }
 }

@@ -30,8 +30,6 @@ public class MontarSpinners {
         tiposFaseObra.add(new ItemSpinner(4, "Pintura"));
         tiposFaseObra.add(new ItemSpinner(5, "Final de Obra"));
         tiposFaseObra.add(new ItemSpinner(6, "Obra Pronta"));
-        tiposFaseObra.add(new ItemSpinner(9, "Rua de Asfalto"));
-        tiposFaseObra.add(new ItemSpinner(10, "Rua de Terra"));
 
         return tiposFaseObra;
     }

@@ -77,6 +77,13 @@ public class VisualizarDadosAnuncioFragment extends Fragment {
             }
         });
 
+        btnEditar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VariaveisEstaticas.getFragmentInterface().alterarFragment("AlterarDadosAnuncio");
+            }
+        });
+
     }
 
 }

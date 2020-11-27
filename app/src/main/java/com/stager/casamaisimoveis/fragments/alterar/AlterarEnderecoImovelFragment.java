@@ -1,4 +1,4 @@
-package com.stager.casamaisimoveis.fragments.cadastrar;
+package com.stager.casamaisimoveis.fragments.alterar;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,23 +6,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.stager.casamaisimoveis.R;
+import com.stager.casamaisimoveis.api.PutHttpComHeaderAsyncTask;
+import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
 import com.stager.casamaisimoveis.models.EnderecoImovel;
-import com.stager.casamaisimoveis.models.EnderecoRota;
+import com.stager.casamaisimoveis.utilitarios.FerramentasBasicas;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
 
-public class CadastrarEnderecoImovelFragment extends Fragment {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class AlterarEnderecoImovelFragment extends Fragment implements HttpResponseInterface {
 
     private Button btnVoltar;
     private Button btnAvancar;
     private EditText edtBairroEnderecoImovel;
     private EditText edtRuaEnderecoImovel;
     private EditText edtNumeroEnderecoImovel;
+
+    private HttpResponseInterface httpResponseInterface;
+    private String API_ENDERECO_IMOVEL = "api/enderecoImovel/";
 
     @Nullable
     @Override
@@ -35,6 +44,9 @@ public class CadastrarEnderecoImovelFragment extends Fragment {
         edtRuaEnderecoImovel = (EditText) view.findViewById(R.id.edtRuaEnderecoImovel);
         edtNumeroEnderecoImovel = (EditText) view.findViewById(R.id.edtNumeroEnderecoImovel);
 
+        btnAvancar.setText("Salvar");
+        httpResponseInterface = this;
+
         eventosBotoes();
 
         return view;
@@ -44,22 +56,14 @@ public class CadastrarEnderecoImovelFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Cadastrar");
+        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Alterar");
 
-        if(VariaveisEstaticas.getEnderecoImovelCadastro() != null){
-            EnderecoImovel enderecoImovel = VariaveisEstaticas.getEnderecoImovelCadastro();
+        if(VariaveisEstaticas.getImovelBusca() != null){
+            EnderecoImovel enderecoImovel = VariaveisEstaticas.getImovelBusca().getEnderecoImovel();
 
             edtBairroEnderecoImovel.setText(enderecoImovel.getBairro());
             edtRuaEnderecoImovel.setText(enderecoImovel.getRua());
             edtNumeroEnderecoImovel.setText(enderecoImovel.getNumero());
-        }else{
-            if(VariaveisEstaticas.getEnderecoRotaSelecionado() != null){
-                EnderecoRota enderecoRota = VariaveisEstaticas.getEnderecoRotaSelecionado();
-
-                edtBairroEnderecoImovel.setText(enderecoRota.getBairro());
-                edtRuaEnderecoImovel.setText(enderecoRota.getRua());
-                edtNumeroEnderecoImovel.setText(enderecoRota.getNumero());
-            }
         }
     }
 
@@ -99,10 +103,44 @@ public class CadastrarEnderecoImovelFragment extends Fragment {
             return;
         }
 
-        EnderecoImovel enderecoImovel = new EnderecoImovel(edtBairroEnderecoImovel.getText().toString(),
-                edtRuaEnderecoImovel.getText().toString(),
-                edtNumeroEnderecoImovel.getText().toString());
-        VariaveisEstaticas.setEnderecoImovelCadastro(enderecoImovel);
-        VariaveisEstaticas.getFragmentInterface().alterarFragment("CadastrarDadosAnuncio");
+        EnderecoImovel enderecoImovel = VariaveisEstaticas.getImovelBusca().getEnderecoImovel();
+        enderecoImovel.setBairro(edtBairroEnderecoImovel.getText().toString());
+        enderecoImovel.setRua(edtRuaEnderecoImovel.getText().toString());
+        enderecoImovel.setNumero(edtNumeroEnderecoImovel.getText().toString());
+
+        PutHttpComHeaderAsyncTask putHttpComHeaderAsyncTask = new PutHttpComHeaderAsyncTask(getContext(),
+                enderecoImovel.gerarEnderecoImovelJSON(),
+                httpResponseInterface,
+                API_ENDERECO_IMOVEL);
+
+        putHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_ENDERECO_IMOVEL + enderecoImovel.getId());
+    }
+
+    @Override
+    public void retornoJsonObject(JSONObject jsonObject, String rotaApi) {
+        try {
+            if(jsonObject.has("erro")){
+                Toast.makeText(getContext(), jsonObject.getString("erro"), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if(rotaApi.equals(API_ENDERECO_IMOVEL))
+                retornoAlteracaoEnderecoImovel(jsonObject);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void retornoAlteracaoEnderecoImovel(JSONObject resposta){
+        if(resposta.has("sucesso")){
+            try {
+                Toast.makeText(getContext(), resposta.getString("mensagem"), Toast.LENGTH_SHORT).show();
+                if(resposta.getBoolean("sucesso"))
+                    VariaveisEstaticas.getFragmentInterface().voltar();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

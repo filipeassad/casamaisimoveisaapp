@@ -1,4 +1,4 @@
-package com.stager.casamaisimoveis.fragments.cadastrar;
+package com.stager.casamaisimoveis.fragments.alterar;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,19 +7,23 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.stager.casamaisimoveis.R;
+import com.stager.casamaisimoveis.api.PutHttpComHeaderAsyncTask;
+import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
 import com.stager.casamaisimoveis.models.DadosImovel;
-import com.stager.casamaisimoveis.models.ItemSpinner;
+import com.stager.casamaisimoveis.utilitarios.FerramentasBasicas;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
 
-import java.util.List;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class CadastrarDadosAnuncioFragment extends Fragment {
+public class AlterarDadosAnuncioFragment extends Fragment implements HttpResponseInterface {
 
     private Button btnVoltar;
     private Button btnAvancar;
@@ -31,6 +35,9 @@ public class CadastrarDadosAnuncioFragment extends Fragment {
     private FrameLayout flPlaca;
     private FrameLayout flExclusividade;
     private FrameLayout flTempoAutorizacao;
+
+    private HttpResponseInterface httpResponseInterface;
+    private String API_DADOS_IMOVEL = "api/dadosImovel/";
 
     @Nullable
     @Override
@@ -50,6 +57,10 @@ public class CadastrarDadosAnuncioFragment extends Fragment {
         flExclusividade = (FrameLayout) view.findViewById(R.id.flExclusividade);
         flTempoAutorizacao = (FrameLayout) view.findViewById(R.id.flTempoAutorizacao);
 
+        btnAvancar.setText("Salvar");
+
+        httpResponseInterface = this;
+
         eventosBotoes();
         return view;
     }
@@ -60,8 +71,8 @@ public class CadastrarDadosAnuncioFragment extends Fragment {
 
         VariaveisEstaticas.getFragmentInterface().alterarTitulo("Alterar");
 
-        if(VariaveisEstaticas.getDadosImovelCadastro() != null){
-            DadosImovel dadosImovel = VariaveisEstaticas.getDadosImovelCadastro();
+        if(VariaveisEstaticas.getImovelBusca() != null){
+            DadosImovel dadosImovel = VariaveisEstaticas.getImovelBusca().getDadosImovel();
             ckDivulgacao.setChecked(dadosImovel.isDivulgacao());
             ckPlaca.setChecked(dadosImovel.isPlaca());
             ckExclusividade.setChecked(dadosImovel.isExclusividade());
@@ -117,21 +128,45 @@ public class CadastrarDadosAnuncioFragment extends Fragment {
 
     private void avancarFormulario(){
 
-        DadosImovel dadosImovel = new DadosImovel(ckDivulgacao.isChecked(),
-                ckPlaca.isChecked(),
-                ckExclusividade.isChecked(),
-                ckTempoAutorizacao.isChecked());
+        DadosImovel dadosImovel = VariaveisEstaticas.getImovelBusca().getDadosImovel();
+        dadosImovel.setDivulgacao(ckDivulgacao.isChecked());
+        dadosImovel.setPlaca(ckPlaca.isChecked());
+        dadosImovel.setExclusividade(ckExclusividade.isChecked());
+        dadosImovel.setAutorizacao_ate_venda(ckTempoAutorizacao.isChecked());
 
-        if(VariaveisEstaticas.getDadosImovelCadastro() != null){
-            VariaveisEstaticas.getDadosImovelCadastro().setDivulgacao(dadosImovel.isDivulgacao());
-            VariaveisEstaticas.getDadosImovelCadastro().setPlaca(dadosImovel.isPlaca());
-            VariaveisEstaticas.getDadosImovelCadastro().setExclusividade(dadosImovel.isExclusividade());
-            VariaveisEstaticas.getDadosImovelCadastro().setAutorizacao_ate_venda(dadosImovel.isAutorizacao_ate_venda());
-        }else{
-            VariaveisEstaticas.setDadosImovelCadastro(dadosImovel);
+        PutHttpComHeaderAsyncTask putHttpComHeaderAsyncTask = new PutHttpComHeaderAsyncTask(getContext(),
+                dadosImovel.gerarDadosImovelJson(),
+                httpResponseInterface,
+                API_DADOS_IMOVEL);
+
+        putHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_DADOS_IMOVEL + dadosImovel.getId());
+    }
+
+    @Override
+    public void retornoJsonObject(JSONObject jsonObject, String rotaApi) {
+        try {
+            if(jsonObject.has("erro")){
+                Toast.makeText(getContext(), jsonObject.getString("erro"), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if(rotaApi.equals(API_DADOS_IMOVEL))
+                retornoAlteracaoDadosImovel(jsonObject);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+    }
 
-        VariaveisEstaticas.getFragmentInterface().alterarFragment("CadastrarInformacoesImovel");
-
+    private void retornoAlteracaoDadosImovel(JSONObject resposta){
+        if(resposta.has("sucesso")){
+            try {
+                Toast.makeText(getContext(), resposta.getString("mensagem"), Toast.LENGTH_SHORT).show();
+                if(resposta.getBoolean("sucesso"))
+                    VariaveisEstaticas.getFragmentInterface().voltar();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

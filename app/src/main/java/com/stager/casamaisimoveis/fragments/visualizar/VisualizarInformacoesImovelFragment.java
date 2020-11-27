@@ -5,7 +5,6 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -115,6 +114,13 @@ public class VisualizarInformacoesImovelFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 VariaveisEstaticas.getFragmentInterface().alterarFragment("VisualizarComposicaoImovel");
+            }
+        });
+
+        btnEditar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VariaveisEstaticas.getFragmentInterface().alterarFragment("AlterarInformacoesImovel");
             }
         });
     }

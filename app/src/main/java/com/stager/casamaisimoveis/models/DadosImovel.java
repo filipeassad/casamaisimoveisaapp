@@ -210,6 +210,8 @@ public class DadosImovel {
     public JSONObject gerarDadosImovelJson(){
         JSONObject jsonObject = new JSONObject();
         try {
+            if(this.id != null)
+                jsonObject.put("id", this.id);
             jsonObject.put("divulgacao", this.divulgacao);
             jsonObject.put("placa", this.placa);
             jsonObject.put("exclusividade", this.exclusividade);

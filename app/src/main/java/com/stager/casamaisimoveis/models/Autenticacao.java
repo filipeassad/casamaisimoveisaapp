@@ -1,5 +1,7 @@
 package com.stager.casamaisimoveis.models;
 
+import android.graphics.Bitmap;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,6 +12,8 @@ public class Autenticacao {
     private Integer usuario_id;
     private boolean captador;
     private boolean ativo;
+    private String linkImagem;
+    private Bitmap imagemUsuario;
 
     public Autenticacao() {
     }
@@ -52,6 +56,22 @@ public class Autenticacao {
 
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
+    }
+
+    public Bitmap getImagemUsuario() {
+        return imagemUsuario;
+    }
+
+    public void setImagemUsuario(Bitmap imagemUsuario) {
+        this.imagemUsuario = imagemUsuario;
+    }
+
+    public String getLinkImagem() {
+        return linkImagem;
+    }
+
+    public void setLinkImagem(String linkImagem) {
+        this.linkImagem = linkImagem;
     }
 
     public JSONObject getJsonLogin(String login, String senha){

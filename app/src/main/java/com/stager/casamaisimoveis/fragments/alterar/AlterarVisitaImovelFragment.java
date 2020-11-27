@@ -1,4 +1,4 @@
-package com.stager.casamaisimoveis.fragments.cadastrar;
+package com.stager.casamaisimoveis.fragments.alterar;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -33,8 +33,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class CadastrarVisitaImovelFragment extends Fragment implements HttpResponseInterface{
-
+public class AlterarVisitaImovelFragment extends Fragment implements HttpResponseInterface{
     private Button btnVoltar;
     private Button btnSalvar;
     private TextView txtNomeCaptador;
@@ -42,7 +41,7 @@ public class CadastrarVisitaImovelFragment extends Fragment implements HttpRespo
     private TextView txtDataVisita;
     private EditText edtDataRetorno;
     private HttpResponseInterface httpResponseInterface;
-    private String API_IMOVEL = "api/cadastrarImovel";
+    private String API_VISITA = "api/visitaImovel";
 
     @Nullable
     @Override
@@ -107,40 +106,22 @@ public class CadastrarVisitaImovelFragment extends Fragment implements HttpRespo
             return;
         }
 
+        DadosImovel dadosImovel = VariaveisEstaticas.getImovelBusca().getDadosImovel();
+
         VisitaImovel visitaImovel = new VisitaImovel(FerramentasBasicas.converterDataParaString(new Date(), "dd/MM/yyyy"),
                 edtDataRetorno.getText().toString(),
-                VariaveisEstaticas.getCaptador().getId());
-
-        VariaveisEstaticas.setVisitaImovelCadastro(visitaImovel);
-        salvarImovel();
+                VariaveisEstaticas.getCaptador().getId(),
+                dadosImovel.getId(),
+                VariaveisEstaticas.getCaptador());
+        dadosImovel.getVisitasImovel().add(visitaImovel);
+        PostHttpComHeaderAsyncTask postHttpComHeaderAsyncTask = new PostHttpComHeaderAsyncTask(getContext(),
+                visitaImovel.gerarVisitaJson(),
+                httpResponseInterface,
+                API_VISITA);
+        postHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_VISITA);
     }
 
-    private void salvarImovel(){
-        Proprietario proprietario = VariaveisEstaticas.getProprietarioCadastro();
-        EnderecoImovel enderecoImovel = VariaveisEstaticas.getEnderecoImovelCadastro();
-        DadosImovel dadosImovel = VariaveisEstaticas.getDadosImovelCadastro();
 
-        dadosImovel.setComposicoes(VariaveisEstaticas.getComposicoesImovelCadastro());
-        List<VisitaImovel> visitasImoveis = new ArrayList<>();
-        visitasImoveis.add(VariaveisEstaticas.getVisitaImovelCadastro());
-        dadosImovel.setVisitasImovel(visitasImoveis);
-
-        Imovel imovel = new Imovel(enderecoImovel, proprietario, dadosImovel);
-        PostHttpComHeaderAsyncTask postHttpComHeaderAsyncTask;
-        if(VariaveisEstaticas.getEnderecoRotaSelecionado() != null){
-            postHttpComHeaderAsyncTask = new PostHttpComHeaderAsyncTask(getContext(),
-                    imovel.gerarImovelComEnderecoRotaJson(VariaveisEstaticas.getEnderecoRotaSelecionado()),
-                    httpResponseInterface,
-                    API_IMOVEL);
-        }else{
-            postHttpComHeaderAsyncTask = new PostHttpComHeaderAsyncTask(getContext(),
-                    imovel.gerarImovelJson(),
-                    httpResponseInterface,
-                    API_IMOVEL);
-        }
-
-        postHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_IMOVEL);
-    }
 
     @Override
     public void retornoJsonObject(JSONObject jsonObject, String rotaApi) {
@@ -150,32 +131,20 @@ public class CadastrarVisitaImovelFragment extends Fragment implements HttpRespo
                 return;
             }
 
-            if(rotaApi.equals(API_IMOVEL))
-                retornoImovel(jsonObject);
+            if(rotaApi.equals(API_VISITA))
+                retornoCadastroVisita(jsonObject);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    private void retornoImovel(JSONObject resposta){
+    private void retornoCadastroVisita(JSONObject resposta){
         if(resposta.has("sucesso")){
             try {
                 Toast.makeText(getContext(), resposta.getString("mensagem"), Toast.LENGTH_SHORT).show();
                 if(resposta.getBoolean("sucesso")){
-                    VariaveisEstaticas.setProprietarioCadastro(null);
-                    VariaveisEstaticas.setEnderecoImovelCadastro(null);
-                    VariaveisEstaticas.setDadosImovelCadastro(null);
-                    VariaveisEstaticas.setComposicoesImovelCadastro(null);
-                    VariaveisEstaticas.setVisitaImovelCadastro(null);
-                    VariaveisEstaticas.setEnderecoRotaSelecionado(null);
-                    VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarDadosProprietario");
-                    VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarEnderecoImovel");
-                    VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarDadosAnuncio");
-                    VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarInformacoesImovel");
-                    VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarComposicaoImovel");
-                    VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarVisitaImovel");
-                    VariaveisEstaticas.getFragmentInterface().alterarFragment("TelaInicial");
+                   VariaveisEstaticas.getFragmentInterface().voltar();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -34,6 +34,14 @@ public class EnderecoImovel {
         }
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getBairro() {
         return bairro;
     }
@@ -60,8 +68,9 @@ public class EnderecoImovel {
 
     public JSONObject gerarEnderecoImovelJSON(){
         JSONObject rotaJson = new JSONObject();
-
         try {
+            if(this.id != null)
+                rotaJson.put("id", this.id);
             rotaJson.put("bairro", this.bairro);
             rotaJson.put("rua", this.rua);
             rotaJson.put("numero", this.numero);

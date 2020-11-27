@@ -1,10 +1,17 @@
 package com.stager.casamaisimoveis.activitys;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -25,6 +32,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.stager.casamaisimoveis.R;
 import com.stager.casamaisimoveis.adapters.MenuAdapter;
 import com.stager.casamaisimoveis.api.GetHttpComHeaderAsyncTask;
+import com.stager.casamaisimoveis.api.OkPostHttpImagem;
 import com.stager.casamaisimoveis.fragments.TelaInicialFragment;
 import com.stager.casamaisimoveis.interfaces.FragmentInterface;
 import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
@@ -33,6 +41,7 @@ import com.stager.casamaisimoveis.models.Captador;
 import com.stager.casamaisimoveis.models.Coordenador;
 import com.stager.casamaisimoveis.utilitarios.Animacao;
 import com.stager.casamaisimoveis.utilitarios.FerramentasBasicas;
+import com.stager.casamaisimoveis.utilitarios.FerramentasHttp;
 import com.stager.casamaisimoveis.utilitarios.GerenciadorFragment;
 import com.stager.casamaisimoveis.utilitarios.LocalizacaoService;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
@@ -40,13 +49,15 @@ import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentPrincipal extends FragmentActivity implements FragmentInterface, HttpResponseInterface {
 
-    static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 24;
-    static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 25;
+    private final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 24;
+    private final int PICK_IMAGE = 25;
 
     private LinearLayout llMenu;
     private TextView ttTituloFragment;
@@ -136,6 +147,16 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
 
         MenuAdapter menuAdapter = new MenuAdapter(this, R.layout.adapter_menu, listString);
         lvMenus.setAdapter(menuAdapter);
+
+        ivImagemUsuario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                pickIntent.setType("image/*");
+
+                startActivityForResult(pickIntent, PICK_IMAGE);
+            }
+        });
 
         lvMenus.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -312,4 +333,29 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode){
+            case PICK_IMAGE:{
+                if(resultCode == RESULT_OK){
+                    Uri selectedImage = data.getData();
+                    ContentResolver contentResolver = getContentResolver();
+
+                    Bitmap resultBitmap = FerramentasBasicas.decodificarImagem(selectedImage, contentResolver);
+                    if (resultBitmap == null) {
+                        ivImagemUsuario.setImageBitmap(BitmapFactory.decodeResource(this.getResources(),
+                                R.drawable.usuario));
+                    }else{
+                        ivImagemUsuario.setImageBitmap(resultBitmap);
+                        OkPostHttpImagem okPostHttpImagem = new OkPostHttpImagem(resultBitmap, VariaveisEstaticas.getAutenticacao().getId(), this, httpResponseInterface);
+                        okPostHttpImagem.execute(FerramentasBasicas.getURL() + "api/uploadImagemUsuario");
+                        VariaveisEstaticas.getAutenticacao().setImagemUsuario(resultBitmap);
+                        VariaveisEstaticas.getTelaInicialInterface().carregarDadosUsuario();
+                    }
+                }
+            }
+        }
+    }
 }

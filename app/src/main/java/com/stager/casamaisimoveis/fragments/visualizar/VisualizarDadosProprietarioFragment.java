@@ -108,14 +108,14 @@ public class VisualizarDadosProprietarioFragment extends Fragment {
         btnEditar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                VariaveisEstaticas.getFragmentInterface().alterarFragment("AlterarDadosProprietario");
             }
         });
     }
 
     private LinearLayout.LayoutParams parametrosListView(){
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (200 * telefonesProprietario.size()));
-        layoutParams.setMargins(0,50,0,0);
+        layoutParams.setMargins(0,50,0,20);
 
         return layoutParams;
     }

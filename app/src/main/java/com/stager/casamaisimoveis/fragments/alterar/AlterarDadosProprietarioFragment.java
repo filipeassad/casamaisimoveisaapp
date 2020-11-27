@@ -1,4 +1,4 @@
-package com.stager.casamaisimoveis.fragments.cadastrar;
+package com.stager.casamaisimoveis.fragments.alterar;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,16 +16,22 @@ import androidx.fragment.app.Fragment;
 
 import com.stager.casamaisimoveis.R;
 import com.stager.casamaisimoveis.adapters.TelefoneProprietarioAdapter;
+import com.stager.casamaisimoveis.api.PutHttpComHeaderAsyncTask;
+import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
 import com.stager.casamaisimoveis.interfaces.TelefoneProprietarioAdapterInterface;
 import com.stager.casamaisimoveis.models.Proprietario;
 import com.stager.casamaisimoveis.models.TelefoneProprietario;
+import com.stager.casamaisimoveis.utilitarios.FerramentasBasicas;
 import com.stager.casamaisimoveis.utilitarios.MascaraEditText;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CadastrarDadosProprietarioFragment extends Fragment implements TelefoneProprietarioAdapterInterface {
+public class AlterarDadosProprietarioFragment extends Fragment implements TelefoneProprietarioAdapterInterface, HttpResponseInterface {
 
     private Button btnVoltar;
     private Button btnAvancar;
@@ -37,6 +44,9 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
     private List<TelefoneProprietario> telefonesProprietario;
 
     private TelefoneProprietarioAdapterInterface telefoneProprietarioAdapterInterface;
+    private HttpResponseInterface httpResponseInterface;
+
+    private String API_ALTERAR_PROPRIETARIO = "api/proprietario";
 
     @Nullable
     @Override
@@ -55,6 +65,9 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
         edtCpfProprietario.addTextChangedListener(MascaraEditText.mask(edtCpfProprietario, MascaraEditText.FORMAT_CPF));
         edtTelefoneProprietario.addTextChangedListener(MascaraEditText.mask(edtTelefoneProprietario, MascaraEditText.FORMAT_FONE));
 
+        btnAvancar.setText("Salvar");
+
+        httpResponseInterface = this;
         telefoneProprietarioAdapterInterface = this;
 
         telefonesProprietario = new ArrayList<>();
@@ -68,10 +81,10 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
     public void onResume() {
         super.onResume();
 
-        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Cadastrar");
+        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Alterar");
 
-        if(VariaveisEstaticas.getProprietarioCadastro() != null){
-            Proprietario proprietario = VariaveisEstaticas.getProprietarioCadastro();
+        if(VariaveisEstaticas.getImovelBusca() != null){
+            Proprietario proprietario = VariaveisEstaticas.getImovelBusca().getProprietario();
 
             edtNomeProprietario.setText(proprietario.getNome());
             edtCpfProprietario.setText(proprietario.getCpf());
@@ -117,7 +130,8 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
             return;
         }
 
-        TelefoneProprietario telefoneProprietario = new TelefoneProprietario(edtTelefoneProprietario.getText().toString());
+        TelefoneProprietario telefoneProprietario = new TelefoneProprietario(edtTelefoneProprietario.getText().toString(),
+                VariaveisEstaticas.getImovelBusca().getProprietario().getId());
         telefonesProprietario.add(telefoneProprietario);
         TelefoneProprietarioAdapter telefoneProprietarioAdapter = new TelefoneProprietarioAdapter(getContext(),
                 R.layout.adapter_telefone_item,
@@ -142,11 +156,25 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
             return;
         }
 
-        Proprietario proprietario = new Proprietario(edtNomeProprietario.getText().toString(),
-                edtCpfProprietario.getText().toString(),
-                telefonesProprietario);
-        VariaveisEstaticas.setProprietarioCadastro(proprietario);
-        VariaveisEstaticas.getFragmentInterface().alterarFragment("CadastrarEnderecoImovel");
+        Proprietario proprietarioAltaracao = VariaveisEstaticas.getImovelBusca().getProprietario();
+
+        proprietarioAltaracao.setNome(edtNomeProprietario.getText().toString());
+        proprietarioAltaracao.setCpf(edtCpfProprietario.getText().toString());
+        proprietarioAltaracao.setTelefones(telefonesProprietario);
+
+        PutHttpComHeaderAsyncTask putHttpComHeaderAsyncTask = new PutHttpComHeaderAsyncTask(getContext(),
+                proprietarioAltaracao.gerarProprietarioJSON(),
+                httpResponseInterface,
+                API_ALTERAR_PROPRIETARIO);
+
+        putHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_ALTERAR_PROPRIETARIO + "/" + proprietarioAltaracao.getId());
+    }
+
+    private LinearLayout.LayoutParams parametrosListView(){
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (200 * telefonesProprietario.size()));
+        layoutParams.setMargins(0,50,0,0);
+
+        return layoutParams;
     }
 
     @Override
@@ -160,10 +188,31 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
         lvTelefoneProprietario.setLayoutParams(parametrosListView());
     }
 
-    private LinearLayout.LayoutParams parametrosListView(){
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (200 * telefonesProprietario.size()));
-        layoutParams.setMargins(0,50,0,0);
+    @Override
+    public void retornoJsonObject(JSONObject jsonObject, String rotaApi) {
+        try {
+            if(jsonObject.has("erro")){
+                Toast.makeText(getContext(), jsonObject.getString("erro"), Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-        return layoutParams;
+            if(rotaApi.equals(API_ALTERAR_PROPRIETARIO))
+                retornoAlteracaoProprietario(jsonObject);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void retornoAlteracaoProprietario(JSONObject resposta){
+        if(resposta.has("sucesso")){
+            try {
+                Toast.makeText(getContext(), resposta.getString("mensagem"), Toast.LENGTH_SHORT).show();
+                if(resposta.getBoolean("sucesso"))
+                    VariaveisEstaticas.getFragmentInterface().voltar();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

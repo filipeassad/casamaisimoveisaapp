@@ -26,6 +26,14 @@ public class VisitaImovel {
         this.captador_id = captador_id;
     }
 
+    public VisitaImovel(String data_visita, String retorno, Integer captador_id, Integer dados_imovel_id, Captador captador) {
+        this.data_visita = data_visita;
+        this.retorno = retorno;
+        this.captador_id = captador_id;
+        this.dados_imovel_id = dados_imovel_id;
+        this.captador = captador;
+    }
+
     public VisitaImovel(JSONObject resposta) {
         try {
             this.id = resposta.has("id") ? resposta.getInt("id") : 0;
@@ -102,8 +110,11 @@ public class VisitaImovel {
 
         try {
             jsonObject.put("data_visita", FerramentasBasicas.converterDataParaString(dataVisita, "yyyy-MM-dd"));
-            if(retorno.trim().equals("") == false)
+            if(this.retorno.trim().equals("") == false)
                 jsonObject.put("retorno", FerramentasBasicas.converterDataParaString(dataRetorno, "yyyy-MM-dd"));
+            if(this.dados_imovel_id != null)
+                jsonObject.put("dados_imovel_id", this.dados_imovel_id);
+
             jsonObject.put("captador_id", this.captador_id);
         } catch (JSONException e) {
             e.printStackTrace();

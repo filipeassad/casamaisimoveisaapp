@@ -14,13 +14,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.stager.casamaisimoveis.R;
-import com.stager.casamaisimoveis.models.Captador;
 import com.stager.casamaisimoveis.models.VisitaImovel;
-import com.stager.casamaisimoveis.utilitarios.FerramentasBasicas;
-import com.stager.casamaisimoveis.utilitarios.MascaraEditText;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
 
-import java.util.Date;
 import java.util.List;
 
 public class VisualizarVisitaImovelFragment extends Fragment {
@@ -47,6 +43,7 @@ public class VisualizarVisitaImovelFragment extends Fragment {
         btnEditar = (Button) view.findViewById(R.id.btnEditar);
 
         btnSalvar.setText("Sair");
+        btnEditar.setText("Nova Visita");
 
         edtDataRetorno.setInputType(InputType.TYPE_NULL);
         btnEditar.setVisibility(View.VISIBLE);
@@ -59,11 +56,11 @@ public class VisualizarVisitaImovelFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Visita");
+        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Visualizar");
 
         if(VariaveisEstaticas.getImovelBusca() != null){
             List<VisitaImovel> visitas = VariaveisEstaticas.getImovelBusca().getDadosImovel().getVisitasImovel();
-            VisitaImovel visitaImovel = visitas.get(visitas.size() -1);
+            VisitaImovel visitaImovel = visitas.get(0);
 
             txtDataVisita.setText(visitaImovel.getData_visita());
             edtDataRetorno.setText(visitaImovel.getRetorno());
@@ -84,6 +81,13 @@ public class VisualizarVisitaImovelFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 VariaveisEstaticas.getFragmentInterface().alterarFragment("BuscarImovel");
+            }
+        });
+
+        btnEditar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VariaveisEstaticas.getFragmentInterface().alterarFragment("AlterarVisitaImovel");
             }
         });
     }

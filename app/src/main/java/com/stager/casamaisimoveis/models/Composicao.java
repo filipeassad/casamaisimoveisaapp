@@ -21,6 +21,12 @@ public class Composicao {
         this.quantidade = quantidade;
     }
 
+    public Composicao(Integer ambiente_id, Integer quantidade, Integer dados_imovel_id) {
+        this.ambiente_id = ambiente_id;
+        this.quantidade = quantidade;
+        this.dados_imovel_id = dados_imovel_id;
+    }
+
     public Composicao(JSONObject resposta) {
         try {
             this.id = resposta.has("id") ? resposta.getInt("id") : 0;
@@ -75,6 +81,10 @@ public class Composicao {
         for(Composicao composicao: composicoes){
             JSONObject composicaoJSONObject = new JSONObject();
             try {
+                if(composicao.getId()!= null)
+                    composicaoJSONObject.put("id", composicao.getId());
+                if(composicao.getDados_imovel_id() != null)
+                    composicaoJSONObject.put("dados_imovel_id", composicao.getDados_imovel_id());
                 composicaoJSONObject.put("ambiente", composicao.getAmbiente_id());
                 composicaoJSONObject.put("quantidade", composicao.getQuantidade());
                 composicoesJSONArray.put(composicaoJSONObject);

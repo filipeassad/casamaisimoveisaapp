@@ -27,6 +27,11 @@ public class TelefoneProprietario {
         this.numero = numero;
     }
 
+    public TelefoneProprietario(String numero, Integer proprietario_id) {
+        this.numero = numero;
+        this.proprietario_id = proprietario_id;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -57,6 +62,12 @@ public class TelefoneProprietario {
         for(TelefoneProprietario telefone: telefones){
             JSONObject telefoneJSONObject = new JSONObject();
             try {
+                if(telefone.getId() != null)
+                    telefoneJSONObject.put("id", telefone.getId());
+
+                if(telefone.getProprietario_id() != null)
+                    telefoneJSONObject.put("proprietario_id", telefone.getProprietario_id());
+
                 telefoneJSONObject.put("numero", telefone.getNumero());
                 telefonesJSONArray.put(telefoneJSONObject);
             } catch (JSONException e) {

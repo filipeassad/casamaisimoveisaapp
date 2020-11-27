@@ -48,13 +48,15 @@
                     android:layout_marginRight="10dp"
                     android:background="@drawable/selector_botao_topo_form"
                     android:textColor="#0D5ED9"
-                    android:textSize="12sp"></Button>
+                    android:textSize="12sp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"></Button>
 
             </FrameLayout>
 
             <Button
                 android:id="@+id/btnEditar"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="40dp"
                 android:text="Editar"
                 android:textColor="#ffffff"

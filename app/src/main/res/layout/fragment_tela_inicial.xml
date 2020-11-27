@@ -40,13 +40,15 @@
             android:layout_marginTop="80dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivImagemUsuario"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/bradpit"
+                android:src="@drawable/usuario"
                 app:civ_border_width="5dp"
                 app:civ_border_color="#ffffff"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="10dp"
+                app:civ_circle_background_color="#ffffff"/>
 
             <LinearLayout
                 android:layout_width="0dp"

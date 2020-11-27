@@ -103,6 +103,13 @@ public class VisualizarComposicaoImovelFragment extends Fragment {
                 VariaveisEstaticas.getFragmentInterface().alterarFragment("VisualizarVisitaImovel");
             }
         });
+
+        btnEditar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VariaveisEstaticas.getFragmentInterface().alterarFragment("AlterarComposicaoImovel");
+            }
+        });
     }
 
     private LinearLayout.LayoutParams parametrosListView(){

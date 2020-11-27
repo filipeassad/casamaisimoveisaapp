@@ -8,6 +8,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.stager.casamaisimoveis.R;
 import com.stager.casamaisimoveis.fragments.BuscarImovelFragment;
+import com.stager.casamaisimoveis.fragments.alterar.AlterarComposicaoImovelFragment;
+import com.stager.casamaisimoveis.fragments.alterar.AlterarDadosAnuncioFragment;
+import com.stager.casamaisimoveis.fragments.alterar.AlterarDadosProprietarioFragment;
+import com.stager.casamaisimoveis.fragments.alterar.AlterarEnderecoImovelFragment;
+import com.stager.casamaisimoveis.fragments.alterar.AlterarInformacoesImovelFragment;
+import com.stager.casamaisimoveis.fragments.alterar.AlterarVisitaImovelFragment;
 import com.stager.casamaisimoveis.fragments.cadastrar.CadastrarComposicaoImovelFragment;
 import com.stager.casamaisimoveis.fragments.cadastrar.CadastrarDadosAnuncioFragment;
 import com.stager.casamaisimoveis.fragments.cadastrar.CadastrarDadosProprietarioFragment;
@@ -95,6 +101,27 @@ public class GerenciadorFragment {
         }else if(nomeTela.equals("VisualizarVisitaImovel")){
             VisualizarVisitaImovelFragment visualizarVisitaImovelFragment = new VisualizarVisitaImovelFragment();
             ft.replace(R.id.contFragments, visualizarVisitaImovelFragment);
+        }else if(nomeTela.equals("AlterarDadosProprietario")){
+            AlterarDadosProprietarioFragment alterarDadosProprietarioFragment = new AlterarDadosProprietarioFragment();
+            ft.replace(R.id.contFragments, alterarDadosProprietarioFragment);
+        }else if(nomeTela.equals("AlterarEnderecoImovel")){
+            AlterarEnderecoImovelFragment alterarEnderecoImovelFragment = new AlterarEnderecoImovelFragment();
+            ft.replace(R.id.contFragments, alterarEnderecoImovelFragment);
+        }else if(nomeTela.equals("AlterarDadosAnuncio")){
+            AlterarDadosAnuncioFragment alterarDadosAnuncioFragment = new AlterarDadosAnuncioFragment();
+            ft.replace(R.id.contFragments, alterarDadosAnuncioFragment);
+        }else if(nomeTela.equals("AlterarInformacoesImovel")){
+            AlterarInformacoesImovelFragment alterarInformacoesImovelFragment = new AlterarInformacoesImovelFragment();
+            ft.replace(R.id.contFragments, alterarInformacoesImovelFragment);
+        }else if(nomeTela.equals("AlterarInformacoesImovel")){
+            AlterarInformacoesImovelFragment alterarInformacoesImovelFragment = new AlterarInformacoesImovelFragment();
+            ft.replace(R.id.contFragments, alterarInformacoesImovelFragment);
+        }else if(nomeTela.equals("AlterarComposicaoImovel")){
+            AlterarComposicaoImovelFragment alterarComposicaoImovelFragment = new AlterarComposicaoImovelFragment();
+            ft.replace(R.id.contFragments, alterarComposicaoImovelFragment);
+        }else if(nomeTela.equals("AlterarVisitaImovel")){
+            AlterarVisitaImovelFragment alterarVisitaImovelFragment = new AlterarVisitaImovelFragment();
+            ft.replace(R.id.contFragments, alterarVisitaImovelFragment);
         }
 
         if(fm.findFragmentByTag(nomeTela) != null)
