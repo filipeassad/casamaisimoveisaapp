@@ -12,11 +12,13 @@ import com.stager.casamaisimoveis.fragments.alterar.AlterarComposicaoImovelFragm
 import com.stager.casamaisimoveis.fragments.alterar.AlterarDadosAnuncioFragment;
 import com.stager.casamaisimoveis.fragments.alterar.AlterarDadosProprietarioFragment;
 import com.stager.casamaisimoveis.fragments.alterar.AlterarEnderecoImovelFragment;
+import com.stager.casamaisimoveis.fragments.alterar.AlterarImagensImovelFragment;
 import com.stager.casamaisimoveis.fragments.alterar.AlterarInformacoesImovelFragment;
 import com.stager.casamaisimoveis.fragments.alterar.AlterarVisitaImovelFragment;
 import com.stager.casamaisimoveis.fragments.cadastrar.CadastrarComposicaoImovelFragment;
 import com.stager.casamaisimoveis.fragments.cadastrar.CadastrarDadosAnuncioFragment;
 import com.stager.casamaisimoveis.fragments.cadastrar.CadastrarDadosProprietarioFragment;
+import com.stager.casamaisimoveis.fragments.cadastrar.CadastrarImagensImovelFragment;
 import com.stager.casamaisimoveis.fragments.rota.CadastrarEnderecoRotaFragment;
 import com.stager.casamaisimoveis.fragments.cadastrar.CadastrarInformacoesImovelFragment;
 import com.stager.casamaisimoveis.fragments.rota.CadastrarRotaFragment;
@@ -31,6 +33,7 @@ import com.stager.casamaisimoveis.fragments.visualizar.VisualizarComposicaoImove
 import com.stager.casamaisimoveis.fragments.visualizar.VisualizarDadosAnuncioFragment;
 import com.stager.casamaisimoveis.fragments.visualizar.VisualizarDadosProprietarioFragment;
 import com.stager.casamaisimoveis.fragments.visualizar.VisualizarEnderecoImovelFragment;
+import com.stager.casamaisimoveis.fragments.visualizar.VisualizarImagensImovelFragment;
 import com.stager.casamaisimoveis.fragments.visualizar.VisualizarInformacoesImovelFragment;
 import com.stager.casamaisimoveis.fragments.visualizar.VisualizarVisitaImovelFragment;
 
@@ -122,6 +125,15 @@ public class GerenciadorFragment {
         }else if(nomeTela.equals("AlterarVisitaImovel")){
             AlterarVisitaImovelFragment alterarVisitaImovelFragment = new AlterarVisitaImovelFragment();
             ft.replace(R.id.contFragments, alterarVisitaImovelFragment);
+        }else if(nomeTela.equals("CadastrarImagensImovel")){
+            CadastrarImagensImovelFragment cadastrarImagensImovelFragment = new CadastrarImagensImovelFragment();
+            ft.replace(R.id.contFragments, cadastrarImagensImovelFragment);
+        }else if(nomeTela.equals("VisualizarImagensImovel")){
+            VisualizarImagensImovelFragment visualizarImagensImovelFragment = new VisualizarImagensImovelFragment();
+            ft.replace(R.id.contFragments, visualizarImagensImovelFragment);
+        }else if(nomeTela.equals("AlterarImagensImovel")){
+            AlterarImagensImovelFragment alterarImagensImovelFragment = new AlterarImagensImovelFragment();
+            ft.replace(R.id.contFragments, alterarImagensImovelFragment);
         }
 
         if(fm.findFragmentByTag(nomeTela) != null)

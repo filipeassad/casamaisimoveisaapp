@@ -1,6 +1,9 @@
 package com.stager.casamaisimoveis.utilitarios;
 
+import android.graphics.Bitmap;
+
 import com.stager.casamaisimoveis.interfaces.FragmentInterface;
+import com.stager.casamaisimoveis.interfaces.ImagemImovelInterface;
 import com.stager.casamaisimoveis.interfaces.TelaInicialInterface;
 import com.stager.casamaisimoveis.models.Autenticacao;
 import com.stager.casamaisimoveis.models.Captador;
@@ -31,9 +34,27 @@ public class VariaveisEstaticas {
     private static EnderecoRota enderecoRotaSelecionado;
     private static RotaCaptador rotaCaptadorHistoricoSelecionado;
     private static Imovel imovelBusca;
+    private static List<Bitmap> imagensImovelCadastro;
 
     private static TelaInicialInterface telaInicialInterface;
     private static FragmentInterface fragmentInterface;
+    private static ImagemImovelInterface imagemImovelInterface;
+
+    public static List<Bitmap> getImagensImovelCadastro() {
+        return imagensImovelCadastro;
+    }
+
+    public static void setImagensImovelCadastro(List<Bitmap> imagensImovelCadastro) {
+        VariaveisEstaticas.imagensImovelCadastro = imagensImovelCadastro;
+    }
+
+    public static ImagemImovelInterface getImagemImovelInterface() {
+        return imagemImovelInterface;
+    }
+
+    public static void setImagemImovelInterface(ImagemImovelInterface imagemImovelInterface) {
+        VariaveisEstaticas.imagemImovelInterface = imagemImovelInterface;
+    }
 
     public static Imovel getImovelBusca() {
         return imovelBusca;

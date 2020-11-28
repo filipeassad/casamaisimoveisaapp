@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
+                <Button
+                    android:id="@+id/btnVoltar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="left"
+                    android:text="voltar"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/selector_botao_topo_form"
+                    android:textColor="#0D5ED9"
+                    android:textSize="12sp"></Button>
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Detalhes Imóvel"
+                    android:textColor="#000000"
+                    android:textSize="20sp"></TextView>
+
+                <Button
+                    android:id="@+id/btnAvancar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="right"
+                    android:text="Avançar"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/selector_botao_topo_form"
+                    android:textColor="#0D5ED9"
+                    android:textSize="12sp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"></Button>
+
+            </FrameLayout>
+
+            <Button
+                android:id="@+id/btnEditar"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:text="Editar"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:background="@drawable/selector_botao_arrendondado_azul"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:visibility="gone"></Button>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Imagens Imóvel"
+                android:textColor="#0D5ED9"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"></TextView>
+
+            <LinearLayout
+                android:id="@+id/llImagensImovel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:padding="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="bottom">
+
+        <Button
+            android:id="@+id/btnAdicionarImagens"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="+"
+            android:background="@drawable/selector_botao_azul_borda_branca_redondo">
+        </Button>
+
+    </LinearLayout>
+
+</FrameLayout>

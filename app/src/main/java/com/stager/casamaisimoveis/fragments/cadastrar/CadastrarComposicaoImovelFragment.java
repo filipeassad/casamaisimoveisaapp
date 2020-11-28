@@ -114,7 +114,7 @@ public class CadastrarComposicaoImovelFragment extends Fragment implements Compo
         }
 
         VariaveisEstaticas.setComposicoesImovelCadastro(composicoesImovel);
-        VariaveisEstaticas.getFragmentInterface().alterarFragment("CadastrarVisitaImovel");
+        VariaveisEstaticas.getFragmentInterface().alterarFragment("CadastrarImagensImovel");
     }
 
     private void carregarSpinner(){

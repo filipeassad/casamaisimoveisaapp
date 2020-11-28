@@ -100,7 +100,7 @@ public class VisualizarComposicaoImovelFragment extends Fragment {
         btnAvancar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                VariaveisEstaticas.getFragmentInterface().alterarFragment("VisualizarVisitaImovel");
+                VariaveisEstaticas.getFragmentInterface().alterarFragment("VisualizarImagensImovel");
             }
         });
 

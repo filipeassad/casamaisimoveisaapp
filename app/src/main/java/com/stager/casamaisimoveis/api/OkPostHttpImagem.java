@@ -28,12 +28,14 @@ public class OkPostHttpImagem extends AsyncTask<String, String, JSONObject> {
     private Context contexto;
     private ProgressDialog progress;
     private HttpResponseInterface httpResponseInterface;
+    private String API_ROTA;
 
-    public OkPostHttpImagem(Bitmap bitmap, Integer usuarioId, Context contexto, HttpResponseInterface httpResponseInterface) {
+    public OkPostHttpImagem(Bitmap bitmap, Integer parentId, Context contexto, HttpResponseInterface httpResponseInterface, String API_ROTA) {
         this.bitmap = bitmap;
-        this.usuarioId = usuarioId;
+        this.usuarioId = parentId;
         this.contexto = contexto;
         this.httpResponseInterface = httpResponseInterface;
+        this.API_ROTA = API_ROTA;
     }
 
     @Override
@@ -52,14 +54,23 @@ public class OkPostHttpImagem extends AsyncTask<String, String, JSONObject> {
             bitmap.compress(Bitmap.CompressFormat.PNG, 50, outStream);
             byte[] arrayByte = outStream.toByteArray();
 
+            String parentName = "usuarioId";
+            String nomeImagem = "imagemUsario.png";
+            String nomeTag = "imagemUsuario";
+            if(API_ROTA.equals("api/uploadImagemImovel")){
+                nomeImagem = "imagemImovel.png";
+                parentName = "imovelId";
+                nomeTag = "imagemImovel";
+            }
+
             OkHttpClient client = new OkHttpClient().newBuilder()
                     .build();
             MediaType mediaType = MediaType.parse("text/plain");
             RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                    .addFormDataPart("imagemUsuario",
-                            "imagemUsario.png",
+                    .addFormDataPart(nomeTag,
+                            nomeImagem,
                             RequestBody.create(MediaType.parse("image/png"), arrayByte))
-                    .addFormDataPart("usuarioId", usuarioId + "")
+                    .addFormDataPart( parentName, usuarioId + "")
                     .build();
 
             Request request = new Request.Builder()
@@ -85,7 +96,7 @@ public class OkPostHttpImagem extends AsyncTask<String, String, JSONObject> {
     @Override
     protected void onPostExecute(JSONObject jsonObject) {
         progress.dismiss();
-        httpResponseInterface.retornoJsonObject(jsonObject, "");
+        httpResponseInterface.retornoJsonObject(jsonObject, API_ROTA);
     }
 }
 

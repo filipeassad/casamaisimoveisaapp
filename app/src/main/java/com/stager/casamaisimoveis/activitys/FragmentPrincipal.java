@@ -1,6 +1,7 @@
 package com.stager.casamaisimoveis.activitys;
 
 import android.Manifest;
+import android.content.ClipData;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -60,6 +61,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
 
     private final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 24;
     private final int PICK_IMAGE = 25;
+    private final int PICK_IMAGES = 26;
 
     private LinearLayout llMenu;
     private TextView ttTituloFragment;
@@ -149,7 +151,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         ivImagemUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent pickIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 pickIntent.setType("image/*");
 
                 startActivityForResult(pickIntent, PICK_IMAGE);
@@ -374,7 +376,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode){
-            case PICK_IMAGE:{
+            case PICK_IMAGE: {
                 if(resultCode == RESULT_OK){
                     Uri selectedImage = data.getData();
                     ContentResolver contentResolver = getContentResolver();
@@ -385,11 +387,31 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
                                 R.drawable.usuario));
                     }else{
                         ivImagemUsuario.setImageBitmap(resultBitmap);
-                        OkPostHttpImagem okPostHttpImagem = new OkPostHttpImagem(resultBitmap, VariaveisEstaticas.getAutenticacao().getId(), this, httpResponseInterface);
+                        OkPostHttpImagem okPostHttpImagem = new OkPostHttpImagem(resultBitmap, VariaveisEstaticas.getAutenticacao().getId(), this, httpResponseInterface, "api/uploadImagemUsuario");
                         okPostHttpImagem.execute(FerramentasBasicas.getURL() + "api/uploadImagemUsuario");
                         VariaveisEstaticas.getAutenticacao().setImagemUsuario(resultBitmap);
                         VariaveisEstaticas.getTelaInicialInterface().carregarDadosUsuario();
                     }
+                }
+            }
+            case PICK_IMAGES: {
+                if(resultCode == RESULT_OK){
+
+                    List<Bitmap> imagens = new ArrayList<>();
+                    ContentResolver contentResolver = getContentResolver();
+
+                    if(data.getClipData() != null){
+                        ClipData mClipData = data.getClipData();
+                        for (int i = 0; i < mClipData.getItemCount(); i++) {
+                            ClipData.Item item = mClipData.getItemAt(i);
+                            Uri uri = item.getUri();
+                            imagens.add(FerramentasBasicas.decodificarImagem(uri, contentResolver));
+                        }
+                    }else{
+                        Uri selectedImage = data.getData();
+                        imagens.add(FerramentasBasicas.decodificarImagem(selectedImage, contentResolver));
+                    }
+                    VariaveisEstaticas.getImagemImovelInterface().retornoSelecaoImagens(imagens);
                 }
             }
         }
