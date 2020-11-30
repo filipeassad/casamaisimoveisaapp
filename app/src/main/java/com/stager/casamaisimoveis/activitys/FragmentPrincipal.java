@@ -411,7 +411,9 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
                         Uri selectedImage = data.getData();
                         imagens.add(FerramentasBasicas.decodificarImagem(selectedImage, contentResolver));
                     }
-                    VariaveisEstaticas.getImagemImovelInterface().retornoSelecaoImagens(imagens);
+
+                    if(VariaveisEstaticas.getImagemImovelInterface() != null)
+                        VariaveisEstaticas.getImagemImovelInterface().retornoSelecaoImagens(imagens);
                 }
             }
         }
