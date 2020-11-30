@@ -35,6 +35,8 @@ import com.stager.casamaisimoveis.adapters.MenuAdapter;
 import com.stager.casamaisimoveis.api.GetHttpComHeaderAsyncTask;
 import com.stager.casamaisimoveis.api.GetHttpImagemAsyncTask;
 import com.stager.casamaisimoveis.api.OkPostHttpImagem;
+import com.stager.casamaisimoveis.banco.AutenticacaoManager;
+import com.stager.casamaisimoveis.banco.DatabaseManager;
 import com.stager.casamaisimoveis.fragments.TelaInicialFragment;
 import com.stager.casamaisimoveis.interfaces.FragmentInterface;
 import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
@@ -80,6 +82,8 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
 
     private Animacao animacao = new Animacao();
     private HttpResponseInterface httpResponseInterface;
+    private DatabaseManager databaseManager;
+    private AutenticacaoManager autenticacaoManager;
 
     private final String API_CAPTADOR = "api/captadorUsuario";
     private final String API_COORDENACAO = "api/coordenador";
@@ -100,6 +104,9 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
 
         httpResponseInterface = this;
         VariaveisEstaticas.setFragmentInterface(this);
+
+        databaseManager = new DatabaseManager(this);
+        autenticacaoManager = new AutenticacaoManager(databaseManager.getWritableDatabase());
 
         getNavMenu();
         inserirPrimeiroFragment();
@@ -237,6 +244,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
 
     @Override
     public void sair() {
+        autenticacaoManager.deletaTudo();
         finish();
     }
 

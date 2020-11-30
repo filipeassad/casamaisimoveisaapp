@@ -17,54 +17,54 @@ public class AutenticacaoManager {
         this.db = db;
     }
 
-    public boolean insertAutenticacao(Autenticacao autenticacao){
+    public boolean insertAutenticacao(Autenticacao autenticacao) {
 
         ContentValues args = new ContentValues();
 
         args.put("id", autenticacao.getId());
         args.put("token", autenticacao.getToken());
         args.put("usuario_id", autenticacao.getUsuario_id());
-        args.put("captador", autenticacao.isCaptador() ? "true":"false");
-        args.put("ativo", autenticacao.isAtivo() ? "true":"false");
+        args.put("captador", autenticacao.isCaptador() ? "true" : "false");
+        args.put("ativo", autenticacao.isAtivo() ? "true" : "false");
 
 
-        long resultado = db.insert("AUTENTICACAO",null, args);
+        long resultado = db.insert("AUTENTICACAO", null, args);
 
-        if(resultado > 0){
+        if (resultado > 0) {
             return true;
         }
 
         return false;
     }
 
-    public boolean updateAutenticacao(Autenticacao autenticacao){
+    public boolean updateAutenticacao(Autenticacao autenticacao) {
 
         ContentValues args = new ContentValues();
 
         args.put("id", autenticacao.getId());
         args.put("token", autenticacao.getToken());
         args.put("usuario_id", autenticacao.getUsuario_id());
-        args.put("captador", autenticacao.isCaptador() ? "true":"false");
-        args.put("ativo", autenticacao.isAtivo() ? "true":"false");
+        args.put("captador", autenticacao.isCaptador() ? "true" : "false");
+        args.put("ativo", autenticacao.isAtivo() ? "true" : "false");
 
         long resultado = db.update("AUTENTICACAO", args, "id=" + autenticacao.getId(), null);
 
-        if(resultado > 0){
+        if (resultado > 0) {
             return true;
         }
 
         return false;
     }
 
-    public List<Autenticacao> getAutenticacaoAtivo(){
+    public List<Autenticacao> getAutenticacaoAtivo() {
 
-        Cursor cursor = db.rawQuery("SELECT * FROM AUTENTICACAO WHERE ativo = 'true'",null);
+        Cursor cursor = db.rawQuery("SELECT * FROM AUTENTICACAO WHERE ativo = 'true'", null);
 
-        if(cursor != null){
+        if (cursor != null) {
 
             List<Autenticacao> lista = new ArrayList<>();
 
-            while (cursor.moveToNext()){
+            while (cursor.moveToNext()) {
 
                 Autenticacao autenticacao = new Autenticacao();
 
@@ -84,6 +84,17 @@ public class AutenticacaoManager {
         }
 
         return null;
+    }
+
+    public boolean deletaTudo() {
+
+        long resultado = db.delete("AUTENTICACAO", "", new String[]{});
+
+        if (resultado > 0) {
+            return true;
+        }
+
+        return false;
     }
 
 }
