@@ -62,7 +62,7 @@
                     android:id="@+id/txtNomeUsuario"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Brad Pitt"
+                    android:text=""
                     android:textStyle="bold"
                     android:textColor="#ffffff"
                     android:textSize="24sp"></TextView>
@@ -71,7 +71,7 @@
                     android:id="@+id/txtProfissaoUsuario"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Captador"
+                    android:text=""
                     android:textStyle="bold"
                     android:textColor="#767676"
                     android:textSize="18sp"

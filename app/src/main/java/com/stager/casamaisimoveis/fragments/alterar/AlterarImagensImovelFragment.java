@@ -48,6 +48,7 @@ public class AlterarImagensImovelFragment extends Fragment implements ImagemImov
     private List<ImagemImovel> imagensSemId;
     private String API_ALTERAR_IMAGEM_IMOVEL = "api/alterarImagensImovel";
     private String API_UPLOAD_IMAGEM_IMOVEL = "api/uploadImagemImovel";
+    private List<ImagemImovel> imagensParaRemover;
 
     @Nullable
     @Override
@@ -62,10 +63,26 @@ public class AlterarImagensImovelFragment extends Fragment implements ImagemImov
         btnAvancar.setText("Salvar");
 
         imagensImovelListagem = new ArrayList<>();
+        imagensParaRemover = new ArrayList<>();
 
         imagemImovelInterface = this;
         VariaveisEstaticas.setImagemImovelInterface(imagemImovelInterface);
         eventosBotoes();
+
+        if(VariaveisEstaticas.getImovelBusca().getImagensImovel() != null){
+            imagensImovel = new ArrayList<>();
+            for(ImagemImovel imagemImovel: VariaveisEstaticas.getImovelBusca().getImagensImovel()){
+                imagensImovel.add(imagemImovel);
+            }
+            if(imagensImovel.size() > 0){
+                ImagemImovel primeiraImagem = imagensImovel.remove(0);
+                imagemImovelBusca = primeiraImagem;
+                GetHttpImagemAsyncTask getHttpImagemAsyncTask = new GetHttpImagemAsyncTask(getContext(),
+                        httpResponseInterface,
+                        "ImagensImovel");
+                getHttpImagemAsyncTask.execute(primeiraImagem.getUrl_imagem());
+            }
+        }
 
         return view;
     }
@@ -75,17 +92,7 @@ public class AlterarImagensImovelFragment extends Fragment implements ImagemImov
         super.onResume();
         VariaveisEstaticas.getFragmentInterface().alterarTitulo("Alterar");
 
-        if(VariaveisEstaticas.getImovelBusca().getImagensImovel() != null){
-            imagensImovel = VariaveisEstaticas.getImovelBusca().getImagensImovel();
-            if(imagensImovel.size() > 0){
-                ImagemImovel primeiraImagem = imagensImovel.get(0);
-                imagemImovelBusca = primeiraImagem;
-                GetHttpImagemAsyncTask getHttpImagemAsyncTask = new GetHttpImagemAsyncTask(getContext(),
-                        httpResponseInterface,
-                        "ImagensImovel");
-                getHttpImagemAsyncTask.execute(primeiraImagem.getUrl_imagem());
-            }
-        }
+
     }
 
     private void eventosBotoes(){
@@ -120,20 +127,17 @@ public class AlterarImagensImovelFragment extends Fragment implements ImagemImov
             Toast.makeText(getContext(), "Insira uma imagem do imóvel", Toast.LENGTH_SHORT).show();
             return;
         }
-        List<ImagemImovel> imoveisComId = new ArrayList<>();
         List<ImagemImovel> imoveisSemId = new ArrayList<>();
 
         for(ImagemImovel imagemList : imagensImovelListagem){
-            if(imagemList.getId() != null)
-                imoveisComId.add(imagemList);
-            else
+            if(imagemList.getId() == null)
                 imoveisSemId.add(imagemList);
         }
 
         imagensSemId = imoveisSemId;
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("imagensImovel", ImagemImovel.gerarImagemImovelJsonArray(imoveisComId));
+            jsonObject.put("imagensImovel", ImagemImovel.gerarImagemImovelJsonArray(imagensParaRemover));
             PutHttpComHeaderAsyncTask putHttpComHeaderAsyncTask = new PutHttpComHeaderAsyncTask(getContext(), jsonObject, httpResponseInterface, API_ALTERAR_IMAGEM_IMOVEL);
             putHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_ALTERAR_IMAGEM_IMOVEL + "/" + VariaveisEstaticas.getImovelBusca().getId());
         } catch (JSONException e) {
@@ -230,6 +234,7 @@ public class AlterarImagensImovelFragment extends Fragment implements ImagemImov
         llImagensImovel.removeAllViews();
         int totalLinhasLista = imagensImovelListagem.size() % 2 != 0 ? (imagensImovelListagem.size() / 2) + 1 : imagensImovelListagem.size() / 2;
         int indexImagem = 0;
+
         for(int i = 0; i < totalLinhasLista; i++){
             LinearLayout.LayoutParams fraLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             fraLayoutParams.setMargins(0, 10, 0,10);
@@ -263,7 +268,9 @@ public class AlterarImagensImovelFragment extends Fragment implements ImagemImov
     }
 
     private void removerImagem(int index){
-        imagensImovelListagem.remove(index);
+        ImagemImovel imagemImovelRemovido = imagensImovelListagem.remove(index);
+        if(imagemImovelRemovido.getId() != null)
+            imagensParaRemover.add(imagemImovelRemovido);
         adicionarImagens();
     }
 }

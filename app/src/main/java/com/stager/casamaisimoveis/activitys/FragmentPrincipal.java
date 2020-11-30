@@ -81,7 +81,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
     private Animacao animacao = new Animacao();
     private HttpResponseInterface httpResponseInterface;
 
-    private final String API_CAPTADOR = "api/captador";
+    private final String API_CAPTADOR = "api/captadorUsuario";
     private final String API_COORDENACAO = "api/coordenador";
     private final String API_IMAGEM_USUARIO = "getImagemUsuario";
     private final String API_USUARIO = "api/usuario";
@@ -103,14 +103,13 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
 
         getNavMenu();
         inserirPrimeiroFragment();
-
+        buscarDadosUsuario(VariaveisEstaticas.getAutenticacao());
         eventosBotoes();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        buscarDadosUsuario(VariaveisEstaticas.getAutenticacao());
     }
 
     private void buscarDadosUsuario(Autenticacao autenticacao){
@@ -272,25 +271,8 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
             else if(rotaApi.equals(API_USUARIO))
                 retornoUsusario(jsonObject);
 
-
         } catch (JSONException e) {
             e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void retornoImagemBitmap(Bitmap imagem, String rotaAPI) {
-        if(imagem != null && rotaAPI.equals(API_IMAGEM_USUARIO)){
-            if(VariaveisEstaticas.getAutenticacao() != null){
-                VariaveisEstaticas.getAutenticacao().setImagemUsuario(imagem);
-                VariaveisEstaticas.getTelaInicialInterface().carregarDadosUsuario();
-                ivImagemUsuario.setImageBitmap(imagem);
-            }
-        }
-
-        if(imagem == null){
-            ivImagemUsuario.setImageBitmap(BitmapFactory.decodeResource(this.getResources(),
-                    R.drawable.usuario));
         }
     }
 
@@ -312,6 +294,17 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         }
     }
 
+    private void retornoCoordenador(JSONObject resposta){
+        Coordenador coordenadorLogado = new Coordenador();
+        coordenadorLogado.setCoordenador(resposta);
+
+        if(coordenadorLogado.getId() != null){
+            VariaveisEstaticas.setCoordenador(coordenadorLogado);
+            inserirDadosUsuario(coordenadorLogado.getNome(), "Coordenador");
+            VariaveisEstaticas.getTelaInicialInterface().carregarDadosUsuario();
+        }
+    }
+
     private void retornoUsusario(JSONObject resposta){
         Autenticacao autenticacao = Autenticacao.getAutenticacaoJsonUsuario(resposta);
         VariaveisEstaticas.getAutenticacao().setLinkImagem(autenticacao.getLinkImagem());
@@ -325,14 +318,19 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         }
     }
 
-    private void retornoCoordenador(JSONObject resposta){
-        Coordenador coordenadorLogado = new Coordenador();
-        coordenadorLogado.setCoordenador(resposta);
+    @Override
+    public void retornoImagemBitmap(Bitmap imagem, String rotaAPI) {
+        if(imagem != null && rotaAPI.equals(API_IMAGEM_USUARIO)){
+            if(VariaveisEstaticas.getAutenticacao() != null){
+                VariaveisEstaticas.getAutenticacao().setImagemUsuario(imagem);
+                VariaveisEstaticas.getTelaInicialInterface().carregarDadosUsuario();
+                ivImagemUsuario.setImageBitmap(imagem);
+            }
+        }
 
-        if(coordenadorLogado.getId() != null){
-            VariaveisEstaticas.setCoordenador(coordenadorLogado);
-            inserirDadosUsuario(coordenadorLogado.getNome(), "Coordenador");
-            VariaveisEstaticas.getTelaInicialInterface().carregarDadosUsuario();
+        if(imagem == null){
+            ivImagemUsuario.setImageBitmap(BitmapFactory.decodeResource(this.getResources(),
+                    R.drawable.usuario));
         }
     }
 
@@ -351,6 +349,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         }
         else{
             Intent serviceIntent = new Intent(this, LocalizacaoService.class);
+            serviceIntent.putExtra("captadorId", VariaveisEstaticas.getCaptador().getId());
             this.startService(serviceIntent);
         }
     }
@@ -362,6 +361,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Intent serviceIntent = new Intent(this, LocalizacaoService.class);
+                    serviceIntent.putExtra("captadorId", VariaveisEstaticas.getCaptador().getId());
                     this.startService(serviceIntent);
                 } else {
                     this.finish();

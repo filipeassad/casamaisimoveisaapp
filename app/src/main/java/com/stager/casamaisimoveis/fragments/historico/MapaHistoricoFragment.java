@@ -54,8 +54,6 @@ public class MapaHistoricoFragment extends Fragment implements OnMapReadyCallbac
         txtDataHistorico = (TextView) view.findViewById(R.id.txtDataHistorico);
         txtNomeUsuario = (TextView) view.findViewById(R.id.txtNomeUsuario);
 
-
-
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.googleMapsFragmentHistorico);
         mapFragment.getMapAsync(this);
 
@@ -136,17 +134,24 @@ public class MapaHistoricoFragment extends Fragment implements OnMapReadyCallbac
 
             googleMapsFragmentHistorico.animateCamera(cameraUpdate);
 
+            int contador = 0;
+
             for(RotaCaptador rotaCaptador : rotasCaptador){
                 LatLng latlngRota = new LatLng(Double.parseDouble(rotaCaptador.getLatitude()),
                         Double.parseDouble(rotaCaptador.getLongitude()));
 
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(latlngRota);
+                if(contador == 0 ){
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(latlngRota);
 
-                markerOptions.title(rotaCaptador.getData_hora_rota());
+                    markerOptions.title(rotaCaptador.getData_hora_rota());
+                    googleMapsFragmentHistorico.addMarker(markerOptions);
+                }
+                contador++;
+                if(contador == 6)
+                    contador = 0;
 
                 options.add(latlngRota);
-                googleMapsFragmentHistorico.addMarker(markerOptions);
             }
 
             googleMapsFragmentHistorico.addPolyline( options );

@@ -28,7 +28,83 @@ public class LocalizacaoService extends Service {
     private LocationManager mLocationManager = null;
     private static final int LOCATION_INTERVAL = 1000;
     private static final float LOCATION_DISTANCE = 10f;
-    private static final Integer captadorID = VariaveisEstaticas.getCaptador().getId();
+    private static Integer captadorID = 0;
+    LocationListener[] mLocationListeners;
+
+    @Override
+    public IBinder onBind(Intent arg0) {
+        return null;
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.e(TAG, "onStartCommand");
+        captadorID = intent.getExtras().getInt("captadorId");
+        mLocationListeners = new LocationListener[]{
+                new LocationListener(LocationManager.GPS_PROVIDER, this, captadorID),
+                new LocationListener(LocationManager.NETWORK_PROVIDER, this, captadorID)
+        };
+
+        super.onStartCommand(intent, flags, startId);
+
+        final Handler handler = new Handler();
+        final int[] count = {0};
+
+        pegarLocalizacao();
+
+        return START_STICKY;
+    }
+
+    @Override
+    public void onCreate() {
+        Log.e(TAG, "onCreate");
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.e(TAG, "onDestroy");
+        super.onDestroy();
+        removerLocationListeners();
+    }
+
+    private void removerLocationListeners() {
+        if (mLocationManager != null) {
+            for (int i = 0; i < mLocationListeners.length; i++) {
+                try {
+                    mLocationManager.removeUpdates(mLocationListeners[i]);
+                } catch (Exception ex) {
+                    Log.i(TAG, "fail to remove location listners, ignore", ex);
+                }
+            }
+        }
+    }
+
+    private void pegarLocalizacao() {
+
+        mLocationManager = (LocationManager) this.getSystemService(this.LOCATION_SERVICE);
+
+        if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Log.e(TAG, "GPS ta liberado.");
+            Criteria criteria = new Criteria();
+            String provider = mLocationManager.getBestProvider(criteria, false);
+
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    || checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+
+            Log.e(TAG, "accesss_fine_location.");
+            try {
+                mLocationManager.requestLocationUpdates(
+                        provider, LOCATION_INTERVAL, LOCATION_DISTANCE,
+                        mLocationListeners[0]);
+            } catch (java.lang.SecurityException ex) {
+                Log.i(TAG, "fail to request location update, ignore", ex);
+            } catch (IllegalArgumentException ex) {
+                Log.d(TAG, "gps provider does not exist " + ex.getMessage());
+            }
+        }
+    }
 
     private class LocationListener implements android.location.LocationListener, HttpResponseInterface {
         Location mLastLocation;
@@ -89,80 +165,6 @@ public class LocalizacaoService extends Service {
         @Override
         public void retornoImagemBitmap(Bitmap imagem, String rotaAPI) {
 
-        }
-    }
-
-    LocationListener[] mLocationListeners = new LocationListener[]{
-            new LocationListener(LocationManager.GPS_PROVIDER, this, captadorID),
-            new LocationListener(LocationManager.NETWORK_PROVIDER, this, captadorID)
-    };
-
-    @Override
-    public IBinder onBind(Intent arg0) {
-        return null;
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e(TAG, "onStartCommand");
-        super.onStartCommand(intent, flags, startId);
-
-        final Handler handler = new Handler();
-        final int[] count = {0};
-
-        pegarLocalizacao();
-
-        return START_STICKY;
-    }
-
-    @Override
-    public void onCreate() {
-        Log.e(TAG, "onCreate");
-    }
-
-    @Override
-    public void onDestroy() {
-        Log.e(TAG, "onDestroy");
-        super.onDestroy();
-        removerLocationListeners();
-    }
-
-    private void removerLocationListeners() {
-        if (mLocationManager != null) {
-            for (int i = 0; i < mLocationListeners.length; i++) {
-                try {
-                    mLocationManager.removeUpdates(mLocationListeners[i]);
-                } catch (Exception ex) {
-                    Log.i(TAG, "fail to remove location listners, ignore", ex);
-                }
-            }
-        }
-    }
-
-    private void pegarLocalizacao() {
-
-        mLocationManager = (LocationManager) this.getSystemService(this.LOCATION_SERVICE);
-
-        if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            Log.e(TAG, "GPS ta liberado.");
-            Criteria criteria = new Criteria();
-            String provider = mLocationManager.getBestProvider(criteria, false);
-
-            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    || checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-
-            Log.e(TAG, "accesss_fine_location.");
-            try {
-                mLocationManager.requestLocationUpdates(
-                        provider, LOCATION_INTERVAL, LOCATION_DISTANCE,
-                        mLocationListeners[0]);
-            } catch (java.lang.SecurityException ex) {
-                Log.i(TAG, "fail to request location update, ignore", ex);
-            } catch (IllegalArgumentException ex) {
-                Log.d(TAG, "gps provider does not exist " + ex.getMessage());
-            }
         }
     }
 }

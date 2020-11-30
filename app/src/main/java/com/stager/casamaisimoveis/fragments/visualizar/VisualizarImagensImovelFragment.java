@@ -9,13 +9,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.stager.casamaisimoveis.R;
+import com.stager.casamaisimoveis.api.GetHttpComHeaderAsyncTask;
 import com.stager.casamaisimoveis.api.GetHttpImagemAsyncTask;
 import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
 import com.stager.casamaisimoveis.models.ImagemImovel;
+import com.stager.casamaisimoveis.utilitarios.FerramentasBasicas;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -35,6 +39,7 @@ public class VisualizarImagensImovelFragment extends Fragment implements HttpRes
     private HttpResponseInterface httpResponseInterface;
     private List<ImagemImovel> imagensImovel;
     private Button btnEditar;
+    private String API_LISTAR_IMAGENS_IMOVEL = "api/listarImagensImovel/";
 
     @Nullable
     @Override
@@ -61,16 +66,10 @@ public class VisualizarImagensImovelFragment extends Fragment implements HttpRes
     public void onResume() {
         super.onResume();
         VariaveisEstaticas.getFragmentInterface().alterarTitulo("Visualizar");
-
+        imagensSelecionadas = new ArrayList<>();
         if(VariaveisEstaticas.getImovelBusca().getImagensImovel() != null){
-            imagensImovel = VariaveisEstaticas.getImovelBusca().getImagensImovel();
-            if(imagensImovel.size() > 0){
-                ImagemImovel primeiraImagem = imagensImovel.get(0);
-                GetHttpImagemAsyncTask getHttpImagemAsyncTask = new GetHttpImagemAsyncTask(getContext(),
-                        httpResponseInterface,
-                        "ImagensImovel");
-                getHttpImagemAsyncTask.execute(primeiraImagem.getUrl_imagem());
-            }
+            GetHttpComHeaderAsyncTask getHttpComHeaderAsyncTask = new GetHttpComHeaderAsyncTask(getContext(), httpResponseInterface, API_LISTAR_IMAGENS_IMOVEL);
+            getHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_LISTAR_IMAGENS_IMOVEL + VariaveisEstaticas.getImovelBusca().getId());
         }
     }
 
@@ -129,7 +128,37 @@ public class VisualizarImagensImovelFragment extends Fragment implements HttpRes
 
     @Override
     public void retornoJsonObject(JSONObject jsonObject, String rotaApi) {
+        try {
+            if(jsonObject.has("erro")){
+                Toast.makeText(getContext(), jsonObject.getString("erro"), Toast.LENGTH_SHORT).show();
+                return;
+            }
 
+            if(rotaApi.equals(API_LISTAR_IMAGENS_IMOVEL))
+                retornoImagensImovel(jsonObject);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void retornoImagensImovel(JSONObject resposta){
+        try {
+            VariaveisEstaticas.getImovelBusca().setImagensImovel(ImagemImovel.gerarListaImagemImovelBuscaImovel(resposta.getJSONArray("array")));
+            imagensImovel = new ArrayList<>();
+            for(ImagemImovel imagemImovel: VariaveisEstaticas.getImovelBusca().getImagensImovel()){
+                imagensImovel.add(imagemImovel);
+            }
+            if(imagensImovel.size() > 0){
+                ImagemImovel primeiraImagem = imagensImovel.remove(0);
+                GetHttpImagemAsyncTask getHttpImagemAsyncTask = new GetHttpImagemAsyncTask(getContext(),
+                        httpResponseInterface,
+                        "ImagensImovel");
+                getHttpImagemAsyncTask.execute(primeiraImagem.getUrl_imagem());
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
