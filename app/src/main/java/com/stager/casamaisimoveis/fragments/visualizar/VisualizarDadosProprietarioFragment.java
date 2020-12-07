@@ -28,6 +28,7 @@ public class VisualizarDadosProprietarioFragment extends Fragment {
 
     private Button btnVoltar;
     private Button btnAvancar;
+    private Button btnAvancarSecundario;
     private EditText edtNomeProprietario;
     private EditText edtCpfProprietario;
     private EditText edtTelefoneProprietario;
@@ -45,6 +46,7 @@ public class VisualizarDadosProprietarioFragment extends Fragment {
 
         btnVoltar = (Button) view.findViewById(R.id.btnVoltar);
         btnAvancar = (Button) view.findViewById(R.id.btnAvancar);
+        btnAvancarSecundario = (Button) view.findViewById(R.id.btnAvancarSecundario);
 
         edtNomeProprietario = (EditText) view.findViewById(R.id.edtNomeProprietario);
         edtCpfProprietario = (EditText) view.findViewById(R.id.edtCpfProprietario);
@@ -99,6 +101,13 @@ public class VisualizarDadosProprietarioFragment extends Fragment {
         });
 
         btnAvancar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VariaveisEstaticas.getFragmentInterface().alterarFragment("VisualizarEnderecoImovel");
+            }
+        });
+
+        btnAvancarSecundario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 VariaveisEstaticas.getFragmentInterface().alterarFragment("VisualizarEnderecoImovel");

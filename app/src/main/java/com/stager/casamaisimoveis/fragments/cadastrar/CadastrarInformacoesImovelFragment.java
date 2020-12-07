@@ -27,6 +27,7 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
 
     private Button btnVoltar;
     private Button btnAvancar;
+    private Button btnAvancarSecundario;
     private Spinner spTipoImovel;
     private Spinner spFaseObra;
     private Spinner spEsgoto;
@@ -54,6 +55,7 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
 
         btnVoltar  = (Button) view.findViewById(R.id.btnVoltar);
         btnAvancar  = (Button) view.findViewById(R.id.btnAvancar);
+        btnAvancarSecundario  = (Button) view.findViewById(R.id.btnAvancarSecundario);
 
         spTipoImovel = (Spinner) view.findViewById(R.id.spTipoImovel);
         spFaseObra = (Spinner) view.findViewById(R.id.spFaseObra);
@@ -103,6 +105,13 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
         });
 
         btnAvancar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                avancarFormulario();
+            }
+        });
+
+        btnAvancarSecundario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 avancarFormulario();

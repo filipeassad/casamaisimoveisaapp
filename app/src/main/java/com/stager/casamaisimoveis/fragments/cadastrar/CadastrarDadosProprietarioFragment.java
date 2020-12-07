@@ -32,6 +32,7 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
     private EditText edtCpfProprietario;
     private EditText edtTelefoneProprietario;
     private Button btnAdicionar;
+    private Button btnAvancarSecundario;
     private ListView lvTelefoneProprietario;
 
     private List<TelefoneProprietario> telefonesProprietario;
@@ -50,6 +51,7 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
         edtCpfProprietario = (EditText) view.findViewById(R.id.edtCpfProprietario);
         edtTelefoneProprietario = (EditText) view.findViewById(R.id.edtTelefoneProprietario);
         btnAdicionar = (Button) view.findViewById(R.id.btnAdicionar);
+        btnAvancarSecundario = (Button) view.findViewById(R.id.btnAvancarSecundario);
         lvTelefoneProprietario = (ListView) view.findViewById(R.id.lvTelefoneProprietario);
 
         edtCpfProprietario.addTextChangedListener(MascaraEditText.mask(edtCpfProprietario, MascaraEditText.FORMAT_CPF));
@@ -107,6 +109,13 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
                 adicionarTelefone();
             }
         });
+
+        btnAvancarSecundario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                avancarFormulario();
+            }
+        });
     }
 
     private void adicionarTelefone(){
@@ -134,11 +143,6 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
 
         if(edtNomeProprietario.getText().toString().trim().equals("")){
             edtNomeProprietario.setError("Digite o nome.");
-            return;
-        }
-
-        if(edtCpfProprietario.getText().toString().trim().equals("")){
-            edtCpfProprietario.setError("Digite o CPF.");
             return;
         }
 

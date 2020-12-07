@@ -188,6 +188,18 @@
 
             </FrameLayout>
 
+            <Button
+                android:id="@+id/btnAvancarSecundario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Avançar"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:background="@drawable/selector_botao_arrendondado_azul"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"></Button>
+
         </LinearLayout>
 
     </ScrollView>

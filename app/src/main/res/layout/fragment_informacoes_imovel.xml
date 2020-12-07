@@ -88,7 +88,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/shape_edittext_form"
-                android:textColor="#c4c4c4"
+                android:textColor="#000000"
                 android:paddingLeft="10dp"></Spinner>
 
             <TextView
@@ -107,7 +107,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/shape_edittext_form"
-                android:textColor="#c4c4c4"
+                android:textColor="#000000"
                 android:paddingLeft="10dp"></Spinner>
 
             <TextView
@@ -126,7 +126,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/shape_edittext_form"
-                android:textColor="#c4c4c4"
+                android:textColor="#000000"
                 android:paddingLeft="10dp"></Spinner>
 
             <TextView
@@ -145,7 +145,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/shape_edittext_form"
-                android:textColor="#c4c4c4"
+                android:textColor="#000000"
                 android:paddingLeft="10dp"></Spinner>
 
             <TextView
@@ -164,7 +164,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/shape_edittext_form"
-                android:textColor="#c4c4c4"
+                android:textColor="#000000"
                 android:textColorHint="#c4c4c4"
                 android:hint="Digite o valor do imóvel"
                 android:paddingLeft="10dp"
@@ -187,7 +187,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/shape_edittext_form"
-                android:textColor="#c4c4c4"
+                android:textColor="#000000"
                 android:textColorHint="#c4c4c4"
                 android:hint="Digite o valor do honorário"
                 android:paddingLeft="10dp"
@@ -210,7 +210,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/shape_edittext_form"
-                android:textColor="#c4c4c4"
+                android:textColor="#000000"
                 android:textColorHint="#c4c4c4"
                 android:hint="Digite a área do terreno"
                 android:paddingLeft="10dp"
@@ -233,7 +233,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/shape_edittext_form"
-                android:textColor="#c4c4c4"
+                android:textColor="#000000"
                 android:textColorHint="#c4c4c4"
                 android:hint="Digite a área construída"
                 android:paddingLeft="10dp"
@@ -256,15 +256,27 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/shape_edittext_form"
-                android:textColor="#c4c4c4"
+                android:textColor="#000000"
                 android:textColorHint="#c4c4c4"
-                android:inputType="textPersonName|textMultiLine"
+                android:inputType="textPersonName|textMultiLine|textCapWords"
                 android:hint="Digite sua observação"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:gravity="top"
-                android:layout_marginBottom="50dp"
                 android:textSize="14sp"></EditText>
+
+            <Button
+                android:id="@+id/btnAvancarSecundario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Avançar"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:background="@drawable/selector_botao_arrendondado_azul"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="50dp"></Button>
 
         </LinearLayout>
 

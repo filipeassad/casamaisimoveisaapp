@@ -40,12 +40,12 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/shape_edittext_form"
-                android:textColor="#c4c4c4"
+                android:textColor="#000000"
                 android:textColorHint="#c4c4c4"
                 android:textSize="14sp"
                 android:hint="Digite o nome da rota"
                 android:paddingLeft="10dp"
-                android:inputType="textPersonName"></EditText>
+                android:inputType="textPersonName|textCapWords"></EditText>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -63,12 +63,12 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/shape_edittext_form"
-                android:textColor="#c4c4c4"
+                android:textColor="#000000"
                 android:textColorHint="#c4c4c4"
                 android:textSize="14sp"
                 android:hint="Digite o nome do bairro"
                 android:paddingLeft="10dp"
-                android:inputType="textPersonName"></EditText>
+                android:inputType="textPersonName|textCapWords"></EditText>
 
             <Button
                 android:id="@+id/btnCadastrarRota"

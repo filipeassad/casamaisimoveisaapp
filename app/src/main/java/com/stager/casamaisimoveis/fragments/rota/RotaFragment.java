@@ -55,7 +55,7 @@ public class RotaFragment extends Fragment implements HttpResponseInterface {
     @Override
     public void onResume() {
         super.onResume();
-        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Rotas");
+        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Bairros");
         buscarRotas();
     }
 

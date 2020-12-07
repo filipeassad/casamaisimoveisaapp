@@ -48,8 +48,8 @@ public class MontarSpinners {
         List<ItemSpinner> tiposRua = new ArrayList<>();
 
         tiposRua.add(new ItemSpinner(0, "Selecione"));
-        tiposRua.add(new ItemSpinner(1, "Rua de Asfalto"));
-        tiposRua.add(new ItemSpinner(2, "Rua de Terra"));
+        tiposRua.add(new ItemSpinner(1, "Asfalto"));
+        tiposRua.add(new ItemSpinner(2, "Terra"));
 
         return tiposRua;
     }

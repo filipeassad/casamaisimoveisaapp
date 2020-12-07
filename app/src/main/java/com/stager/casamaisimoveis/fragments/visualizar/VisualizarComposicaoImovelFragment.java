@@ -29,6 +29,7 @@ public class VisualizarComposicaoImovelFragment extends Fragment {
 
     private Button btnVoltar;
     private Button btnAvancar;
+    private Button btnAvancarSecundario;
     private Button btnAdicionar;
 
     private Spinner spAmbiente;
@@ -48,6 +49,7 @@ public class VisualizarComposicaoImovelFragment extends Fragment {
 
         btnVoltar = (Button) view.findViewById(R.id.btnVoltar);
         btnAvancar = (Button) view.findViewById(R.id.btnAvancar);
+        btnAvancarSecundario = (Button) view.findViewById(R.id.btnAvancarSecundario);
         btnAdicionar = (Button) view.findViewById(R.id.btnAdicionar);
 
         spAmbiente = (Spinner) view.findViewById(R.id.spAmbiente);
@@ -98,6 +100,14 @@ public class VisualizarComposicaoImovelFragment extends Fragment {
         });
 
         btnAvancar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VariaveisEstaticas.getFragmentInterface().alterarFragment("VisualizarImagensImovel");
+            }
+        });
+
+
+        btnAvancarSecundario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 VariaveisEstaticas.getFragmentInterface().alterarFragment("VisualizarImagensImovel");

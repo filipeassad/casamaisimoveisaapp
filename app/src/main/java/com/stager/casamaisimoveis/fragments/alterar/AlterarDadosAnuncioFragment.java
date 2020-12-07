@@ -28,6 +28,7 @@ public class AlterarDadosAnuncioFragment extends Fragment implements HttpRespons
 
     private Button btnVoltar;
     private Button btnAvancar;
+    private Button btnAvancarSecundario;
     private CheckBox ckDivulgacao;
     private CheckBox ckPlaca;
     private CheckBox ckExclusividade;
@@ -47,6 +48,7 @@ public class AlterarDadosAnuncioFragment extends Fragment implements HttpRespons
 
         btnVoltar = (Button) view.findViewById(R.id.btnVoltar);
         btnAvancar = (Button) view.findViewById(R.id.btnAvancar);
+        btnAvancarSecundario = (Button) view.findViewById(R.id.btnAvancarSecundario);
 
         ckDivulgacao = (CheckBox) view.findViewById(R.id.ckDivulgacao);
         ckPlaca = (CheckBox) view.findViewById(R.id.ckPlaca);
@@ -59,6 +61,7 @@ public class AlterarDadosAnuncioFragment extends Fragment implements HttpRespons
         flTempoAutorizacao = (FrameLayout) view.findViewById(R.id.flTempoAutorizacao);
 
         btnAvancar.setText("Salvar");
+        btnAvancarSecundario.setText("Salvar");
 
         httpResponseInterface = this;
 
@@ -91,6 +94,13 @@ public class AlterarDadosAnuncioFragment extends Fragment implements HttpRespons
         });
 
         btnAvancar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                avancarFormulario();
+            }
+        });
+
+        btnAvancarSecundario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 avancarFormulario();

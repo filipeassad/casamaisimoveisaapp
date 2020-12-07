@@ -25,6 +25,7 @@ public class AlertaGoogleMaps {
 
         Button btnRota = (Button) view.findViewById(R.id.btnRota);
         Button btnCadastrarImovel = (Button) view.findViewById(R.id.btnCadastrarImovel);
+        Button btnExcluirEndereco = (Button) view.findViewById(R.id.btnExcluirEndereco);
 
         txtBairroMapa.setText(enderecoRota.getBairro());
         txtRuaMapa.setText(enderecoRota.getRua());
@@ -52,6 +53,16 @@ public class AlertaGoogleMaps {
                 mapaRotaInterface.criarImovel(enderecoRota);
             }
         });
+
+        btnExcluirEndereco.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alerta.dismiss();
+                mapaRotaInterface.excluirEndereco(enderecoRota);
+            }
+        });
+
+
 
     }
 

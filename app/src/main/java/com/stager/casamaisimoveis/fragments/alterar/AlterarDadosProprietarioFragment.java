@@ -152,11 +152,6 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
             return;
         }
 
-        if(edtCpfProprietario.getText().toString().trim().equals("")){
-            edtCpfProprietario.setError("Digite o CPF.");
-            return;
-        }
-
         Proprietario proprietarioAltaracao = VariaveisEstaticas.getImovelBusca().getProprietario();
 
         proprietarioAltaracao.setNome(edtNomeProprietario.getText().toString());

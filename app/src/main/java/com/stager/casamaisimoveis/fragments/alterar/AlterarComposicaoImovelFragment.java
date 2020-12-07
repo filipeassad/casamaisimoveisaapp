@@ -40,6 +40,7 @@ public class AlterarComposicaoImovelFragment extends Fragment implements Composi
 
     private Button btnVoltar;
     private Button btnAvancar;
+    private Button btnAvancarSecundario;
     private Button btnAdicionar;
 
     private Spinner spAmbiente;
@@ -61,6 +62,7 @@ public class AlterarComposicaoImovelFragment extends Fragment implements Composi
 
         btnVoltar = (Button) view.findViewById(R.id.btnVoltar);
         btnAvancar = (Button) view.findViewById(R.id.btnAvancar);
+        btnAvancarSecundario = (Button) view.findViewById(R.id.btnAvancarSecundario);
         btnAdicionar = (Button) view.findViewById(R.id.btnAdicionar);
 
         spAmbiente = (Spinner) view.findViewById(R.id.spAmbiente);
@@ -68,6 +70,7 @@ public class AlterarComposicaoImovelFragment extends Fragment implements Composi
         lvAmbientes = (ListView) view.findViewById(R.id.lvAmbientes);
 
         btnAvancar.setText("Salvar");
+        btnAvancarSecundario.setText("Salvar");
 
         composicoesImovel = new ArrayList<>();
         composicaoInterface = this;
@@ -104,6 +107,13 @@ public class AlterarComposicaoImovelFragment extends Fragment implements Composi
         });
 
         btnAvancar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                avancarFormulario();
+            }
+        });
+
+        btnAvancarSecundario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 avancarFormulario();

@@ -163,7 +163,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/shape_edittext_form"
-                android:textColor="#c4c4c4"
+                android:textColor="#000000"
                 android:textColorHint="#c4c4c4"
                 android:hint="Digite a data do retorno"
                 android:paddingLeft="10dp"

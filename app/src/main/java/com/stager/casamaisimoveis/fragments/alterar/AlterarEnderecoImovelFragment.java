@@ -27,6 +27,7 @@ public class AlterarEnderecoImovelFragment extends Fragment implements HttpRespo
 
     private Button btnVoltar;
     private Button btnAvancar;
+    private Button btnAvancarSecundario;
     private EditText edtBairroEnderecoImovel;
     private EditText edtRuaEnderecoImovel;
     private EditText edtNumeroEnderecoImovel;
@@ -41,11 +42,13 @@ public class AlterarEnderecoImovelFragment extends Fragment implements HttpRespo
 
         btnVoltar = (Button) view.findViewById(R.id.btnVoltar);
         btnAvancar = (Button) view.findViewById(R.id.btnAvancar);
+        btnAvancarSecundario = (Button) view.findViewById(R.id.btnAvancarSecundario);
         edtBairroEnderecoImovel = (EditText) view.findViewById(R.id.edtBairroEnderecoImovel);
         edtRuaEnderecoImovel = (EditText) view.findViewById(R.id.edtRuaEnderecoImovel);
         edtNumeroEnderecoImovel = (EditText) view.findViewById(R.id.edtNumeroEnderecoImovel);
 
         btnAvancar.setText("Salvar");
+        btnAvancarSecundario.setText("Salvar");
         httpResponseInterface = this;
 
         eventosBotoes();
@@ -78,6 +81,13 @@ public class AlterarEnderecoImovelFragment extends Fragment implements HttpRespo
         });
 
         btnAvancar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                avancarFormulario();
+            }
+        });
+
+        btnAvancarSecundario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 avancarFormulario();

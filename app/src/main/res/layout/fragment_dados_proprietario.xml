@@ -88,12 +88,12 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/shape_edittext_form"
-                android:textColor="#c4c4c4"
+                android:textColor="#000000"
                 android:textColorHint="#c4c4c4"
                 android:hint="Digite o nome do proprietário"
                 android:paddingLeft="10dp"
                 android:textSize="14sp"
-                android:inputType="textPersonName"></EditText>
+                android:inputType="textPersonName|textCapWords"></EditText>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -111,7 +111,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/shape_edittext_form"
-                android:textColor="#c4c4c4"
+                android:textColor="#000000"
                 android:textColorHint="#c4c4c4"
                 android:hint="Digite o CPF do proprietário"
                 android:paddingLeft="10dp"
@@ -141,7 +141,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:background="@drawable/shape_edittext_form"
-                    android:textColor="#c4c4c4"
+                    android:textColor="#000000"
                     android:textColorHint="#c4c4c4"
                     android:hint="Digite o telefone do proprietário"
                     android:paddingLeft="10dp"
@@ -168,6 +168,19 @@
                 android:paddingRight="10dp">
 
             </ListView>
+
+            <Button
+                android:id="@+id/btnAvancarSecundario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Avançar"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:background="@drawable/selector_botao_arrendondado_azul"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="50dp"></Button>
 
         </LinearLayout>
 

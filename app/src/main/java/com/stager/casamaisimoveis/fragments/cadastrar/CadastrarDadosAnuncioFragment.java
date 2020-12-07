@@ -23,6 +23,7 @@ public class CadastrarDadosAnuncioFragment extends Fragment {
 
     private Button btnVoltar;
     private Button btnAvancar;
+    private Button btnAvancarSecundario;
     private CheckBox ckDivulgacao;
     private CheckBox ckPlaca;
     private CheckBox ckExclusividade;
@@ -39,6 +40,7 @@ public class CadastrarDadosAnuncioFragment extends Fragment {
 
         btnVoltar = (Button) view.findViewById(R.id.btnVoltar);
         btnAvancar = (Button) view.findViewById(R.id.btnAvancar);
+        btnAvancarSecundario = (Button) view.findViewById(R.id.btnAvancarSecundario);
 
         ckDivulgacao = (CheckBox) view.findViewById(R.id.ckDivulgacao);
         ckPlaca = (CheckBox) view.findViewById(R.id.ckPlaca);
@@ -79,6 +81,13 @@ public class CadastrarDadosAnuncioFragment extends Fragment {
         });
 
         btnAvancar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                avancarFormulario();
+            }
+        });
+
+        btnAvancarSecundario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 avancarFormulario();

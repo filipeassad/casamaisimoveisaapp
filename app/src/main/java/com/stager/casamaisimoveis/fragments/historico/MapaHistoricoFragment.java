@@ -134,13 +134,13 @@ public class MapaHistoricoFragment extends Fragment implements OnMapReadyCallbac
 
             googleMapsFragmentHistorico.animateCamera(cameraUpdate);
 
-            int contador = 0;
+            int contador = 1;
 
             for(RotaCaptador rotaCaptador : rotasCaptador){
                 LatLng latlngRota = new LatLng(Double.parseDouble(rotaCaptador.getLatitude()),
                         Double.parseDouble(rotaCaptador.getLongitude()));
 
-                if(contador == 0 ){
+                if(contador == 1 || contador == rotasCaptador.size()){
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(latlngRota);
 
@@ -148,9 +148,6 @@ public class MapaHistoricoFragment extends Fragment implements OnMapReadyCallbac
                     googleMapsFragmentHistorico.addMarker(markerOptions);
                 }
                 contador++;
-                if(contador == 6)
-                    contador = 0;
-
                 options.add(latlngRota);
             }
 

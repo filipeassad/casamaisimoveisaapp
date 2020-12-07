@@ -1,6 +1,8 @@
 package com.stager.casamaisimoveis.fragments.rota;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -32,6 +34,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.stager.casamaisimoveis.R;
 import com.stager.casamaisimoveis.alertas.AlertaGoogleMaps;
+import com.stager.casamaisimoveis.api.DeleteHttpComHeaderAsyncTask;
 import com.stager.casamaisimoveis.api.GetHttpComHeaderAsyncTask;
 import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
 import com.stager.casamaisimoveis.interfaces.MapaRotaInterface;
@@ -57,6 +60,7 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
     private Button btnNovoEndereco;
     private HttpResponseInterface httpResponseInterface;
     private String API_ENDERECOS_ROTAS = "api/enderecosRota/";
+    private String API_ENDERECO_ROTA = "api/enderecoRota/";
     private List<EnderecoRota> enderecosRota;
 
     private MapaRotaInterface mapaRotaInterface;
@@ -87,7 +91,7 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
     @Override
     public void onResume() {
         super.onResume();
-        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Mapa Rota");
+        VariaveisEstaticas.getFragmentInterface().alterarTitulo("Mapa Bairro");
 
         if(VariaveisEstaticas.getRotaSelecionada() != null){
             edtBairroRota.setText("Bairro: " + VariaveisEstaticas.getRotaSelecionada().getBairro());
@@ -164,6 +168,9 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
 
             if(rotaApi.equals(API_ENDERECOS_ROTAS))
                 retornoEnderecosRota(jsonObject);
+            if(rotaApi.equals(API_ENDERECO_ROTA))
+                retornoEnderecoRota(jsonObject);
+
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -179,6 +186,7 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
 
         enderecosRota = EnderecoRota.listarEnderecosRotas(resposta);
         Rota rota = VariaveisEstaticas.getRotaSelecionada();
+        int i = 1;
 
         for(EnderecoRota enderecoRota: enderecosRota){
             Geocoder geocoder = new Geocoder(getContext());
@@ -189,11 +197,28 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
                     LatLng latlng = new LatLng(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(latlng);
-                    markerOptions.title(rota.getNome() + ": " + enderecoRota.getId());
+                    markerOptions.title(rota.getNome() + ": " + i);
                     marcasEnderecoRota.put(markerOptions.getTitle(), enderecoRota);
                     googleMapsFragment.addMarker(markerOptions);
+                    i++;
                 }
             } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void retornoEnderecoRota(JSONObject resposta){
+
+        if(resposta.has("sucesso")){
+            try {
+                Toast.makeText(getContext(), resposta.getString("mensagem"), Toast.LENGTH_SHORT).show();
+                if(resposta.getBoolean("sucesso")){
+                    marcasEnderecoRota = new HashMap<>();
+                    googleMapsFragment.clear();
+                    carregarEnderecos();
+                }
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
@@ -224,5 +249,36 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
     public void criarImovel(EnderecoRota enderecoRota) {
         VariaveisEstaticas.setEnderecoRotaSelecionado(enderecoRota);
         VariaveisEstaticas.getFragmentInterface().alterarFragment("CadastrarDadosProprietario");
+    }
+
+    @Override
+    public void excluirEndereco(final EnderecoRota enderecoRota) {
+
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+        builder1.setMessage("Você deseja excluir este endereço ?");
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "Sim",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        DeleteHttpComHeaderAsyncTask deleteHttpComHeaderAsyncTask = new DeleteHttpComHeaderAsyncTask(getContext(),
+                                httpResponseInterface,
+                                API_ENDERECO_ROTA);
+                        deleteHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_ENDERECO_ROTA + enderecoRota.getId());
+                        dialog.dismiss();
+                    }
+                });
+
+        builder1.setNegativeButton(
+                "Não",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 }
