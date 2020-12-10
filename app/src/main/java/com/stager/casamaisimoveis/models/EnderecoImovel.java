@@ -80,4 +80,9 @@ public class EnderecoImovel {
 
         return rotaJson;
     }
+
+    public String getEnderecoEscrito(){
+        String endereco = "Campo Grande MS, " + this.bairro + ", " + this.rua + ", " + this.numero;
+        return endereco;
+    }
 }
