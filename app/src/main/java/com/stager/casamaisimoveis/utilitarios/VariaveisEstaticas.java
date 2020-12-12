@@ -24,6 +24,7 @@ public class VariaveisEstaticas {
 
     private static Autenticacao autenticacao;
     private static Captador captador;
+    private static Captador captadorHistorico;
     private static Coordenador coordenador;
     private static Rota rotaSelecionada;
     private static Proprietario proprietarioCadastro;
@@ -39,6 +40,14 @@ public class VariaveisEstaticas {
     private static TelaInicialInterface telaInicialInterface;
     private static FragmentInterface fragmentInterface;
     private static ImagemImovelInterface imagemImovelInterface;
+
+    public static Captador getCaptadorHistorico() {
+        return captadorHistorico;
+    }
+
+    public static void setCaptadorHistorico(Captador captadorHistorico) {
+        VariaveisEstaticas.captadorHistorico = captadorHistorico;
+    }
 
     public static List<Bitmap> getImagensImovelCadastro() {
         return imagensImovelCadastro;

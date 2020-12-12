@@ -80,6 +80,53 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llPublicarImoveis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_botao_arrendondado_azul"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:clickable="true"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_width="37dp"
+                android:layout_height="37dp"
+                android:src="@drawable/publicar"></ImageView>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center|left"
+                android:paddingRight="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Publicar"
+                    android:textStyle="bold"
+                    android:textColor="#e5e5e5"
+                    android:textSize="24sp"></TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Selecione os imóveis para publicar nos sites de divulgação."
+                    android:textColor="#e5e5e5"
+                    android:textSize="13sp"></TextView>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/llRota"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

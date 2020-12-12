@@ -37,6 +37,7 @@ import com.stager.casamaisimoveis.api.GetHttpImagemAsyncTask;
 import com.stager.casamaisimoveis.api.OkPostHttpImagem;
 import com.stager.casamaisimoveis.banco.AutenticacaoManager;
 import com.stager.casamaisimoveis.banco.DatabaseManager;
+import com.stager.casamaisimoveis.fragments.TelaInicialCoordenadorFragment;
 import com.stager.casamaisimoveis.fragments.TelaInicialFragment;
 import com.stager.casamaisimoveis.interfaces.FragmentInterface;
 import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
@@ -86,7 +87,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
     private AutenticacaoManager autenticacaoManager;
 
     private final String API_CAPTADOR = "api/captadorUsuario";
-    private final String API_COORDENACAO = "api/coordenador";
+    private final String API_COORDENACAO = "api/coordenadorUsuario";
     private final String API_IMAGEM_USUARIO = "getImagemUsuario";
     private final String API_USUARIO = "api/usuario";
 
@@ -126,10 +127,19 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
 
     private void inserirPrimeiroFragment(){
         if(savedInstanceState == null){
-            TelaInicialFragment telaInicialFragment = new TelaInicialFragment();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.add(R.id.contFragments, telaInicialFragment, "TelaInicial");
-            ft.commit();
+            Autenticacao autenticacao = VariaveisEstaticas.getAutenticacao();
+
+            if(autenticacao.isCaptador()){
+                TelaInicialFragment telaInicialFragment = new TelaInicialFragment();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.add(R.id.contFragments, telaInicialFragment, "TelaInicial");
+                ft.commit();
+            }else{
+                TelaInicialCoordenadorFragment telaInicialCoordenadorFragment = new TelaInicialCoordenadorFragment();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.add(R.id.contFragments, telaInicialCoordenadorFragment, "TelaInicialCoordenador");
+                ft.commit();
+            }
         }
     }
 
@@ -145,8 +155,13 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
 
         List<String> listString = new ArrayList<>();
 
+        final Autenticacao autenticacao = VariaveisEstaticas.getAutenticacao();
+
         listString.add("Tela Inicial");
-        listString.add("Rota");
+
+        if (autenticacao.isCaptador())
+            listString.add("Rota");
+
         listString.add("Histórico");
         listString.add("Imóveis");
         listString.add("Sair");
@@ -169,11 +184,17 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 if(((String) parent.getItemAtPosition(position)).equals("Tela Inicial")){
-                    alterarFragment("TelaInicial");
+                    if (autenticacao.isCaptador())
+                        alterarFragment("TelaInicial");
+                    else
+                        alterarFragment("TelaInicialCoordenador");
                 }else if(((String) parent.getItemAtPosition(position)).equals("Rota")){
                     alterarFragment("Rota");
                 }else if(((String) parent.getItemAtPosition(position)).equals("Histórico")){
-                    alterarFragment("HistoricoCaptador");
+                    if (autenticacao.isCaptador())
+                        alterarFragment("HistoricoCaptador");
+                    else
+                        alterarFragment("");
                 }else if(((String) parent.getItemAtPosition(position)).equals("Imóveis")){
                     alterarFragment("BuscarImovel");
                 }else if(((String) parent.getItemAtPosition(position)).equals("Sair")){
@@ -309,7 +330,15 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         if(coordenadorLogado.getId() != null){
             VariaveisEstaticas.setCoordenador(coordenadorLogado);
             inserirDadosUsuario(coordenadorLogado.getNome(), "Coordenador");
+            if(VariaveisEstaticas.getAutenticacao().getLinkImagem() != null){
+                GetHttpImagemAsyncTask getHttpImagemAsyncTask = new GetHttpImagemAsyncTask(this,
+                        httpResponseInterface,
+                        API_IMAGEM_USUARIO);
+                getHttpImagemAsyncTask.execute(VariaveisEstaticas.getAutenticacao().getLinkImagem());
+            }
+
             VariaveisEstaticas.getTelaInicialInterface().carregarDadosUsuario();
+            verificarPermissaoLocalizacao();
         }
     }
 
@@ -322,7 +351,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
             getHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_CAPTADOR + "/" + VariaveisEstaticas.getAutenticacao().getUsuario_id());
         }else{
             GetHttpComHeaderAsyncTask getHttpComHeaderAsyncTask = new GetHttpComHeaderAsyncTask(this, httpResponseInterface, API_COORDENACAO);
-            getHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_CAPTADOR + "/" + VariaveisEstaticas.getAutenticacao().getUsuario_id());
+            getHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_COORDENACAO + "/" + VariaveisEstaticas.getAutenticacao().getUsuario_id());
         }
     }
 
@@ -356,9 +385,11 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
                     MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION );
         }
         else{
-            Intent serviceIntent = new Intent(this, LocalizacaoService.class);
-            serviceIntent.putExtra("captadorId", VariaveisEstaticas.getCaptador().getId());
-            this.startService(serviceIntent);
+            if(VariaveisEstaticas.getAutenticacao().isCaptador()){
+                Intent serviceIntent = new Intent(this, LocalizacaoService.class);
+                serviceIntent.putExtra("captadorId", VariaveisEstaticas.getCaptador().getId());
+                this.startService(serviceIntent);
+            }
         }
     }
 
@@ -395,7 +426,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
                                 R.drawable.usuario));
                     }else{
                         ivImagemUsuario.setImageBitmap(resultBitmap);
-                        OkPostHttpImagem okPostHttpImagem = new OkPostHttpImagem(resultBitmap, VariaveisEstaticas.getAutenticacao().getId(), this, httpResponseInterface, "api/uploadImagemUsuario");
+                        OkPostHttpImagem okPostHttpImagem = new OkPostHttpImagem(resultBitmap, VariaveisEstaticas.getAutenticacao().getUsuario_id(), this, httpResponseInterface, "api/uploadImagemUsuario");
                         okPostHttpImagem.execute(FerramentasBasicas.getURL() + "api/uploadImagemUsuario");
                         VariaveisEstaticas.getAutenticacao().setImagemUsuario(resultBitmap);
                         VariaveisEstaticas.getTelaInicialInterface().carregarDadosUsuario();

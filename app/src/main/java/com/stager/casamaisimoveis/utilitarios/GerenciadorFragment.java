@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.stager.casamaisimoveis.R;
 import com.stager.casamaisimoveis.fragments.BuscarImovelFragment;
+import com.stager.casamaisimoveis.fragments.TelaInicialCoordenadorFragment;
 import com.stager.casamaisimoveis.fragments.alterar.AlterarComposicaoImovelFragment;
 import com.stager.casamaisimoveis.fragments.alterar.AlterarDadosAnuncioFragment;
 import com.stager.casamaisimoveis.fragments.alterar.AlterarDadosProprietarioFragment;
@@ -19,6 +20,7 @@ import com.stager.casamaisimoveis.fragments.cadastrar.CadastrarComposicaoImovelF
 import com.stager.casamaisimoveis.fragments.cadastrar.CadastrarDadosAnuncioFragment;
 import com.stager.casamaisimoveis.fragments.cadastrar.CadastrarDadosProprietarioFragment;
 import com.stager.casamaisimoveis.fragments.cadastrar.CadastrarImagensImovelFragment;
+import com.stager.casamaisimoveis.fragments.historico.ListaCaptadoresHistoricoFragment;
 import com.stager.casamaisimoveis.fragments.rota.CadastrarEnderecoRotaFragment;
 import com.stager.casamaisimoveis.fragments.cadastrar.CadastrarInformacoesImovelFragment;
 import com.stager.casamaisimoveis.fragments.rota.CadastrarRotaFragment;
@@ -47,6 +49,9 @@ public class GerenciadorFragment {
         if(nomeTela.equals("TelaInicial")){
             TelaInicialFragment telaInicialFragment = new TelaInicialFragment();
             ft.replace(R.id.contFragments, telaInicialFragment, nomeTela);
+        }else if(nomeTela.equals("TelaInicialCoordenador")){
+            TelaInicialCoordenadorFragment telaInicialCoordenadorFragment = new TelaInicialCoordenadorFragment();
+            ft.replace(R.id.contFragments, telaInicialCoordenadorFragment, nomeTela);
         }else if(nomeTela.equals("Rota")){
             RotaFragment rotaFragment = new RotaFragment();
             ft.replace(R.id.contFragments, rotaFragment, nomeTela);
@@ -134,6 +139,9 @@ public class GerenciadorFragment {
         }else if(nomeTela.equals("AlterarImagensImovel")){
             AlterarImagensImovelFragment alterarImagensImovelFragment = new AlterarImagensImovelFragment();
             ft.replace(R.id.contFragments, alterarImagensImovelFragment);
+        }else if(nomeTela.equals("ListaCaptadoresHistorico")){
+            ListaCaptadoresHistoricoFragment listaCaptadoresHistoricoFragment = new ListaCaptadoresHistoricoFragment();
+            ft.replace(R.id.contFragments, listaCaptadoresHistoricoFragment);
         }
 
         if(fm.findFragmentByTag(nomeTela) != null)

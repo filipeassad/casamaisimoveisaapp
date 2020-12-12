@@ -67,7 +67,7 @@ public class MapaHistoricoFragment extends Fragment implements OnMapReadyCallbac
         super.onResume();
         VariaveisEstaticas.getFragmentInterface().alterarTitulo("Mapa Histórico");
         txtDataHistorico.setText(VariaveisEstaticas.getRotaCaptadorHistoricoSelecionado().getData_rota());
-        txtNomeUsuario.setText(VariaveisEstaticas.getCaptador().getNome());
+        txtNomeUsuario.setText(VariaveisEstaticas.getCaptadorHistorico().getNome());
     }
 
     private void carregarRotasCaptador(){
@@ -78,7 +78,7 @@ public class MapaHistoricoFragment extends Fragment implements OnMapReadyCallbac
                 + API_ROTAS_CAPTADOR
                 + VariaveisEstaticas.getRotaCaptadorHistoricoSelecionado().getDataRotaFormatoServidor()
                 + "/"
-                + VariaveisEstaticas.getCaptador().getId());
+                + VariaveisEstaticas.getCaptadorHistorico().getId());
     }
 
     @Override

@@ -53,7 +53,7 @@ public class HistoricoCaptadorFragment extends Fragment implements HttpResponseI
 
     private void buscarDatas(){
         GetHttpComHeaderAsyncTask getHttpComHeaderAsyncTask = new GetHttpComHeaderAsyncTask(getContext(), httpResponseInterface, API_DATAS_CAPTADOR);
-        getHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_DATAS_CAPTADOR + VariaveisEstaticas.getCaptador().getId());
+        getHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_DATAS_CAPTADOR + VariaveisEstaticas.getCaptadorHistorico().getId());
     }
 
     @Override

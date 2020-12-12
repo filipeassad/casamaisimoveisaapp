@@ -16,16 +16,15 @@ import com.stager.casamaisimoveis.R;
 import com.stager.casamaisimoveis.interfaces.TelaInicialInterface;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
 
-public class TelaInicialFragment extends Fragment implements TelaInicialInterface {
+public class TelaInicialCoordenadorFragment extends Fragment implements TelaInicialInterface {
 
     private TextView txtNomeUsuario;
     private TextView txtProfissaoUsuario;
     private LinearLayout llRota;
     private LinearLayout llHitorico;
     private LinearLayout llBuscarImovel;
+    private LinearLayout llPublicarImoveis;
     private ImageView ivImagemUsuario;
-
-    private String FRAGMENT_ROTA = "Rota";
 
     @Nullable
     @Override
@@ -37,7 +36,10 @@ public class TelaInicialFragment extends Fragment implements TelaInicialInterfac
         llRota = (LinearLayout) view.findViewById(R.id.llRota);
         llHitorico = (LinearLayout) view.findViewById(R.id.llHitorico);
         llBuscarImovel = (LinearLayout) view.findViewById(R.id.llBuscarImovel);
+        llPublicarImoveis = (LinearLayout) view.findViewById(R.id.llPublicarImoveis);
         ivImagemUsuario = (ImageView) view.findViewById(R.id.ivImagemUsuario);
+
+        llRota.setVisibility(View.GONE);
 
         VariaveisEstaticas.setTelaInicialInterface(this);
         eventosBotoes();
@@ -52,18 +54,18 @@ public class TelaInicialFragment extends Fragment implements TelaInicialInterfac
     }
 
     private void eventosBotoes(){
-        llRota.setOnClickListener(new View.OnClickListener() {
+
+        llPublicarImoveis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                VariaveisEstaticas.getFragmentInterface().alterarFragment(FRAGMENT_ROTA);
+
             }
         });
 
         llHitorico.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                VariaveisEstaticas.setCaptadorHistorico(VariaveisEstaticas.getCaptador());
-                VariaveisEstaticas.getFragmentInterface().alterarFragment("HistoricoCaptador");
+                VariaveisEstaticas.getFragmentInterface().alterarFragment("ListaCaptadoresHistorico");
             }
         });
 
