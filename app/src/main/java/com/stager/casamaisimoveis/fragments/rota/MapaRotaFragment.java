@@ -58,10 +58,12 @@ import java.util.List;
 public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, HttpResponseInterface, MapaRotaInterface {
 
     private GoogleMap googleMapsFragment;
-
-
     private TextView edtBairroRota;
+    private TextView txtImoveisNovos;
+    private TextView txtImoveisRetorno;
+    private TextView txtImoveisFinalizados;
     private Button btnNovoEndereco;
+
     private HttpResponseInterface httpResponseInterface;
     private String API_ENDERECOS_ROTAS = "api/enderecosRota/";
     private String API_ENDERECO_ROTA = "api/enderecoRota/";
@@ -81,6 +83,9 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
         View view = inflater.inflate(R.layout.fragment_mapa_rota, container, false);
 
         edtBairroRota = (TextView) view.findViewById(R.id.edtBairroRota);
+        txtImoveisNovos = (TextView) view.findViewById(R.id.txtImoveisNovos);
+        txtImoveisRetorno = (TextView) view.findViewById(R.id.txtImoveisRetorno);
+        txtImoveisFinalizados = (TextView) view.findViewById(R.id.txtImoveisFinalizados);
         btnNovoEndereco = (Button) view.findViewById(R.id.btnNovoEndereco);
 
         httpResponseInterface = this;
@@ -94,6 +99,7 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
         marcasImoveis = new HashMap<>();
 
         eventosBotoes();
+        iniciarLoading();
 
         return view;
     }
@@ -133,6 +139,7 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         googleMapsFragment = googleMap;
         if (ActivityCompat.checkSelfPermission(getContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -173,6 +180,7 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
             e.printStackTrace();
         }
 
+        finalizarLoading();
         carregarEnderecos();
     }
 
@@ -208,6 +216,7 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
         Rota rota = VariaveisEstaticas.getRotaSelecionada();
         int i = 1;
         iniciarLoading();
+        int contadorEnderecoNovos = 0;
         for(EnderecoRota enderecoRota: enderecosRota){
             Geocoder geocoder = new Geocoder(getContext());
             List<Address> addresses;
@@ -226,8 +235,9 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            contadorEnderecoNovos++;
         }
-
+        txtImoveisNovos.setText("Novo: " + contadorEnderecoNovos);
         finalizarLoading();
         buscarImoveisJahCadastrados();
     }
@@ -251,6 +261,8 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
     private void retornoImoveisJaCadastrados(JSONObject resposta){
         List<Imovel> imoveis = Imovel.gerarListaImoveisBuscaImovel(resposta);
         iniciarLoading();
+        int contadorImoveisRetorno = 0;
+        int contadorImoveisFinalizados = 0;
         for(Imovel imovel: imoveis){
             Geocoder geocoder = new Geocoder(getContext());
             List<Address> addresses;
@@ -261,10 +273,14 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(latlng);
                     markerOptions.title(imovel.getEnderecoImovel().getEnderecoEscrito());
-                    if(imovel.getDadosImovel().getFase_obra() == FASE_OBRA_PRONTA)
+                    if(imovel.getDadosImovel().getFase_obra() == FASE_OBRA_PRONTA){
                         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-                    else
+                        contadorImoveisFinalizados++;
+                    }
+                    else{
                         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                        contadorImoveisRetorno++;
+                    }
                     marcasImoveis.put(markerOptions.getTitle(), imovel);
                     googleMapsFragment.addMarker(markerOptions);
                 }
@@ -272,6 +288,9 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
                 e.printStackTrace();
             }
         }
+
+        txtImoveisRetorno.setText("Retorno: " + contadorImoveisRetorno);
+        txtImoveisFinalizados.setText("Finalizado: " + contadorImoveisFinalizados);
         finalizarLoading();
     }
 
@@ -342,6 +361,7 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
     private void iniciarLoading(){
         progress = new ProgressDialog(getContext());
         progress.setMessage("Aguarde...");
+        progress.setCancelable(false);
         progress.show();
     }
 

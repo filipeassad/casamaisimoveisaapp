@@ -21,6 +21,11 @@ public class Composicao {
         this.quantidade = quantidade;
     }
 
+    public Composicao(ItemSpinner ambiente){
+        this.ambiente_id = ambiente.getId();
+        this.quantidade = ambiente.getQuantidade();
+    }
+
     public Composicao(Integer ambiente_id, Integer quantidade, Integer dados_imovel_id) {
         this.ambiente_id = ambiente_id;
         this.quantidade = quantidade;

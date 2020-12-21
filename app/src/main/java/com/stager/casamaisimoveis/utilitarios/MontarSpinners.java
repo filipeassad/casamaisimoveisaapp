@@ -89,4 +89,51 @@ public class MontarSpinners {
 
         return ambientesImovel;
     }
+
+    public List<ItemSpinner> listarAmbientesCheckbox(){
+        List<ItemSpinner> ambientesImovel = new ArrayList<>();
+
+        ambientesImovel.add(new ItemSpinner(22, "Cerca Elétrica", 1));
+        ambientesImovel.add(new ItemSpinner(9, "Sala de Estar", 1));
+        ambientesImovel.add(new ItemSpinner(4, "Lavanderia", 1));
+        ambientesImovel.add(new ItemSpinner(23, "Concertina", 1));
+        ambientesImovel.add(new ItemSpinner(10, "Sala de Jantar", 1));
+        ambientesImovel.add(new ItemSpinner(7, "Área de Serviço", 1));
+        ambientesImovel.add(new ItemSpinner(25, "Motor Portão", 1));
+        ambientesImovel.add(new ItemSpinner(11, "Sala de TV", 1));
+        ambientesImovel.add(new ItemSpinner(29, "Edícula", 1));
+        ambientesImovel.add(new ItemSpinner(24, "Alarme", 1));
+        ambientesImovel.add(new ItemSpinner(26, "Forro Rebaixado", 1));
+        ambientesImovel.add(new ItemSpinner(8, "Varanda Gourmet", 1));
+        ambientesImovel.add(new ItemSpinner(28, "Corredor Lateral", 1));
+        ambientesImovel.add(new ItemSpinner(14, "Cozinha", 1));
+        ambientesImovel.add(new ItemSpinner(18, "Churrasqueira", 1));
+        ambientesImovel.add(new ItemSpinner(30, "Jardim", 1));
+        ambientesImovel.add(new ItemSpinner(15, "Cozinha Americana", 1));
+        ambientesImovel.add(new ItemSpinner(31, "Piscina", 1));
+        ambientesImovel.add(new ItemSpinner(20, "Uma Vaga Coberta", 1));
+        ambientesImovel.add(new ItemSpinner(20, "Duas Vagas Coberta", 2));
+        ambientesImovel.add(new ItemSpinner(17, "Despensa", 1));
+        ambientesImovel.add(new ItemSpinner(19, "Uma Vaga Descoberta", 1));
+        ambientesImovel.add(new ItemSpinner(19, "Duas Vagas Descoberta", 2));
+        ambientesImovel.add(new ItemSpinner(5, "Banheiro", 1));
+        ambientesImovel.add(new ItemSpinner(1, "Um Quarto", 1));
+        ambientesImovel.add(new ItemSpinner(1, "Dois Quartos", 2));
+        ambientesImovel.add(new ItemSpinner(1, "Três Quartos", 3));
+        ambientesImovel.add(new ItemSpinner(2, "Uma Suíte", 1));
+        ambientesImovel.add(new ItemSpinner(2, "Duas Suítes", 2));
+        ambientesImovel.add(new ItemSpinner(2, "Três Suítes", 3));
+        ambientesImovel.add(new ItemSpinner(3, "Um Closet", 1));
+        ambientesImovel.add(new ItemSpinner(3, "Dois Closets", 2));
+        ambientesImovel.add(new ItemSpinner(3, "Três Closets", 3));
+        ambientesImovel.add(new ItemSpinner(32, "Aquecedor Solar", 1));
+        ambientesImovel.add(new ItemSpinner(12, "Jardim de Inverno", 1));
+        ambientesImovel.add(new ItemSpinner(6, "Lavabo", 1));
+        ambientesImovel.add(new ItemSpinner(13, "Escritório", 1));
+        ambientesImovel.add(new ItemSpinner(16, "Copa", 1));
+        ambientesImovel.add(new ItemSpinner(21, "Varanda", 1));
+        ambientesImovel.add(new ItemSpinner(27, "Geminada", 1));
+
+        return ambientesImovel;
+    }
 }

@@ -84,7 +84,7 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
             DadosImovel dadosImovel = VariaveisEstaticas.getDadosImovelCadastro();
 
             spTipoImovel.setSelection(dadosImovel.getTipo() != null ? dadosImovel.getTipo(): 0);
-            spFaseObra.setSelection(dadosImovel.getFase_obra() != null ? dadosImovel.getTipo(): 0);
+            spFaseObra.setSelection(dadosImovel.getFase_obra() != null ? dadosImovel.getFase_obra(): 0);
             spEsgoto.setSelection(dadosImovel.getEsgoto() != null ? dadosImovel.getEsgoto(): 0);
             spTipoRua.setSelection(dadosImovel.getTipo_rua() != null ? dadosImovel.getTipo_rua(): 0);
 

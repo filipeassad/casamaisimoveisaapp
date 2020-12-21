@@ -32,6 +32,7 @@ public class GetHttpComHeaderAsyncTask extends AsyncTask<String, String, JSONObj
     @Override
     protected void onPreExecute() {
         progress = new ProgressDialog(contexto);
+        progress.setCancelable(true);
         progress.setMessage("Aguarde...");
         progress.show();
     }

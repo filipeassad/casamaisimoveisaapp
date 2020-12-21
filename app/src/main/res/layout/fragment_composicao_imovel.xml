@@ -72,84 +72,14 @@
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center"></TextView>
 
-            <TextView
-                android:id="@+id/txtAmbiente"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ambiente:"
-                android:textColor="#0D5ED9"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"></TextView>
-
-            <Spinner
-                android:id="@+id/spAmbiente"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/shape_edittext_form"
-                android:textColor="#000000"
-                android:paddingLeft="10dp"></Spinner>
-
-            <TextView
-                android:id="@+id/txtQuantidade"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Quantidade:"
-                android:textColor="#0D5ED9"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"></TextView>
-
-            <EditText
-                android:id="@+id/edtQuantidade"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/shape_edittext_form"
-                android:textColor="#000000"
-                android:textColorHint="#c4c4c4"
-                android:hint="Digite a quantidade"
-                android:paddingLeft="10dp"
-                android:textSize="14sp"
-                android:inputType="number"></EditText>
-
-            <Button
-                android:id="@+id/btnAdicionar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Adicionar"
-                android:textColor="#ffffff"
-                android:textStyle="bold"
-                android:background="@drawable/selector_botao_arrendondado_azul"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"></Button>
-
             <LinearLayout
-                android:id="@+id/llDivider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#E5E5E5"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:orientation="horizontal"></LinearLayout>
-
-            <ListView
-                android:id="@+id/lvAmbientes"
+                android:id="@+id/llListaCheckboxAmbiente"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbarAlwaysDrawVerticalTrack="false"
-                android:layout_marginTop="10dp"
-                android:divider="#fff"
-                android:dividerHeight="10dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:orientation="vertical"
+                android:layout_marginTop="20dp">
 
-            </ListView>
+            </LinearLayout>
 
             <Button
                 android:id="@+id/btnAvancarSecundario"
@@ -162,7 +92,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"
-                android:layout_marginBottom="50dp"></Button>
+                android:layout_marginBottom="20dp"></Button>
 
         </LinearLayout>
 

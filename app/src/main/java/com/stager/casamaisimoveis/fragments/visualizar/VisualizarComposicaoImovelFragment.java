@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -20,6 +22,8 @@ import androidx.fragment.app.Fragment;
 import com.stager.casamaisimoveis.R;
 import com.stager.casamaisimoveis.adapters.ComposicaoAdapter;
 import com.stager.casamaisimoveis.models.Composicao;
+import com.stager.casamaisimoveis.models.ItemSpinner;
+import com.stager.casamaisimoveis.utilitarios.MontarSpinners;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
 
 import java.util.ArrayList;
@@ -30,17 +34,11 @@ public class VisualizarComposicaoImovelFragment extends Fragment {
     private Button btnVoltar;
     private Button btnAvancar;
     private Button btnAvancarSecundario;
-    private Button btnAdicionar;
-
-    private Spinner spAmbiente;
-    private EditText edtQuantidade;
-    private ListView lvAmbientes;
     private Button btnEditar;
-    private TextView txtAmbiente;
-    private TextView txtQuantidade;
-    private LinearLayout llDivider;
 
     private List<Composicao> composicoesImovel;
+    private LinearLayout llListaCheckboxAmbiente;
+    private List<ItemSpinner> ambientesCheckBox;
 
     @Nullable
     @Override
@@ -50,23 +48,10 @@ public class VisualizarComposicaoImovelFragment extends Fragment {
         btnVoltar = (Button) view.findViewById(R.id.btnVoltar);
         btnAvancar = (Button) view.findViewById(R.id.btnAvancar);
         btnAvancarSecundario = (Button) view.findViewById(R.id.btnAvancarSecundario);
-        btnAdicionar = (Button) view.findViewById(R.id.btnAdicionar);
-
-        spAmbiente = (Spinner) view.findViewById(R.id.spAmbiente);
-        edtQuantidade = (EditText) view.findViewById(R.id.edtQuantidade);
-        lvAmbientes = (ListView) view.findViewById(R.id.lvAmbientes);
         btnEditar = (Button) view.findViewById(R.id.btnEditar);
-        txtAmbiente = (TextView) view.findViewById(R.id.txtAmbiente);
-        txtQuantidade = (TextView) view.findViewById(R.id.txtQuantidade);
-        llDivider = (LinearLayout) view.findViewById(R.id.llDivider);
+        llListaCheckboxAmbiente = (LinearLayout) view.findViewById(R.id.llListaCheckboxAmbiente);
 
         btnEditar.setVisibility(View.VISIBLE);
-        spAmbiente.setVisibility(View.GONE);
-        edtQuantidade.setVisibility(View.GONE);
-        btnAdicionar.setVisibility(View.GONE);
-        txtAmbiente.setVisibility(View.GONE);
-        txtQuantidade.setVisibility(View.GONE);
-        llDivider.setVisibility(View.GONE);
 
         composicoesImovel = new ArrayList<>();
 
@@ -79,16 +64,13 @@ public class VisualizarComposicaoImovelFragment extends Fragment {
         super.onResume();
 
         VariaveisEstaticas.getFragmentInterface().alterarTitulo("Visualizar");
+        MontarSpinners montarSpinners = new MontarSpinners();
+        ambientesCheckBox = montarSpinners.listarAmbientesCheckbox();
 
-        if(VariaveisEstaticas.getImovelBusca() != null){
+        if(VariaveisEstaticas.getImovelBusca() != null)
             composicoesImovel = VariaveisEstaticas.getImovelBusca().getDadosImovel().getComposicoes();
-            ComposicaoAdapter composicaoAdapter = new ComposicaoAdapter(getContext(),
-                    R.layout.adapter_ambiente_imovel,
-                    composicoesImovel,
-                    null);
-            lvAmbientes.setAdapter(composicaoAdapter);
-            lvAmbientes.setLayoutParams(parametrosListView());
-        }
+
+        carregarCheckbox();
     }
 
     private void eventosBotoes(){
@@ -122,11 +104,46 @@ public class VisualizarComposicaoImovelFragment extends Fragment {
         });
     }
 
-    private LinearLayout.LayoutParams parametrosListView(){
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (250 * composicoesImovel.size()));
-        layoutParams.setMargins(0,50,0,10);
+    private void carregarCheckbox(){
 
-        return layoutParams;
+        int numeroInteracoes = ambientesCheckBox.size() / 3;
+        int contador = 0;
+
+        for(int i = 0; i < numeroInteracoes; i++){
+            LinearLayout adapterCheckboxComposicao = (LinearLayout) getLayoutInflater().inflate(R.layout.adapter_checkbox_composicao, llListaCheckboxAmbiente, false);
+
+            for(int j = 0; j < 3; j++){
+                if(contador >= ambientesCheckBox.size())
+                    break;
+
+                ItemSpinner ambienteCheckbox = ambientesCheckBox.get(contador);
+                CheckBox checkBox;
+                if(j == 0)
+                    checkBox = adapterCheckboxComposicao.findViewById(R.id.ckPrimeiroAmbiente);
+                else if(j == 1)
+                    checkBox = adapterCheckboxComposicao.findViewById(R.id.ckSegundoAmbiente);
+                else
+                    checkBox = adapterCheckboxComposicao.findViewById(R.id.ckTerceiroAmbiente);
+
+                checkBox.setTag(ambienteCheckbox);
+                checkBox.setText(ambienteCheckbox.getDescricao());
+                checkBox.setClickable(false);
+                if(ambienteEstaPresenteNaComposicao(ambienteCheckbox))
+                    checkBox.setChecked(true);
+
+                contador++;
+            }
+            llListaCheckboxAmbiente.addView(adapterCheckboxComposicao);
+        }
     }
 
+    private boolean ambienteEstaPresenteNaComposicao(ItemSpinner ambiente){
+
+        for (Composicao composicao : composicoesImovel){
+            if(composicao.getAmbiente_id() == ambiente.getId()
+                    && composicao.getQuantidade() == ambiente.getQuantidade())
+                return true;
+        }
+        return false;
+    }
 }

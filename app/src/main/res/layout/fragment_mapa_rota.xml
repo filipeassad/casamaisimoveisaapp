@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -35,28 +36,48 @@
             android:paddingLeft="20dp"
             android:layout_marginTop="10dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Novo: 2"
-                android:textColor="#767676"
-                android:textSize="15sp"></TextView>
+            <LinearLayout
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/shape_bola_vermelha"
+                android:layout_marginRight="5dp"></LinearLayout>
 
             <TextView
+                android:id="@+id/txtImoveisNovos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Retorno: 3"
+                android:text="Novo: "
                 android:textColor="#767676"
-                android:textSize="15sp"
-                android:layout_marginLeft="20dp"></TextView>
+                android:textSize="12sp"></TextView>
+
+            <LinearLayout
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/shape_bola_amarela"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="20dp"></LinearLayout>
 
             <TextView
+                android:id="@+id/txtImoveisRetorno"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Finalizado: 10"
+                android:text="Retorno:"
                 android:textColor="#767676"
-                android:textSize="15sp"
-                android:layout_marginLeft="20dp"></TextView>
+                android:textSize="12sp"></TextView>
+
+            <LinearLayout
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/shape_bola_azul"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="20dp"></LinearLayout>
+            <TextView
+                android:id="@+id/txtImoveisFinalizados"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Finalizado:"
+                android:textColor="#767676"
+                android:textSize="12sp"></TextView>
         </LinearLayout>
 
         <LinearLayout

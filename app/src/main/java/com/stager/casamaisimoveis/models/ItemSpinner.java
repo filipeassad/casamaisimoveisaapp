@@ -4,10 +4,17 @@ public class ItemSpinner {
 
     private Integer id;
     private String descricao;
+    private Integer quantidade;
 
     public ItemSpinner(Integer id, String descricao) {
         this.id = id;
         this.descricao = descricao;
+    }
+
+    public ItemSpinner(Integer id, String descricao, Integer quantidade) {
+        this.id = id;
+        this.descricao = descricao;
+        this.quantidade = quantidade;
     }
 
     public Integer getId() {
@@ -24,6 +31,14 @@ public class ItemSpinner {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public Integer getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
     }
 
     @Override

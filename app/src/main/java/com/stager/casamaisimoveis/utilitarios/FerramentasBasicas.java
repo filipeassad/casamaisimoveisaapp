@@ -19,7 +19,8 @@ public class FerramentasBasicas {
 
     public static String getURL(){
         //return "http://192.168.0.27:3200/";
-        return "http://165.227.80.240:3200/";
+        //return "http://165.227.80.240:3200/";
+        return "http://104.236.30.166:3200/";
     }
 
     public static boolean isOnline(Context context){
