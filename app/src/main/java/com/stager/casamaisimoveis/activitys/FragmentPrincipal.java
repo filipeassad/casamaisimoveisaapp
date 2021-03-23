@@ -1,6 +1,7 @@
 package com.stager.casamaisimoveis.activitys;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.content.ClipData;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -109,8 +110,6 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         databaseManager = new DatabaseManager(this);
         autenticacaoManager = new AutenticacaoManager(databaseManager.getWritableDatabase());
 
-        getNavMenu();
-        inserirPrimeiroFragment();
         buscarDadosUsuario(VariaveisEstaticas.getAutenticacao());
         eventosBotoes();
     }
@@ -118,6 +117,9 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
     @Override
     protected void onResume() {
         super.onResume();
+
+        if(localizacaoServiceEstahRodando() == false && verificarPermissaoLocalizacao())
+            ativarLocalizacaoService();
     }
 
     private void buscarDadosUsuario(Autenticacao autenticacao){
@@ -311,6 +313,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
 
         if(captadorLogado.getId() != null){
             VariaveisEstaticas.setCaptador(captadorLogado);
+
             inserirDadosUsuario(captadorLogado.getNome(), "Captador");
             if(VariaveisEstaticas.getAutenticacao().getLinkImagem() != null){
                 GetHttpImagemAsyncTask getHttpImagemAsyncTask = new GetHttpImagemAsyncTask(this,
@@ -318,8 +321,13 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
                         API_IMAGEM_USUARIO);
                 getHttpImagemAsyncTask.execute(VariaveisEstaticas.getAutenticacao().getLinkImagem());
             }
+
+            if(verificarPermissaoLocalizacao() == false)
+                solicitarPermissaoDeLocalizacao();
+            else
+                ativarLocalizacaoService();
+
             VariaveisEstaticas.getTelaInicialInterface().carregarDadosUsuario();
-            verificarPermissaoLocalizacao();
         }
     }
 
@@ -337,14 +345,21 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
                 getHttpImagemAsyncTask.execute(VariaveisEstaticas.getAutenticacao().getLinkImagem());
             }
 
+            if(verificarPermissaoLocalizacao() == false)
+                solicitarPermissaoDeLocalizacao();
+            else
+                ativarLocalizacaoService();
+
             VariaveisEstaticas.getTelaInicialInterface().carregarDadosUsuario();
-            verificarPermissaoLocalizacao();
         }
     }
 
     private void retornoUsusario(JSONObject resposta){
         Autenticacao autenticacao = Autenticacao.getAutenticacaoJsonUsuario(resposta);
         VariaveisEstaticas.getAutenticacao().setLinkImagem(autenticacao.getLinkImagem());
+
+        getNavMenu();
+        inserirPrimeiroFragment();
 
         if(VariaveisEstaticas.getAutenticacao().isCaptador()){
             GetHttpComHeaderAsyncTask getHttpComHeaderAsyncTask = new GetHttpComHeaderAsyncTask(this, httpResponseInterface, API_CAPTADOR);
@@ -376,32 +391,33 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         txtProfissao.setText(profissao);
     }
 
-    public void verificarPermissaoLocalizacao(){
+    public boolean verificarPermissaoLocalizacao(){
         if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION )
-                != PackageManager.PERMISSION_GRANTED ) {
+                != PackageManager.PERMISSION_GRANTED )
+            return false;
+        return true;
+    }
 
-            ActivityCompat.requestPermissions( this, new String[] { android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                            android.Manifest.permission.ACCESS_FINE_LOCATION },
-                    MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION );
+    public void ativarLocalizacaoService(){
+        if(VariaveisEstaticas.getAutenticacao().isCaptador() && VariaveisEstaticas.getCaptador() != null){
+            Intent serviceIntent = new Intent(this, LocalizacaoService.class);
+            serviceIntent.putExtra("captadorId", VariaveisEstaticas.getCaptador().getId());
+            this.startService(serviceIntent);
         }
-        else{
-            if(VariaveisEstaticas.getAutenticacao().isCaptador()){
-                Intent serviceIntent = new Intent(this, LocalizacaoService.class);
-                serviceIntent.putExtra("captadorId", VariaveisEstaticas.getCaptador().getId());
-                this.startService(serviceIntent);
-            }
-        }
+    }
+
+    public void solicitarPermissaoDeLocalizacao(){
+        ActivityCompat.requestPermissions( this, new String[] { android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                        android.Manifest.permission.ACCESS_FINE_LOCATION },
+                MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION );
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Intent serviceIntent = new Intent(this, LocalizacaoService.class);
-                    serviceIntent.putExtra("captadorId", VariaveisEstaticas.getCaptador().getId());
-                    this.startService(serviceIntent);
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    ativarLocalizacaoService();
                 } else {
                     this.finish();
                 }
@@ -456,5 +472,15 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
                 }
             }
         }
+    }
+
+    private boolean localizacaoServiceEstahRodando() {
+        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
+            if("com.stager.casamaisimoveis.utilitarios.LocalizacaoService".equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

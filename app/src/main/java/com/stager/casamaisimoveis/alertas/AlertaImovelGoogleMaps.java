@@ -28,6 +28,7 @@ public class AlertaImovelGoogleMaps {
         TextView txtNumeroMapa = (TextView) view.findViewById(R.id.txtNumeroMapa);
         TextView txtFaseObra = (TextView) view.findViewById(R.id.txtFaseObra);
         Button btnVisualizarImovel = (Button) view.findViewById(R.id.btnVisualizarImovel);
+        Button btnEditarImovel = (Button) view.findViewById(R.id.btnEditarImovel);
 
         txtBairroMapa.setText(imovel.getEnderecoImovel().getBairro());
         txtRuaMapa.setText(imovel.getEnderecoImovel().getRua());
@@ -56,7 +57,13 @@ public class AlertaImovelGoogleMaps {
             }
         });
 
-
+        btnEditarImovel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alerta.dismiss();
+                mapaRotaInterface.editarImovel(imovel);
+            }
+        });
 
     }
 }

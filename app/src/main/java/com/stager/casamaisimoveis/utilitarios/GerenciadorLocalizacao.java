@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.os.PowerManager;
 
 import com.stager.casamaisimoveis.api.PostHttpComHeaderAsyncTask;
 import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;

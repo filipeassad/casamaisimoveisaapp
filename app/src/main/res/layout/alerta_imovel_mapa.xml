@@ -127,7 +127,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btnVisualizarImovel"
@@ -135,6 +136,19 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Visualizar"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:background="#0D5ED9"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"></Button>
+
+        <Button
+            android:id="@+id/btnEditarImovel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="editar"
             android:textColor="#ffffff"
             android:textSize="12sp"
             android:textStyle="bold"

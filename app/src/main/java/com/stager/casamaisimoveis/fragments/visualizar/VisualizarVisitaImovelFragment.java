@@ -39,6 +39,7 @@ public class VisualizarVisitaImovelFragment extends Fragment implements HttpResp
     private EditText edtDataRetorno;
     private Button btnEditar;
     private ImageView ivImagemCaptador;
+    private TextView txtRetorno;
 
     HttpResponseInterface httpResponseInterface;
     private String API_IMAGEM_CAPTADOR = "api/captador/imagemUsuario/";
@@ -56,13 +57,14 @@ public class VisualizarVisitaImovelFragment extends Fragment implements HttpResp
         edtDataRetorno = (EditText) view.findViewById(R.id.edtDataRetorno);
         btnEditar = (Button) view.findViewById(R.id.btnEditar);
         ivImagemCaptador = (ImageView) view.findViewById(R.id.ivImagemCaptador);
+        txtRetorno = (TextView) view.findViewById(R.id.txtRetorno);
 
         btnSalvar.setText("Sair");
         btnEditar.setText("Nova Visita");
 
         httpResponseInterface = this;
-
-        edtDataRetorno.setInputType(InputType.TYPE_NULL);
+        txtRetorno.setVisibility(View.GONE);
+        edtDataRetorno.setVisibility(View.GONE);
         btnEditar.setVisibility(View.VISIBLE);
         eventosBotoes();
 

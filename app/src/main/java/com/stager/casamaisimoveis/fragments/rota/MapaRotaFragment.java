@@ -358,6 +358,12 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
         VariaveisEstaticas.getFragmentInterface().alterarFragment("VisualizarDadosProprietario");
     }
 
+    @Override
+    public void editarImovel(Imovel imovel) {
+        VariaveisEstaticas.setImovelBusca(imovel);
+        VariaveisEstaticas.getFragmentInterface().alterarFragment("AlterarDadosProprietario");
+    }
+
     private void iniciarLoading(){
         progress = new ProgressDialog(getContext());
         progress.setMessage("Aguarde...");

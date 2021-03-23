@@ -8,4 +8,5 @@ public interface MapaRotaInterface {
     public void criarImovel(EnderecoRota enderecoRota);
     public void excluirEndereco(EnderecoRota enderecoRota);
     public void visualizarImovel(Imovel imovel);
+    public void editarImovel(Imovel imovel);
 }
