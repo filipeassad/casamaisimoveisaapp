@@ -237,7 +237,7 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
             }
             contadorEnderecoNovos++;
         }
-        txtImoveisNovos.setText("Novo: " + contadorEnderecoNovos);
+        txtImoveisNovos.setText("Pendente: " + contadorEnderecoNovos);
         finalizarLoading();
         buscarImoveisJahCadastrados();
     }
@@ -273,13 +273,16 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(latlng);
                     markerOptions.title(imovel.getEnderecoImovel().getEnderecoEscrito());
-                    if(imovel.getDadosImovel().getFase_obra() == FASE_OBRA_PRONTA){
-                        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-                        contadorImoveisFinalizados++;
+                    if(imovel.getSituacao_anuncio() == 0){
+                        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                     }
-                    else{
+                    else if(imovel.getSituacao_anuncio() == 1) {
                         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
                         contadorImoveisRetorno++;
+                    }
+                    else {
+                        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                        contadorImoveisFinalizados++;
                     }
                     marcasImoveis.put(markerOptions.getTitle(), imovel);
                     googleMapsFragment.addMarker(markerOptions);
@@ -289,8 +292,8 @@ public class MapaRotaFragment extends Fragment implements OnMapReadyCallback, Ht
             }
         }
 
-        txtImoveisRetorno.setText("Retorno: " + contadorImoveisRetorno);
-        txtImoveisFinalizados.setText("Finalizado: " + contadorImoveisFinalizados);
+        txtImoveisRetorno.setText("Atualizar: " + contadorImoveisRetorno);
+        txtImoveisFinalizados.setText("OK: " + contadorImoveisFinalizados);
         finalizarLoading();
     }
 

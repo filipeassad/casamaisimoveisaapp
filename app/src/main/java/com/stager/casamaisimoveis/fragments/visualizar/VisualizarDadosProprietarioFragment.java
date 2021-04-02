@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,6 +38,12 @@ public class VisualizarDadosProprietarioFragment extends Fragment {
     private TextView txtTelefone;
     private ListView lvTelefoneProprietario;
     private Button btnEditar;
+    private RadioGroup rgrpSituacaoAnuncio;
+
+    private RadioButton rbtnPendente;
+    private RadioButton rbtnAtualizar;
+    private RadioButton rbtnOk;
+
 
     private List<TelefoneProprietario> telefonesProprietario;
 
@@ -55,6 +63,10 @@ public class VisualizarDadosProprietarioFragment extends Fragment {
         lvTelefoneProprietario = (ListView) view.findViewById(R.id.lvTelefoneProprietario);
         txtTelefone = (TextView) view.findViewById(R.id.txtTelefone);
         btnEditar = (Button) view.findViewById(R.id.btnEditar);
+        rgrpSituacaoAnuncio = (RadioGroup) view.findViewById(R.id.rgrpSituacaoAnuncio);
+        rbtnPendente = (RadioButton) view.findViewById(R.id.rbtnPendente);
+        rbtnAtualizar = (RadioButton) view.findViewById(R.id.rbtnAtualizar);
+        rbtnOk = (RadioButton) view.findViewById(R.id.rbtnOk);
 
         edtNomeProprietario.setInputType(InputType.TYPE_NULL);
         edtCpfProprietario.setInputType(InputType.TYPE_NULL);
@@ -62,6 +74,10 @@ public class VisualizarDadosProprietarioFragment extends Fragment {
         edtTelefoneProprietario.setVisibility(View.GONE);
         btnAdicionar.setVisibility(View.GONE);
         btnEditar.setVisibility(View.VISIBLE);
+
+        rbtnPendente.setEnabled(false);
+        rbtnAtualizar.setEnabled(false);
+        rbtnOk.setEnabled(false);
 
         telefonesProprietario = new ArrayList<>();
 
@@ -89,6 +105,21 @@ public class VisualizarDadosProprietarioFragment extends Fragment {
                     null);
             lvTelefoneProprietario.setAdapter(telefoneProprietarioAdapter);
             lvTelefoneProprietario.setLayoutParams(parametrosListView());
+            carregarSituacaoAnuncio();
+        }
+    }
+
+    private void carregarSituacaoAnuncio(){
+        switch (VariaveisEstaticas.getImovelBusca().getSituacao_anuncio()){
+            case 0:
+                rgrpSituacaoAnuncio.check(R.id.rbtnPendente);
+                break;
+            case 1:
+                rgrpSituacaoAnuncio.check(R.id.rbtnAtualizar);
+                break;
+            case 2:
+                rgrpSituacaoAnuncio.check(R.id.rbtnOk);
+                break;
         }
     }
 

@@ -38,6 +38,7 @@ import com.stager.casamaisimoveis.models.RotaCaptador;
 
 import org.json.JSONObject;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class LocalizacaoService extends Service {
@@ -166,27 +167,45 @@ public class LocalizacaoService extends Service {
         {
             Log.e("*****", "Location changed");
             if(isBetterLocation(loc, previousBestLocation)) {
-                loc.getLatitude();
-                loc.getLongitude();
+
+                Calendar calendarHorarioManha = Calendar.getInstance();
+                calendarHorarioManha.set(Calendar.HOUR_OF_DAY, 7);
+                calendarHorarioManha.set(Calendar.MINUTE, 30);
+                calendarHorarioManha.set(Calendar.SECOND, 0);
+                calendarHorarioManha.set(Calendar.MILLISECOND, 0);
+
+                Date periodoManha = calendarHorarioManha.getTime();
+
+                Calendar calendarHorarioTarde = Calendar.getInstance();
+                calendarHorarioTarde.set(Calendar.HOUR_OF_DAY, 17);
+                calendarHorarioTarde.set(Calendar.MINUTE, 30);
+                calendarHorarioTarde.set(Calendar.SECOND, 0);
+                calendarHorarioTarde.set(Calendar.MILLISECOND, 0);
+
+                Date periodoTarde = calendarHorarioTarde.getTime();
+
+                Date dataHoje = new Date();
 
                 Log.e("localização ------------------->", loc.getLatitude() + ":" + loc.getLongitude());
                 intent.putExtra("Latitude", loc.getLatitude());
                 intent.putExtra("Longitude", loc.getLongitude());
                 intent.putExtra("Provider", loc.getProvider());
 
-                if (FerramentasBasicas.isOnline(getApplicationContext())) {
-                    RotaCaptador rotaCaptador = new RotaCaptador(loc.getLatitude() + "",
-                            loc.getLongitude() + "",
-                            FerramentasBasicas.converterDataParaString(new Date(),
-                                    "dd/MM/yyyy"),
-                            FerramentasBasicas.converterDataParaString(new Date(), "yyyy-MM-dd'T'HH:mm:ss'Z'"),
-                            captadorID);
-                    PostHttpComHeaderServiceAsyncTask postHttpComHeaderAsyncTask = new PostHttpComHeaderServiceAsyncTask(getApplicationContext(),
-                            httpResponseInterface,
-                            rotaCaptador.gerarRotaCaptadorJSON(),
-                            API_ROTA_CAPTADO);
+                if(!periodoManha.after(dataHoje) && !periodoTarde.before(dataHoje)) {
+                    if (FerramentasBasicas.isOnline(getApplicationContext())) {
+                        RotaCaptador rotaCaptador = new RotaCaptador(loc.getLatitude() + "",
+                                loc.getLongitude() + "",
+                                FerramentasBasicas.converterDataParaString(new Date(),
+                                        "dd/MM/yyyy"),
+                                FerramentasBasicas.converterDataParaString(new Date(), "yyyy-MM-dd'T'HH:mm:ss'Z'"),
+                                captadorID);
+                        PostHttpComHeaderServiceAsyncTask postHttpComHeaderAsyncTask = new PostHttpComHeaderServiceAsyncTask(getApplicationContext(),
+                                httpResponseInterface,
+                                rotaCaptador.gerarRotaCaptadorJSON(),
+                                API_ROTA_CAPTADO);
 
-                    postHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_ROTA_CAPTADO);
+                        postHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_ROTA_CAPTADO);
+                    }
                 }
                 sendBroadcast(intent);
             }

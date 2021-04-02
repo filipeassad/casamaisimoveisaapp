@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.stager.casamaisimoveis.R;
 import com.stager.casamaisimoveis.adapters.TelefoneProprietarioAdapter;
 import com.stager.casamaisimoveis.interfaces.TelefoneProprietarioAdapterInterface;
+import com.stager.casamaisimoveis.models.Imovel;
 import com.stager.casamaisimoveis.models.Proprietario;
 import com.stager.casamaisimoveis.models.TelefoneProprietario;
 import com.stager.casamaisimoveis.utilitarios.MascaraEditText;
@@ -34,8 +36,10 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
     private Button btnAdicionar;
     private Button btnAvancarSecundario;
     private ListView lvTelefoneProprietario;
+    private RadioGroup rgrpSituacaoAnuncio;
 
     private List<TelefoneProprietario> telefonesProprietario;
+    private int situacaoAnuncioSelecionado = 0;
 
     private TelefoneProprietarioAdapterInterface telefoneProprietarioAdapterInterface;
 
@@ -53,6 +57,7 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
         btnAdicionar = (Button) view.findViewById(R.id.btnAdicionar);
         btnAvancarSecundario = (Button) view.findViewById(R.id.btnAvancarSecundario);
         lvTelefoneProprietario = (ListView) view.findViewById(R.id.lvTelefoneProprietario);
+        rgrpSituacaoAnuncio = (RadioGroup) view.findViewById(R.id.rgrpSituacaoAnuncio);
 
         edtCpfProprietario.addTextChangedListener(MascaraEditText.mask(edtCpfProprietario, MascaraEditText.FORMAT_CPF));
         edtTelefoneProprietario.addTextChangedListener(MascaraEditText.mask(edtTelefoneProprietario, MascaraEditText.FORMAT_FONE));
@@ -116,6 +121,23 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
                 avancarFormulario();
             }
         });
+
+        rgrpSituacaoAnuncio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch(checkedId){
+                    case R.id.rbtnPendente:
+                        situacaoAnuncioSelecionado = 0;
+                        break;
+                    case R.id.rbtnAtualizar:
+                        situacaoAnuncioSelecionado = 1;
+                        break;
+                    case R.id.rbtnOk:
+                        situacaoAnuncioSelecionado = 2;
+                        break;
+                }
+            }
+        });
     }
 
     private void adicionarTelefone(){
@@ -145,6 +167,9 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
             edtNomeProprietario.setError("Digite o nome.");
             return;
         }
+
+        Imovel imovel = new Imovel(situacaoAnuncioSelecionado);
+        VariaveisEstaticas.setImovelCadastro(imovel);
 
         Proprietario proprietario = new Proprietario(edtNomeProprietario.getText().toString(),
                 edtCpfProprietario.getText().toString(),

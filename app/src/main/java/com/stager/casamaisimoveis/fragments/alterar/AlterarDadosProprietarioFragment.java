@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.stager.casamaisimoveis.adapters.TelefoneProprietarioAdapter;
 import com.stager.casamaisimoveis.api.PutHttpComHeaderAsyncTask;
 import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
 import com.stager.casamaisimoveis.interfaces.TelefoneProprietarioAdapterInterface;
+import com.stager.casamaisimoveis.models.Imovel;
 import com.stager.casamaisimoveis.models.Proprietario;
 import com.stager.casamaisimoveis.models.TelefoneProprietario;
 import com.stager.casamaisimoveis.utilitarios.FerramentasBasicas;
@@ -36,18 +38,22 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
 
     private Button btnVoltar;
     private Button btnAvancar;
+    private Button btnAvancarSecundario;
     private EditText edtNomeProprietario;
     private EditText edtCpfProprietario;
     private EditText edtTelefoneProprietario;
     private Button btnAdicionar;
     private ListView lvTelefoneProprietario;
+    private RadioGroup rgrpSituacaoAnuncio;
 
     private List<TelefoneProprietario> telefonesProprietario;
+    private int situacaoAnuncioSelecionado = 0;
 
     private TelefoneProprietarioAdapterInterface telefoneProprietarioAdapterInterface;
     private HttpResponseInterface httpResponseInterface;
 
     private String API_ALTERAR_PROPRIETARIO = "api/proprietario";
+    private String API_ALTERAR_IMOVEL = "api/imovel";
 
     @Nullable
     @Override
@@ -56,17 +62,20 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
 
         btnVoltar = (Button) view.findViewById(R.id.btnVoltar);
         btnAvancar = (Button) view.findViewById(R.id.btnAvancar);
+        btnAvancarSecundario = (Button) view.findViewById(R.id.btnAvancarSecundario);
 
         edtNomeProprietario = (EditText) view.findViewById(R.id.edtNomeProprietario);
         edtCpfProprietario = (EditText) view.findViewById(R.id.edtCpfProprietario);
         edtTelefoneProprietario = (EditText) view.findViewById(R.id.edtTelefoneProprietario);
         btnAdicionar = (Button) view.findViewById(R.id.btnAdicionar);
         lvTelefoneProprietario = (ListView) view.findViewById(R.id.lvTelefoneProprietario);
+        rgrpSituacaoAnuncio = (RadioGroup) view.findViewById(R.id.rgrpSituacaoAnuncio);
 
         edtCpfProprietario.addTextChangedListener(MascaraEditText.mask(edtCpfProprietario, MascaraEditText.FORMAT_CPF));
         edtTelefoneProprietario.addTextChangedListener(MascaraEditText.mask(edtTelefoneProprietario, MascaraEditText.FORMAT_FONE));
 
         btnAvancar.setText("Salvar");
+        btnAvancarSecundario.setText("Salvar");
 
         httpResponseInterface = this;
         telefoneProprietarioAdapterInterface = this;
@@ -97,6 +106,21 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
                     telefoneProprietarioAdapterInterface);
             lvTelefoneProprietario.setAdapter(telefoneProprietarioAdapter);
             lvTelefoneProprietario.setLayoutParams(parametrosListView());
+            carregarSituacaoAnuncio();
+        }
+    }
+
+    private void carregarSituacaoAnuncio(){
+        switch (VariaveisEstaticas.getImovelBusca().getSituacao_anuncio()){
+            case 0:
+                rgrpSituacaoAnuncio.check(R.id.rbtnPendente);
+                break;
+            case 1:
+                rgrpSituacaoAnuncio.check(R.id.rbtnAtualizar);
+                break;
+            case 2:
+                rgrpSituacaoAnuncio.check(R.id.rbtnOk);
+                break;
         }
     }
 
@@ -115,10 +139,34 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
             }
         });
 
+        btnAvancarSecundario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                avancarFormulario();
+            }
+        });
+
         btnAdicionar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 adicionarTelefone();
+            }
+        });
+
+        rgrpSituacaoAnuncio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch(checkedId){
+                    case R.id.rbtnPendente:
+                        situacaoAnuncioSelecionado = 0;
+                        break;
+                    case R.id.rbtnAtualizar:
+                        situacaoAnuncioSelecionado = 1;
+                        break;
+                    case R.id.rbtnOk:
+                        situacaoAnuncioSelecionado = 2;
+                        break;
+                }
             }
         });
     }
@@ -194,6 +242,8 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
 
             if(rotaApi.equals(API_ALTERAR_PROPRIETARIO))
                 retornoAlteracaoProprietario(jsonObject);
+            if(rotaApi.equals(API_ALTERAR_IMOVEL))
+                retornoAlteracaoImovel(jsonObject);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -210,10 +260,36 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
             try {
                 Toast.makeText(getContext(), resposta.getString("mensagem"), Toast.LENGTH_SHORT).show();
                 if(resposta.getBoolean("sucesso"))
+                    salvarSituacaoImovel();
+                    //VariaveisEstaticas.getFragmentInterface().voltar();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void retornoAlteracaoImovel(JSONObject resposta){
+        if(resposta.has("sucesso")){
+            try {
+                Toast.makeText(getContext(), resposta.getString("mensagem"), Toast.LENGTH_SHORT).show();
+                if(resposta.getBoolean("sucesso"))
                     VariaveisEstaticas.getFragmentInterface().voltar();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void salvarSituacaoImovel(){
+
+        Imovel imovel = VariaveisEstaticas.getImovelBusca();
+
+        imovel.setSituacao_anuncio(situacaoAnuncioSelecionado);
+        PutHttpComHeaderAsyncTask putHttpComHeaderAsyncTask = new PutHttpComHeaderAsyncTask(getContext(),
+                imovel.gerarImovelSituacaoAnuncioJson(),
+                httpResponseInterface,
+                API_ALTERAR_IMOVEL);
+
+        putHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_ALTERAR_IMOVEL + "/" + imovel.getId());
     }
 }

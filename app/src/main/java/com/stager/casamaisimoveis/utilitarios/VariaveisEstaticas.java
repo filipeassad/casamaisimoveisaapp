@@ -36,10 +36,19 @@ public class VariaveisEstaticas {
     private static RotaCaptador rotaCaptadorHistoricoSelecionado;
     private static Imovel imovelBusca;
     private static List<Bitmap> imagensImovelCadastro;
+    private static Imovel imovelCadastro;
 
     private static TelaInicialInterface telaInicialInterface;
     private static FragmentInterface fragmentInterface;
     private static ImagemImovelInterface imagemImovelInterface;
+
+    public static Imovel getImovelCadastro() {
+        return imovelCadastro;
+    }
+
+    public static void setImovelCadastro(Imovel imovelCadastro) {
+        VariaveisEstaticas.imovelCadastro = imovelCadastro;
+    }
 
     public static Captador getCaptadorHistorico() {
         return captadorHistorico;

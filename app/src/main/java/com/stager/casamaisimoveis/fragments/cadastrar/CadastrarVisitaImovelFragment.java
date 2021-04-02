@@ -135,16 +135,16 @@ public class CadastrarVisitaImovelFragment extends Fragment implements HttpRespo
         visitasImoveis.add(VariaveisEstaticas.getVisitaImovelCadastro());
         dadosImovel.setVisitasImovel(visitasImoveis);
 
-        Imovel imovel = new Imovel(enderecoImovel, proprietario, dadosImovel);
+        VariaveisEstaticas.getImovelCadastro().preencherImovel(enderecoImovel, proprietario, dadosImovel);
         PostHttpComHeaderAsyncTask postHttpComHeaderAsyncTask;
         if(VariaveisEstaticas.getEnderecoRotaSelecionado() != null){
             postHttpComHeaderAsyncTask = new PostHttpComHeaderAsyncTask(getContext(),
-                    imovel.gerarImovelComEnderecoRotaJson(VariaveisEstaticas.getEnderecoRotaSelecionado()),
+                    VariaveisEstaticas.getImovelCadastro().gerarImovelComEnderecoRotaJson(VariaveisEstaticas.getEnderecoRotaSelecionado()),
                     httpResponseInterface,
                     API_IMOVEL);
         }else{
             postHttpComHeaderAsyncTask = new PostHttpComHeaderAsyncTask(getContext(),
-                    imovel.gerarImovelJson(),
+                    VariaveisEstaticas.getImovelCadastro().gerarImovelJson(),
                     httpResponseInterface,
                     API_IMOVEL);
         }

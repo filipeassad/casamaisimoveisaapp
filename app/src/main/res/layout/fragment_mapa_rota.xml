@@ -46,7 +46,7 @@
                 android:id="@+id/txtImoveisNovos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Novo: "
+                android:text="Pendente: "
                 android:textColor="#767676"
                 android:textSize="12sp"></TextView>
 
@@ -61,7 +61,7 @@
                 android:id="@+id/txtImoveisRetorno"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Retorno:"
+                android:text="Atualizar:"
                 android:textColor="#767676"
                 android:textSize="12sp"></TextView>
 
@@ -75,7 +75,7 @@
                 android:id="@+id/txtImoveisFinalizados"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Finalizado:"
+                android:text="Ok:"
                 android:textColor="#767676"
                 android:textSize="12sp"></TextView>
         </LinearLayout>
