@@ -1,5 +1,7 @@
 package com.stager.casamaisimoveis.fragments.alterar;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -37,6 +39,7 @@ public class AlterarImagensImovelFragment extends Fragment implements ImagemImov
     private Button btnAvancar;
     private LinearLayout llImagensImovel;
     private Button btnAdicionarImagens;
+    private Button btnExcluirTudo;
 
     private final int PICK_IMAGES = 26;
 
@@ -59,6 +62,7 @@ public class AlterarImagensImovelFragment extends Fragment implements ImagemImov
         btnAvancar = (Button) view.findViewById(R.id.btnAvancar);
         llImagensImovel = (LinearLayout) view.findViewById(R.id.llImagensImovel);
         btnAdicionarImagens = (Button) view.findViewById(R.id.btnAdicionarImagens);
+        btnExcluirTudo = (Button) view.findViewById(R.id.btnExcluirTudo);
 
         btnAvancar.setText("Salvar");
 
@@ -118,6 +122,13 @@ public class AlterarImagensImovelFragment extends Fragment implements ImagemImov
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 getActivity().startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGES);
+            }
+        });
+
+        btnExcluirTudo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                criarDialogParaConfirmarExclusao();
             }
         });
     }
@@ -232,8 +243,14 @@ public class AlterarImagensImovelFragment extends Fragment implements ImagemImov
 
     private void adicionarImagens(){
         llImagensImovel.removeAllViews();
+
         int totalLinhasLista = imagensImovelListagem.size() % 2 != 0 ? (imagensImovelListagem.size() / 2) + 1 : imagensImovelListagem.size() / 2;
         int indexImagem = 0;
+
+        if(imagensImovelListagem.size() > 0)
+            btnExcluirTudo.setVisibility(View.VISIBLE);
+        else
+            btnExcluirTudo.setVisibility(View.GONE);
 
         for(int i = 0; i < totalLinhasLista; i++){
             LinearLayout.LayoutParams fraLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -272,5 +289,28 @@ public class AlterarImagensImovelFragment extends Fragment implements ImagemImov
         if(imagemImovelRemovido.getId() != null)
             imagensParaRemover.add(imagemImovelRemovido);
         adicionarImagens();
+    }
+
+    private void criarDialogParaConfirmarExclusao(){
+        new AlertDialog.Builder(getContext())
+                .setTitle("Atenção")
+                .setMessage("Você tem certeza que deseja excluir todas as imagens ?")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        adicionarTodasAsImagensParaRemover();
+                        adicionarImagens();
+                    }})
+                .setNegativeButton("Não", null).show();
+    }
+
+    public void adicionarTodasAsImagensParaRemover(){
+        for(ImagemImovel imagem : imagensImovelListagem){
+            if(imagem.getId() != null)
+                imagensParaRemover.add(imagem);
+        }
+
+        imagensImovelListagem = new ArrayList<>();
     }
 }
