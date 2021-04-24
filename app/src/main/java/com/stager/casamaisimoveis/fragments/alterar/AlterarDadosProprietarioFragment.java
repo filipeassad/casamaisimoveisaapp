@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -44,7 +45,8 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
     private EditText edtTelefoneProprietario;
     private Button btnAdicionar;
     private ListView lvTelefoneProprietario;
-    private RadioGroup rgrpSituacaoAnuncio;
+    private RadioGroup rgrpSituacaoAnuncio1;
+    private RadioGroup rgrpSituacaoAnuncio2;
 
     private List<TelefoneProprietario> telefonesProprietario;
     private int situacaoAnuncioSelecionado = 0;
@@ -54,6 +56,7 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
 
     private String API_ALTERAR_PROPRIETARIO = "api/proprietario";
     private String API_ALTERAR_IMOVEL = "api/imovel";
+    private boolean isChecking = true;
 
     @Nullable
     @Override
@@ -69,7 +72,8 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
         edtTelefoneProprietario = (EditText) view.findViewById(R.id.edtTelefoneProprietario);
         btnAdicionar = (Button) view.findViewById(R.id.btnAdicionar);
         lvTelefoneProprietario = (ListView) view.findViewById(R.id.lvTelefoneProprietario);
-        rgrpSituacaoAnuncio = (RadioGroup) view.findViewById(R.id.rgrpSituacaoAnuncio);
+        rgrpSituacaoAnuncio1 = (RadioGroup) view.findViewById(R.id.rgrpSituacaoAnuncio1);
+        rgrpSituacaoAnuncio2 = (RadioGroup) view.findViewById(R.id.rgrpSituacaoAnuncio2);
 
         edtCpfProprietario.addTextChangedListener(MascaraEditText.mask(edtCpfProprietario, MascaraEditText.FORMAT_CPF));
         edtTelefoneProprietario.addTextChangedListener(MascaraEditText.mask(edtTelefoneProprietario, MascaraEditText.FORMAT_FONE));
@@ -111,15 +115,27 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
     }
 
     private void carregarSituacaoAnuncio(){
+
+        rgrpSituacaoAnuncio1.clearCheck();
+        rgrpSituacaoAnuncio2.clearCheck();
         switch (VariaveisEstaticas.getImovelBusca().getSituacao_anuncio()){
             case 0:
-                rgrpSituacaoAnuncio.check(R.id.rbtnPendente);
+                rgrpSituacaoAnuncio1.check(R.id.rbtnPendente);
                 break;
             case 1:
-                rgrpSituacaoAnuncio.check(R.id.rbtnAtualizar);
+                rgrpSituacaoAnuncio1.check(R.id.rbtnAtualizar);
                 break;
             case 2:
-                rgrpSituacaoAnuncio.check(R.id.rbtnOk);
+                rgrpSituacaoAnuncio1.check(R.id.rbtnOk);
+                break;
+            case 3:
+                rgrpSituacaoAnuncio2.check(R.id.rbtnVendido);
+                break;
+            case 4:
+                rgrpSituacaoAnuncio2.check(R.id.rbtnExclusividade);
+                break;
+            case 5:
+                rgrpSituacaoAnuncio2.check(R.id.rbtnParticular);
                 break;
         }
     }
@@ -153,20 +169,49 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
             }
         });
 
-        rgrpSituacaoAnuncio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        rgrpSituacaoAnuncio1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch(checkedId){
-                    case R.id.rbtnPendente:
-                        situacaoAnuncioSelecionado = 0;
-                        break;
-                    case R.id.rbtnAtualizar:
-                        situacaoAnuncioSelecionado = 1;
-                        break;
-                    case R.id.rbtnOk:
-                        situacaoAnuncioSelecionado = 2;
-                        break;
+                if (checkedId != -1 && isChecking) {
+                    switch(checkedId){
+                        case R.id.rbtnPendente:
+                            situacaoAnuncioSelecionado = 0;
+                            break;
+                        case R.id.rbtnAtualizar:
+                            situacaoAnuncioSelecionado = 1;
+                            break;
+                        case R.id.rbtnOk:
+                            situacaoAnuncioSelecionado = 2;
+                            break;
+                    }
+
+                    isChecking = false;
+                    rgrpSituacaoAnuncio2.clearCheck();
                 }
+                isChecking = true;
+            }
+        });
+
+        rgrpSituacaoAnuncio2.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId != -1 && isChecking) {
+                    switch(checkedId){
+                        case R.id.rbtnVendido:
+                            situacaoAnuncioSelecionado = 3;
+                            break;
+                        case R.id.rbtnExclusividade:
+                            situacaoAnuncioSelecionado = 4;
+                            break;
+                        case R.id.rbtnParticular:
+                            situacaoAnuncioSelecionado = 5;
+                            break;
+                    }
+
+                    isChecking = false;
+                    rgrpSituacaoAnuncio1.clearCheck();
+                }
+                isChecking = true;
             }
         });
     }

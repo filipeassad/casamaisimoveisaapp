@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
@@ -36,10 +37,12 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
     private Button btnAdicionar;
     private Button btnAvancarSecundario;
     private ListView lvTelefoneProprietario;
-    private RadioGroup rgrpSituacaoAnuncio;
+    private RadioGroup rgrpSituacaoAnuncio1;
+    private RadioGroup rgrpSituacaoAnuncio2;
 
     private List<TelefoneProprietario> telefonesProprietario;
     private int situacaoAnuncioSelecionado = 0;
+    private boolean isChecking = true;
 
     private TelefoneProprietarioAdapterInterface telefoneProprietarioAdapterInterface;
 
@@ -57,7 +60,9 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
         btnAdicionar = (Button) view.findViewById(R.id.btnAdicionar);
         btnAvancarSecundario = (Button) view.findViewById(R.id.btnAvancarSecundario);
         lvTelefoneProprietario = (ListView) view.findViewById(R.id.lvTelefoneProprietario);
-        rgrpSituacaoAnuncio = (RadioGroup) view.findViewById(R.id.rgrpSituacaoAnuncio);
+        rgrpSituacaoAnuncio1 = (RadioGroup) view.findViewById(R.id.rgrpSituacaoAnuncio1);
+        rgrpSituacaoAnuncio2 = (RadioGroup) view.findViewById(R.id.rgrpSituacaoAnuncio2);
+
 
         edtCpfProprietario.addTextChangedListener(MascaraEditText.mask(edtCpfProprietario, MascaraEditText.FORMAT_CPF));
         edtTelefoneProprietario.addTextChangedListener(MascaraEditText.mask(edtTelefoneProprietario, MascaraEditText.FORMAT_FONE));
@@ -122,20 +127,49 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
             }
         });
 
-        rgrpSituacaoAnuncio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        rgrpSituacaoAnuncio1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch(checkedId){
-                    case R.id.rbtnPendente:
-                        situacaoAnuncioSelecionado = 0;
-                        break;
-                    case R.id.rbtnAtualizar:
-                        situacaoAnuncioSelecionado = 1;
-                        break;
-                    case R.id.rbtnOk:
-                        situacaoAnuncioSelecionado = 2;
-                        break;
+                if (checkedId != -1 && isChecking) {
+                    switch(checkedId){
+                        case R.id.rbtnPendente:
+                            situacaoAnuncioSelecionado = 0;
+                            break;
+                        case R.id.rbtnAtualizar:
+                            situacaoAnuncioSelecionado = 1;
+                            break;
+                        case R.id.rbtnOk:
+                            situacaoAnuncioSelecionado = 2;
+                            break;
+                    }
+
+                    isChecking = false;
+                    rgrpSituacaoAnuncio2.clearCheck();
                 }
+                isChecking = true;
+            }
+        });
+
+        rgrpSituacaoAnuncio2.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId != -1 && isChecking) {
+                    switch(checkedId){
+                        case R.id.rbtnVendido:
+                            situacaoAnuncioSelecionado = 3;
+                            break;
+                        case R.id.rbtnExclusividade:
+                            situacaoAnuncioSelecionado = 4;
+                            break;
+                        case R.id.rbtnParticular:
+                            situacaoAnuncioSelecionado = 5;
+                            break;
+                    }
+
+                    isChecking = false;
+                    rgrpSituacaoAnuncio1.clearCheck();
+                }
+                isChecking = true;
             }
         });
     }

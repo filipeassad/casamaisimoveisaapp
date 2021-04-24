@@ -313,6 +313,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
 
         if(captadorLogado.getId() != null){
             VariaveisEstaticas.setCaptador(captadorLogado);
+            VariaveisEstaticas.setCaptadorHistorico(captadorLogado);
 
             inserirDadosUsuario(captadorLogado.getNome(), "Captador");
             if(VariaveisEstaticas.getAutenticacao().getLinkImagem() != null){

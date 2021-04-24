@@ -75,62 +75,128 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
 
-                <RadioGroup
-                    android:id="@+id/rgrpSituacaoAnuncio"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:id="@+id/rbtnPendente"
-                        android:layout_width="wrap_content"
+                    <RadioGroup
+                        android:id="@+id/rgrpSituacaoAnuncio1"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Pendente"
-                        android:textColor="#000000"
-                        android:buttonTint="#000">
-                    </RadioButton>
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/shape_bola_vermelha"
-                        android:layout_marginLeft="5dp"></LinearLayout>
+                        <RadioButton
+                            android:id="@+id/rbtnPendente"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pendente"
+                            android:textColor="#000000"
+                            android:buttonTint="#000"
+                            android:textSize="12sp">
+                        </RadioButton>
 
-                    <RadioButton
-                        android:layout_marginLeft="10dp"
-                        android:id="@+id/rbtnAtualizar"
-                        android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:background="@drawable/shape_bola_vermelha"
+                            android:layout_marginLeft="5dp"></LinearLayout>
+
+                        <RadioButton
+                            android:layout_marginLeft="10dp"
+                            android:id="@+id/rbtnAtualizar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Atualizar"
+                            android:textColor="#000000"
+                            android:buttonTint="#000"
+                            android:textSize="12sp">
+                        </RadioButton>
+
+                        <LinearLayout
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:background="@drawable/shape_bola_azul"
+                            android:layout_marginLeft="5dp"></LinearLayout>
+
+                        <RadioButton
+                            android:layout_marginLeft="10dp"
+                            android:id="@+id/rbtnOk"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ok"
+                            android:textColor="#000000"
+                            android:buttonTint="#000"
+                            android:textSize="12sp">
+                        </RadioButton>
+
+                        <LinearLayout
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:background="@drawable/shape_bola_verde"
+                            android:layout_marginLeft="5dp"></LinearLayout>
+
+
+                    </RadioGroup>
+
+                    <RadioGroup
+                        android:id="@+id/rgrpSituacaoAnuncio2"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Atualizar"
-                        android:textColor="#000000"
-                        android:buttonTint="#000">
-                    </RadioButton>
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/shape_bola_amarela"
-                        android:layout_marginLeft="5dp"></LinearLayout>
+                        <RadioButton
+                            android:layout_marginLeft="10dp"
+                            android:id="@+id/rbtnVendido"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Vendido"
+                            android:textColor="#000000"
+                            android:buttonTint="#000"
+                            android:textSize="12sp">
+                        </RadioButton>
 
-                    <RadioButton
-                        android:layout_marginLeft="10dp"
-                        android:id="@+id/rbtnOk"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Ok"
-                        android:textColor="#000000"
-                        android:buttonTint="#000">
-                    </RadioButton>
+                        <LinearLayout
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:background="@drawable/shape_bola_cinza"
+                            android:layout_marginLeft="5dp"></LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/shape_bola_azul"
-                        android:layout_marginLeft="5dp"></LinearLayout>
-                </RadioGroup>
+                        <RadioButton
+                            android:layout_marginLeft="10dp"
+                            android:id="@+id/rbtnExclusividade"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Exclusividade"
+                            android:textColor="#000000"
+                            android:buttonTint="#000"
+                            android:textSize="12sp">
+                        </RadioButton>
+
+                        <LinearLayout
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:background="@drawable/shape_bola_preta"
+                            android:layout_marginLeft="5dp"></LinearLayout>
+
+                        <RadioButton
+                            android:layout_marginLeft="10dp"
+                            android:id="@+id/rbtnParticular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Particular"
+                            android:textColor="#000000"
+                            android:buttonTint="#000"
+                            android:textSize="12sp">
+                        </RadioButton>
+
+                        <LinearLayout
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:background="@drawable/shape_bola_marrom"
+                            android:layout_marginLeft="5dp"></LinearLayout>
+
+                    </RadioGroup>
 
             </LinearLayout>
 
