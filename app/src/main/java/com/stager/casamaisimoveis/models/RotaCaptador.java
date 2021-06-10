@@ -141,9 +141,38 @@ public class RotaCaptador {
         return rotaJson;
     }
 
+    public static JSONObject gerarRotaCaptadorJSON(RotaCaptador rotaCaptador){
+        JSONObject rotaJson = new JSONObject();
+
+        Date dataRota = FerramentasBasicas
+                .converterStringParaData(rotaCaptador.getData_rota(), "dd/MM/yyyy");
+
+        try {
+            rotaJson.put("latitude", rotaCaptador.getLatitude());
+            rotaJson.put("longitude", rotaCaptador.getLongitude());
+            rotaJson.put("data_rota", FerramentasBasicas.converterDataParaString(dataRota, "yyyy-MM-dd"));
+            rotaJson.put("data_hora_rota", rotaCaptador.getData_hora_rota());
+            rotaJson.put("captador_id", rotaCaptador.getCaptador_id());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return rotaJson;
+    }
+
     public String getDataRotaFormatoServidor(){
         Date dataConvertida = FerramentasBasicas.converterStringParaData(this.data_rota, "dd/MM/yyyy");
         return FerramentasBasicas.converterDataParaString(dataConvertida, "yyyy-MM-dd");
+    }
+
+    public static JSONArray gerarListaRotaCaptadorJSON(List<RotaCaptador> rotasCaptador){
+        JSONArray jsonArray = new JSONArray();
+
+        for(RotaCaptador rotaCaptador :rotasCaptador){
+            jsonArray.put(gerarRotaCaptadorJSON(rotaCaptador));
+        }
+
+        return jsonArray;
     }
 
     public static List<RotaCaptador> listarEnderecosRotas(JSONObject resposta){

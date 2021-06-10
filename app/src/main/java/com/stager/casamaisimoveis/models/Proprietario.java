@@ -11,12 +11,14 @@ public class Proprietario {
     private Integer id;
     private String nome;
     private String cpf;
+    private String observacao_coordenador;
     private List<TelefoneProprietario> telefones;
 
-    public Proprietario(String nome, String cpf, List<TelefoneProprietario> telefones) {
+    public Proprietario(String nome, String cpf, String observacao_coordenador, List<TelefoneProprietario> telefones) {
         this.nome = nome;
         this.cpf = cpf;
         this.telefones = telefones;
+        this.observacao_coordenador = observacao_coordenador;
     }
 
     public Proprietario(JSONObject resposta) {
@@ -24,6 +26,7 @@ public class Proprietario {
             this.id = resposta.has("id") ? resposta.getInt("id") : 0;
             this.nome = resposta.has("nome") ? resposta.getString("nome") : new String();
             this.cpf = resposta.has("cpf") ? resposta.getString("cpf") : new String();
+            this.observacao_coordenador = resposta.has("observacao_coordenador") ? resposta.getString("observacao_coordenador") : new String();
             this.telefones = resposta.has("telefones") ? TelefoneProprietario.gerarListaTelefonesProprietarioBuscaImovel(resposta.getJSONArray("telefones")) : new ArrayList<TelefoneProprietario>();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -62,6 +65,14 @@ public class Proprietario {
         this.telefones = telefones;
     }
 
+    public String getObservacao_coordenador() {
+        return observacao_coordenador;
+    }
+
+    public void setObservacao_coordenador(String observacao_coordenador) {
+        this.observacao_coordenador = observacao_coordenador;
+    }
+
     public JSONObject gerarProprietarioJSON(){
         JSONObject proprietarioJson = new JSONObject();
 
@@ -70,6 +81,7 @@ public class Proprietario {
                 proprietarioJson.put("id", this.id);
             proprietarioJson.put("nome", this.nome);
             proprietarioJson.put("cpf", this.cpf);
+            proprietarioJson.put("observacao_coordenador", this.observacao_coordenador);
             proprietarioJson.put("telefones", TelefoneProprietario.gerarTelefoneProprietarioJSONArray(this.telefones));
         } catch (JSONException e) {
             e.printStackTrace();

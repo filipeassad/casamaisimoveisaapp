@@ -33,6 +33,8 @@ import androidx.core.app.NotificationCompat;
 import com.stager.casamaisimoveis.R;
 import com.stager.casamaisimoveis.activitys.MainActivity;
 import com.stager.casamaisimoveis.api.PostHttpComHeaderServiceAsyncTask;
+import com.stager.casamaisimoveis.banco.DatabaseManager;
+import com.stager.casamaisimoveis.banco.RotaCaptadorManager;
 import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
 import com.stager.casamaisimoveis.models.RotaCaptador;
 
@@ -40,6 +42,7 @@ import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class LocalizacaoService extends Service {
 
@@ -160,8 +163,10 @@ public class LocalizacaoService extends Service {
 
     public class MyLocationListener implements LocationListener, HttpResponseInterface {
 
-        private String API_ROTA_CAPTADO = "api/rotaCaptador";
+        private String API_ROTA_CAPTADO = "api/inserirListaRotasCaptador";
         private HttpResponseInterface httpResponseInterface = this;
+        private DatabaseManager databaseManager = new DatabaseManager(getApplicationContext());
+        private RotaCaptadorManager rotaCaptadorManager = new RotaCaptadorManager(databaseManager.getWritableDatabase());
 
         public void onLocationChanged(final Location loc)
         {
@@ -192,24 +197,42 @@ public class LocalizacaoService extends Service {
                 intent.putExtra("Provider", loc.getProvider());
 
                 if(!periodoManha.after(dataHoje) && !periodoTarde.before(dataHoje)) {
-                    if (FerramentasBasicas.isOnline(getApplicationContext())) {
-                        RotaCaptador rotaCaptador = new RotaCaptador(loc.getLatitude() + "",
-                                loc.getLongitude() + "",
-                                FerramentasBasicas.converterDataParaString(new Date(),
-                                        "dd/MM/yyyy"),
-                                FerramentasBasicas.converterDataParaString(new Date(), "yyyy-MM-dd'T'HH:mm:ss'Z'"),
-                                captadorID);
-                        PostHttpComHeaderServiceAsyncTask postHttpComHeaderAsyncTask = new PostHttpComHeaderServiceAsyncTask(getApplicationContext(),
-                                httpResponseInterface,
-                                rotaCaptador.gerarRotaCaptadorJSON(),
-                                API_ROTA_CAPTADO);
+                    RotaCaptador rotaCaptador = new RotaCaptador(loc.getLatitude() + "",
+                            loc.getLongitude() + "",
+                            FerramentasBasicas.converterDataParaString(new Date(),
+                                    "dd/MM/yyyy"),
+                            FerramentasBasicas.converterDataParaString(new Date(), "yyyy-MM-dd'T'HH:mm:ss'Z'"),
+                            captadorID);
 
-                        postHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_ROTA_CAPTADO);
+                    rotaCaptadorManager.insertRotaCaptador(rotaCaptador);
+
+                    if (FerramentasBasicas.isOnline(getApplicationContext())) {
+                        Log.e("VariaveisEstaticas.getContadorEnvioRotaCaptador()", VariaveisEstaticas.getContadorEnvioRotaCaptador() + "");
+                        if(VariaveisEstaticas.getContadorEnvioRotaCaptador() == 100){
+                            List<RotaCaptador> rotasCaptador = rotaCaptadorManager.getRotasCaptador();
+                            PostHttpComHeaderServiceAsyncTask postHttpComHeaderAsyncTask = new PostHttpComHeaderServiceAsyncTask(getApplicationContext(),
+                                    httpResponseInterface,
+                                    RotaCaptador.gerarListaRotaCaptadorJSON(rotasCaptador),
+                                    API_ROTA_CAPTADO);
+
+                            postHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_ROTA_CAPTADO);
+                            rotaCaptadorManager.deletaTudo();
+                        }else
+                            VariaveisEstaticas.setContadorEnvioRotaCaptador();
                     }
                 }
                 sendBroadcast(intent);
             }
         }
+
+        /*
+             PostHttpComHeaderServiceAsyncTask postHttpComHeaderAsyncTask = new PostHttpComHeaderServiceAsyncTask(getApplicationContext(),
+                                httpResponseInterface,
+                                rotaCaptador.gerarRotaCaptadorJSON(),
+                                API_ROTA_CAPTADO);
+
+                        postHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_ROTA_CAPTADO);
+         */
 
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {

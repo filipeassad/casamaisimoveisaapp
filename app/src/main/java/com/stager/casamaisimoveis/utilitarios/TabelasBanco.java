@@ -14,4 +14,17 @@ public class TabelasBanco {
         return autenticacaoTable;
     }
 
+    public String tabelaRotaCaptador() {
+
+        String rotaCaptadorTable = "CREATE TABLE ROTACAPTADOR (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "latitude TEXT, " +
+                "longitude TEXT, " +
+                "data_rota TEXT," +
+                "data_hora_rota TEXT," +
+                "captador_id BIGINT)";
+
+        return rotaCaptadorTable;
+    }
+
 }

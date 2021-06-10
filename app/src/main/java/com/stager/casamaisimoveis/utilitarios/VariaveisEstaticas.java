@@ -37,6 +37,7 @@ public class VariaveisEstaticas {
     private static Imovel imovelBusca;
     private static List<Bitmap> imagensImovelCadastro;
     private static Imovel imovelCadastro;
+    private static int contadorEnvioRotaCaptador = 0;
 
     private static TelaInicialInterface telaInicialInterface;
     private static FragmentInterface fragmentInterface;
@@ -184,5 +185,13 @@ public class VariaveisEstaticas {
 
     public static void setAutenticacao(Autenticacao autenticacao) {
         VariaveisEstaticas.autenticacao = autenticacao;
+    }
+
+    public static int getContadorEnvioRotaCaptador() {
+        return contadorEnvioRotaCaptador;
+    }
+
+    public static void setContadorEnvioRotaCaptador() {
+        VariaveisEstaticas.contadorEnvioRotaCaptador++;
     }
 }

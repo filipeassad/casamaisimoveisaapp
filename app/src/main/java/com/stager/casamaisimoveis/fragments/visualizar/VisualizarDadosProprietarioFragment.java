@@ -33,6 +33,7 @@ public class VisualizarDadosProprietarioFragment extends Fragment {
     private Button btnAvancarSecundario;
     private EditText edtNomeProprietario;
     private EditText edtCpfProprietario;
+    private EditText edtObservacaoCoordenador;
     private EditText edtTelefoneProprietario;
     private Button btnAdicionar;
     private TextView txtTelefone;
@@ -62,6 +63,7 @@ public class VisualizarDadosProprietarioFragment extends Fragment {
 
         edtNomeProprietario = (EditText) view.findViewById(R.id.edtNomeProprietario);
         edtCpfProprietario = (EditText) view.findViewById(R.id.edtCpfProprietario);
+        edtObservacaoCoordenador = (EditText) view.findViewById(R.id.edtObservacaoCoordenador);
         edtTelefoneProprietario = (EditText) view.findViewById(R.id.edtTelefoneProprietario);
         btnAdicionar = (Button) view.findViewById(R.id.btnAdicionar);
         lvTelefoneProprietario = (ListView) view.findViewById(R.id.lvTelefoneProprietario);
@@ -78,6 +80,7 @@ public class VisualizarDadosProprietarioFragment extends Fragment {
 
         edtNomeProprietario.setInputType(InputType.TYPE_NULL);
         edtCpfProprietario.setInputType(InputType.TYPE_NULL);
+        edtObservacaoCoordenador.setInputType(InputType.TYPE_NULL);
 
         edtTelefoneProprietario.setVisibility(View.GONE);
         btnAdicionar.setVisibility(View.GONE);
@@ -108,6 +111,7 @@ public class VisualizarDadosProprietarioFragment extends Fragment {
             Proprietario proprietario = VariaveisEstaticas.getImovelBusca().getProprietario();
             edtNomeProprietario.setText(proprietario.getNome());
             edtCpfProprietario.setText(proprietario.getCpf());
+            edtObservacaoCoordenador.setText(proprietario.getObservacao_coordenador());
 
             telefonesProprietario = proprietario.getTelefones();
             TelefoneProprietarioAdapter telefoneProprietarioAdapter = new TelefoneProprietarioAdapter(getContext(),

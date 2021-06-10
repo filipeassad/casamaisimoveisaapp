@@ -42,6 +42,7 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
     private Button btnAvancarSecundario;
     private EditText edtNomeProprietario;
     private EditText edtCpfProprietario;
+    private EditText edtObservacaoCoordenador;
     private EditText edtTelefoneProprietario;
     private Button btnAdicionar;
     private ListView lvTelefoneProprietario;
@@ -69,6 +70,7 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
 
         edtNomeProprietario = (EditText) view.findViewById(R.id.edtNomeProprietario);
         edtCpfProprietario = (EditText) view.findViewById(R.id.edtCpfProprietario);
+        edtObservacaoCoordenador = (EditText) view.findViewById(R.id.edtObservacaoCoordenador);
         edtTelefoneProprietario = (EditText) view.findViewById(R.id.edtTelefoneProprietario);
         btnAdicionar = (Button) view.findViewById(R.id.btnAdicionar);
         lvTelefoneProprietario = (ListView) view.findViewById(R.id.lvTelefoneProprietario);
@@ -102,6 +104,7 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
 
             edtNomeProprietario.setText(proprietario.getNome());
             edtCpfProprietario.setText(proprietario.getCpf());
+            edtObservacaoCoordenador.setText(proprietario.getObservacao_coordenador());
 
             telefonesProprietario = proprietario.getTelefones();
             TelefoneProprietarioAdapter telefoneProprietarioAdapter = new TelefoneProprietarioAdapter(getContext(),
@@ -249,6 +252,7 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
 
         proprietarioAltaracao.setNome(edtNomeProprietario.getText().toString());
         proprietarioAltaracao.setCpf(edtCpfProprietario.getText().toString());
+        proprietarioAltaracao.setObservacao_coordenador(edtObservacaoCoordenador.getText().toString());
         proprietarioAltaracao.setTelefones(telefonesProprietario);
 
         PutHttpComHeaderAsyncTask putHttpComHeaderAsyncTask = new PutHttpComHeaderAsyncTask(getContext(),

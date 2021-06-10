@@ -7,6 +7,7 @@ import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
 import com.stager.casamaisimoveis.utilitarios.FerramentasHttp;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,13 +22,13 @@ public class PostHttpComHeaderServiceAsyncTask extends AsyncTask<String, String,
 
     private Context contexto;
     private HttpResponseInterface httpResponseInterface;
-    private JSONObject jsonObject;
+    private JSONArray jsonArray;
     private String rotaApi;
 
-    public PostHttpComHeaderServiceAsyncTask(Context contexto, HttpResponseInterface httpResponseInterface, JSONObject jsonObject, String rotaApi) {
+    public PostHttpComHeaderServiceAsyncTask(Context contexto, HttpResponseInterface httpResponseInterface, JSONArray jsonArray, String rotaApi) {
         this.contexto = contexto;
         this.httpResponseInterface = httpResponseInterface;
-        this.jsonObject = jsonObject;
+        this.jsonArray = jsonArray;
         this.rotaApi = rotaApi;
     }
 
@@ -51,7 +52,7 @@ public class PostHttpComHeaderServiceAsyncTask extends AsyncTask<String, String,
 
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-            writer.write(jsonObject.toString());
+            writer.write(jsonArray.toString());
             writer.flush();
             writer.close();
             os.close();

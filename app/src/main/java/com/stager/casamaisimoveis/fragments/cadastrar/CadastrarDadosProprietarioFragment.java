@@ -34,6 +34,7 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
     private EditText edtNomeProprietario;
     private EditText edtCpfProprietario;
     private EditText edtTelefoneProprietario;
+    private EditText edtObservacaoCoordenador;
     private Button btnAdicionar;
     private Button btnAvancarSecundario;
     private ListView lvTelefoneProprietario;
@@ -57,6 +58,7 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
         edtNomeProprietario = (EditText) view.findViewById(R.id.edtNomeProprietario);
         edtCpfProprietario = (EditText) view.findViewById(R.id.edtCpfProprietario);
         edtTelefoneProprietario = (EditText) view.findViewById(R.id.edtTelefoneProprietario);
+        edtObservacaoCoordenador = (EditText) view.findViewById(R.id.edtObservacaoCoordenador);
         btnAdicionar = (Button) view.findViewById(R.id.btnAdicionar);
         btnAvancarSecundario = (Button) view.findViewById(R.id.btnAvancarSecundario);
         lvTelefoneProprietario = (ListView) view.findViewById(R.id.lvTelefoneProprietario);
@@ -207,6 +209,7 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
 
         Proprietario proprietario = new Proprietario(edtNomeProprietario.getText().toString(),
                 edtCpfProprietario.getText().toString(),
+                edtObservacaoCoordenador.getText().toString(),
                 telefonesProprietario);
         VariaveisEstaticas.setProprietarioCadastro(proprietario);
         VariaveisEstaticas.getFragmentInterface().alterarFragment("CadastrarEnderecoImovel");
