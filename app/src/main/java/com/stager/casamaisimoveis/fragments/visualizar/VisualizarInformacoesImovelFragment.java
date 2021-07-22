@@ -17,7 +17,9 @@ import androidx.fragment.app.Fragment;
 import com.stager.casamaisimoveis.R;
 import com.stager.casamaisimoveis.models.DadosImovel;
 import com.stager.casamaisimoveis.models.ItemSpinner;
+import com.stager.casamaisimoveis.utilitarios.MoneyTextWatcher;
 import com.stager.casamaisimoveis.utilitarios.MontarSpinners;
+import com.stager.casamaisimoveis.utilitarios.PorcentagemTextWatch;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
 
 import java.util.List;
@@ -70,6 +72,9 @@ public class VisualizarInformacoesImovelFragment extends Fragment {
         edtAreaConstruida.setInputType(InputType.TYPE_NULL);
         edtObservacao.setInputType(InputType.TYPE_NULL);
         btnEditar.setVisibility(View.VISIBLE);
+
+        edtValor.addTextChangedListener(new MoneyTextWatcher(edtValor));
+        edtHonorario.addTextChangedListener(new PorcentagemTextWatch(edtHonorario));
 
         spTipoImovel.setEnabled(false);
         spFaseObra.setEnabled(false);

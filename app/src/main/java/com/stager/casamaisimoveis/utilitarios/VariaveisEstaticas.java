@@ -192,6 +192,10 @@ public class VariaveisEstaticas {
     }
 
     public static void setContadorEnvioRotaCaptador() {
-        VariaveisEstaticas.contadorEnvioRotaCaptador++;
+        contadorEnvioRotaCaptador++;
+    }
+
+    public static void zerarContadorEnvioRotaCaptador() {
+        contadorEnvioRotaCaptador = 0;
     }
 }

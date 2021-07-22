@@ -22,7 +22,9 @@ import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
 import com.stager.casamaisimoveis.models.DadosImovel;
 import com.stager.casamaisimoveis.models.ItemSpinner;
 import com.stager.casamaisimoveis.utilitarios.FerramentasBasicas;
+import com.stager.casamaisimoveis.utilitarios.MoneyTextWatcher;
 import com.stager.casamaisimoveis.utilitarios.MontarSpinners;
+import com.stager.casamaisimoveis.utilitarios.PorcentagemTextWatch;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
 
 import org.json.JSONException;
@@ -77,6 +79,9 @@ public class AlterarInformacoesImovelFragment extends Fragment implements HttpRe
         edtAreaTerreno = (EditText) view.findViewById(R.id.edtAreaTerreno);
         edtAreaConstruida = (EditText) view.findViewById(R.id.edtAreaConstruida);
         edtObservacao = (EditText) view.findViewById(R.id.edtObservacao);
+
+        edtValor.addTextChangedListener(new MoneyTextWatcher(edtValor));
+        edtHonorario.addTextChangedListener(new PorcentagemTextWatch(edtHonorario));
 
         btnAvancar.setText("Salvar");
         btnAvancarSecundario.setText("Salvar");

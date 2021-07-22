@@ -217,6 +217,7 @@ public class LocalizacaoService extends Service {
 
                             postHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_ROTA_CAPTADO);
                             rotaCaptadorManager.deletaTudo();
+                            VariaveisEstaticas.zerarContadorEnvioRotaCaptador();
                         }else
                             VariaveisEstaticas.setContadorEnvioRotaCaptador();
                     }

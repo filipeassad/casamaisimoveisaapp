@@ -3,8 +3,11 @@ package com.stager.casamaisimoveis.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class DadosImovel {
 
@@ -24,6 +27,7 @@ public class DadosImovel {
     private String observacao;
     private List<Composicao> composicoes;
     private List<VisitaImovel> visitasImovel;
+    Locale ptBr = new Locale("pt", "BR");
 
     public DadosImovel(boolean divulgacao, boolean placa, boolean exclusividade, boolean autorizacao_ate_venda) {
         this.divulgacao = divulgacao;
@@ -33,6 +37,7 @@ public class DadosImovel {
     }
 
     public DadosImovel(Integer tipo, Integer fase_obra, Integer esgoto, Integer tipo_rua, String valor, String honorario, String area_terreno, String area_construida, String observacao) {
+
         this.tipo = tipo;
         this.valor = valor;
         this.honorario = honorario;
@@ -52,8 +57,8 @@ public class DadosImovel {
             this.exclusividade = resposta.has("exclusividade") ? resposta.getBoolean("exclusividade") : false;
             this.autorizacao_ate_venda = resposta.has("autorizacao_ate_venda") ? resposta.getBoolean("autorizacao_ate_venda") : false;
             this.tipo = resposta.has("tipo") ? resposta.getInt("tipo") : 0;
-            this.valor = resposta.has("valor") ? resposta.getString("valor") : new String();
-            this.honorario = resposta.has("honorario") ? resposta.getString("honorario") : new String();
+            this.valor = resposta.has("valor") ? NumberFormat.getCurrencyInstance(ptBr).format(Double.parseDouble(resposta.getString("valor"))) : new String();
+            this.honorario = resposta.has("honorario") ? NumberFormat.getCurrencyInstance(ptBr).format(Double.parseDouble(resposta.getString("honorario"))) : new String();
             this.fase_obra = resposta.has("fase_obra") ? resposta.getInt("fase_obra") : 0;
             this.esgoto = resposta.has("esgoto") ? resposta.getInt("esgoto") : 0;
             this.tipo_rua = resposta.has("tipo_rua") ? resposta.getInt("tipo_rua") : 0;
@@ -217,8 +222,8 @@ public class DadosImovel {
             jsonObject.put("exclusividade", this.exclusividade);
             jsonObject.put("autorizacao_ate_venda", this.autorizacao_ate_venda);
             jsonObject.put("tipo", this.tipo);
-            jsonObject.put("valor", this.valor);
-            jsonObject.put("honorario", this.honorario);
+            jsonObject.put("valor", converterPtBrParaUS(this.valor));
+            jsonObject.put("honorario", converterPtBrParaUS(this.honorario));
             jsonObject.put("fase_obra", this.fase_obra);
             jsonObject.put("esgoto", this.esgoto);
             jsonObject.put("tipo_rua", this.tipo_rua);
@@ -232,5 +237,15 @@ public class DadosImovel {
         }
 
         return jsonObject;
+    }
+
+    private String converterPtBrParaUS(String valor){
+        if (valor.isEmpty()) return "";
+
+        String cleanString = valor.replaceAll("[R$%.,\\s+]", "");
+        BigDecimal parsed = new BigDecimal(cleanString).setScale(2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR);
+        String formatted = NumberFormat.getCurrencyInstance(Locale.US).format(parsed);
+        formatted = formatted.replaceAll("[R$%,\\s+]", "");
+        return formatted;
     }
 }
