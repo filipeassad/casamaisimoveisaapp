@@ -22,6 +22,7 @@ import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
 import com.stager.casamaisimoveis.models.Captador;
 import com.stager.casamaisimoveis.models.DadosImovel;
 import com.stager.casamaisimoveis.models.EnderecoImovel;
+import com.stager.casamaisimoveis.models.ImagemUpload;
 import com.stager.casamaisimoveis.models.Imovel;
 import com.stager.casamaisimoveis.models.Proprietario;
 import com.stager.casamaisimoveis.models.VisitaImovel;
@@ -204,7 +205,31 @@ public class CadastrarVisitaImovelFragment extends Fragment implements HttpRespo
         if (resposta.has("imovelId")) {
             try {
                 imovelId = resposta.getInt("imovelId");
-                imagensInserir = VariaveisEstaticas.getImagensImovelCadastro();
+
+                for(Bitmap imagem : VariaveisEstaticas.getImagensImovelCadastro()){
+                    ImagemUpload imagemUpload = new ImagemUpload(imovelId, imagem);
+                    VariaveisEstaticas.getImagensUpload().add(imagemUpload);
+                }
+
+                Toast.makeText(getContext(), "Imóvel cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+                VariaveisEstaticas.setProprietarioCadastro(null);
+                VariaveisEstaticas.setEnderecoImovelCadastro(null);
+                VariaveisEstaticas.setDadosImovelCadastro(null);
+                VariaveisEstaticas.setComposicoesImovelCadastro(null);
+                VariaveisEstaticas.setVisitaImovelCadastro(null);
+                VariaveisEstaticas.setEnderecoRotaSelecionado(null);
+                VariaveisEstaticas.setImagensImovelCadastro(null);
+                VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarDadosProprietario");
+                VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarEnderecoImovel");
+                VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarDadosAnuncio");
+                VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarInformacoesImovel");
+                VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarComposicaoImovel");
+                VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarImagensImovel");
+                VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarVisitaImovel");
+                VariaveisEstaticas.getFragmentInterface().alterarFragment("TelaInicial");
+
+                VariaveisEstaticas.getFragmentInterface().iniciarUploadImagens();
+                /*
                 if (imagensInserir.size() != 0) {
                     Bitmap primeiraImagem = imagensInserir.remove(0);
                     OkPostHttpImagem okPostHttpImagem = new OkPostHttpImagem(primeiraImagem, imovelId, getContext(), httpResponseInterface, API_UPLOAD_IMAGEM_IMOVEL);
@@ -226,7 +251,7 @@ public class CadastrarVisitaImovelFragment extends Fragment implements HttpRespo
                     VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarImagensImovel");
                     VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarVisitaImovel");
                     VariaveisEstaticas.getFragmentInterface().alterarFragment("TelaInicial");
-                }
+                }*/
             }catch(JSONException e){
                 e.printStackTrace();
             }

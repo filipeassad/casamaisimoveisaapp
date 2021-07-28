@@ -12,12 +12,14 @@ import com.stager.casamaisimoveis.models.Coordenador;
 import com.stager.casamaisimoveis.models.DadosImovel;
 import com.stager.casamaisimoveis.models.EnderecoImovel;
 import com.stager.casamaisimoveis.models.EnderecoRota;
+import com.stager.casamaisimoveis.models.ImagemUpload;
 import com.stager.casamaisimoveis.models.Imovel;
 import com.stager.casamaisimoveis.models.Proprietario;
 import com.stager.casamaisimoveis.models.Rota;
 import com.stager.casamaisimoveis.models.RotaCaptador;
 import com.stager.casamaisimoveis.models.VisitaImovel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class VariaveisEstaticas {
@@ -42,6 +44,8 @@ public class VariaveisEstaticas {
     private static TelaInicialInterface telaInicialInterface;
     private static FragmentInterface fragmentInterface;
     private static ImagemImovelInterface imagemImovelInterface;
+
+    private static List<ImagemUpload> imagensUpload = new ArrayList<>();
 
     public static Imovel getImovelCadastro() {
         return imovelCadastro;
@@ -197,5 +201,17 @@ public class VariaveisEstaticas {
 
     public static void zerarContadorEnvioRotaCaptador() {
         contadorEnvioRotaCaptador = 0;
+    }
+
+    public static void setContadorEnvioRotaCaptador(int contadorEnvioRotaCaptador) {
+        VariaveisEstaticas.contadorEnvioRotaCaptador = contadorEnvioRotaCaptador;
+    }
+
+    public static List<ImagemUpload> getImagensUpload() {
+        return imagensUpload;
+    }
+
+    public static void setImagensUpload(List<ImagemUpload> imagensUpload) {
+        VariaveisEstaticas.imagensUpload = imagensUpload;
     }
 }

@@ -50,6 +50,7 @@ import com.stager.casamaisimoveis.utilitarios.FerramentasBasicas;
 import com.stager.casamaisimoveis.utilitarios.FerramentasHttp;
 import com.stager.casamaisimoveis.utilitarios.GerenciadorFragment;
 import com.stager.casamaisimoveis.utilitarios.LocalizacaoService;
+import com.stager.casamaisimoveis.utilitarios.UploadImagemService;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
 
 import org.json.JSONException;
@@ -120,6 +121,8 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
 
         if(localizacaoServiceEstahRodando() == false && verificarPermissaoLocalizacao())
             ativarLocalizacaoService();
+        if(VariaveisEstaticas.getImagensUpload().size() > 0)
+            iniciarUploadImagens();
     }
 
     private void buscarDadosUsuario(Autenticacao autenticacao){
@@ -285,6 +288,16 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
     @Override
     public void removerFragment(String nomeFragment) {
         gerenciadorFragment.removerFragmentParaVoltar(fm, nomeFragment);
+    }
+
+    @Override
+    public void iniciarUploadImagens() {
+        if(uploadServiceEstahRodando() == false){
+            /*Intent serviceIntent = new Intent(this, UploadImagemService.class);
+            this.startService(serviceIntent);*/
+            Intent mIntent = new Intent(this, UploadImagemService.class);
+            UploadImagemService.enqueueWork(this, mIntent);
+        }
     }
 
     @Override
@@ -479,6 +492,16 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
             if("com.stager.casamaisimoveis.utilitarios.LocalizacaoService".equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean uploadServiceEstahRodando() {
+        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
+            if("com.stager.casamaisimoveis.utilitarios.UploadImagemService".equals(service.service.getClassName())) {
                 return true;
             }
         }

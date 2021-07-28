@@ -42,6 +42,9 @@
                 <action android:name=".utilitarios.LocalizacaoService" />
             </intent-filter>
         </service>
+        <service
+            android:name=".utilitarios.UploadImagemService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>

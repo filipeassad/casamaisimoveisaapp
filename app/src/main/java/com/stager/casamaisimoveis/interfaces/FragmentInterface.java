@@ -9,4 +9,5 @@ public interface FragmentInterface {
     public void sair();
     public void fecharTeclado();
     public void removerFragment(String nomeFragment);
+    public void iniciarUploadImagens();
 }
