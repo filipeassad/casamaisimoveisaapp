@@ -57,6 +57,12 @@ public class CadastrarComposicaoImovelFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        VariaveisEstaticas.setComposicoesImovelCadastro(composicoesImovel);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 

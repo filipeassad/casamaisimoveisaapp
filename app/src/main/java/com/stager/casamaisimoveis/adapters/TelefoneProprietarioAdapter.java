@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import androidx.annotation.Nullable;
 import com.stager.casamaisimoveis.R;
 import com.stager.casamaisimoveis.interfaces.TelefoneProprietarioAdapterInterface;
 import com.stager.casamaisimoveis.models.TelefoneProprietario;
+import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
 
 import java.util.List;
 
@@ -42,10 +44,18 @@ public class TelefoneProprietarioAdapter extends ArrayAdapter<TelefoneProprietar
 
         final TelefoneProprietario telefoneProprietario = getItem(position);
 
+        LinearLayout llTelefoneProprietario = (LinearLayout) convertView.findViewById(R.id.llTelefoneProprietario);
         TextView txtTelefoneProprietario = (TextView) convertView.findViewById(R.id.txtTelefoneProprietario);
         Button btnRemoverTelefone = (Button) convertView.findViewById(R.id.btnRemoverTelefone);
 
         txtTelefoneProprietario.setText(telefoneProprietario.getNumero());
+
+        llTelefoneProprietario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VariaveisEstaticas.getFragmentInterface().copiarTexto(telefoneProprietario.getNumero());
+            }
+        });
 
         if(telefoneProprietarioAdapterInterface != null){
             btnRemoverTelefone.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +67,7 @@ public class TelefoneProprietarioAdapter extends ArrayAdapter<TelefoneProprietar
         }else{
             btnRemoverTelefone.setVisibility(View.GONE);
         }
+
         return convertView;
     }
 }

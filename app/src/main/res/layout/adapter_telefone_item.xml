@@ -4,6 +4,7 @@
     android:layout_height="60dp"
     android:background="@drawable/shape_item_telefone">
     <LinearLayout
+        android:id="@+id/llTelefoneProprietario"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="left|center">

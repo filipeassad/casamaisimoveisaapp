@@ -57,6 +57,24 @@ public class CadastrarDadosAnuncioFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        DadosImovel dadosImovel = new DadosImovel(ckDivulgacao.isChecked(),
+                ckPlaca.isChecked(),
+                ckExclusividade.isChecked(),
+                ckTempoAutorizacao.isChecked());
+
+        if(VariaveisEstaticas.getDadosImovelCadastro() != null){
+            VariaveisEstaticas.getDadosImovelCadastro().setDivulgacao(dadosImovel.isDivulgacao());
+            VariaveisEstaticas.getDadosImovelCadastro().setPlaca(dadosImovel.isPlaca());
+            VariaveisEstaticas.getDadosImovelCadastro().setExclusividade(dadosImovel.isExclusividade());
+            VariaveisEstaticas.getDadosImovelCadastro().setAutorizacao_ate_venda(dadosImovel.isAutorizacao_ate_venda());
+        }else{
+            VariaveisEstaticas.setDadosImovelCadastro(dadosImovel);
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 

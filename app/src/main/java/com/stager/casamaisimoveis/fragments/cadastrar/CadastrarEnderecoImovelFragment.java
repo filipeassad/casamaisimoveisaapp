@@ -43,6 +43,16 @@ public class CadastrarEnderecoImovelFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+
+        EnderecoImovel enderecoImovel = new EnderecoImovel(edtBairroEnderecoImovel.getText().toString(),
+                edtRuaEnderecoImovel.getText().toString(),
+                edtNumeroEnderecoImovel.getText().toString());
+        VariaveisEstaticas.setEnderecoImovelCadastro(enderecoImovel);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 

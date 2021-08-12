@@ -72,6 +72,13 @@ public class AlterarComposicaoImovelFragment extends Fragment implements HttpRes
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        DadosImovel dadosImovel = VariaveisEstaticas.getImovelBusca().getDadosImovel();
+        dadosImovel.setComposicoes(composicoesImovel);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 
@@ -119,8 +126,6 @@ public class AlterarComposicaoImovelFragment extends Fragment implements HttpRes
             Toast.makeText(getContext(), "Adicione pelo menos uma composição", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        VariaveisEstaticas.getImovelBusca().getDadosImovel().setComposicoes(composicoesImovel);
 
         DadosImovel dadosImovel = VariaveisEstaticas.getImovelBusca().getDadosImovel();
         dadosImovel.setComposicoes(composicoesImovel);

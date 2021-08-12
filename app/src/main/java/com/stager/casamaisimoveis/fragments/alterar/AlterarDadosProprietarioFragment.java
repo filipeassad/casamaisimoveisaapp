@@ -94,6 +94,17 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        Proprietario proprietarioAltaracao = VariaveisEstaticas.getImovelBusca().getProprietario();
+
+        proprietarioAltaracao.setNome(edtNomeProprietario.getText().toString());
+        proprietarioAltaracao.setCpf(edtCpfProprietario.getText().toString());
+        proprietarioAltaracao.setObservacao_coordenador(edtObservacaoCoordenador.getText().toString());
+        proprietarioAltaracao.setTelefones(telefonesProprietario);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 

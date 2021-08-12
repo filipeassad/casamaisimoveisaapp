@@ -3,6 +3,7 @@ package com.stager.casamaisimoveis.activitys;
 import android.Manifest;
 import android.app.ActivityManager;
 import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -118,9 +119,8 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
     @Override
     protected void onResume() {
         super.onResume();
-
-        if(localizacaoServiceEstahRodando() == false && verificarPermissaoLocalizacao())
-            ativarLocalizacaoService();
+        /*if(localizacaoServiceEstahRodando() == false && verificarPermissaoLocalizacao())
+            ativarLocalizacaoService();*/
         if(VariaveisEstaticas.getImagensUpload().size() > 0)
             iniciarUploadImagens();
     }
@@ -164,11 +164,11 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
 
         listString.add("Tela Inicial");
 
-        if (autenticacao.isCaptador())
-            listString.add("Rota");
+        /*if (autenticacao.isCaptador())
+            listString.add("Rota");*/
 
-        listString.add("Histórico");
-        listString.add("Imóveis");
+        listString.add("Cadastrar Imóvel");
+        listString.add("Buscar Imóveis");
         listString.add("Sair");
 
         MenuAdapter menuAdapter = new MenuAdapter(this, R.layout.adapter_menu, listString);
@@ -200,8 +200,10 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
                         alterarFragment("HistoricoCaptador");
                     else
                         alterarFragment("");
-                }else if(((String) parent.getItemAtPosition(position)).equals("Imóveis")){
+                }else if(((String) parent.getItemAtPosition(position)).equals("Buscar Imóveis")){
                     alterarFragment("BuscarImovel");
+                }else if(((String) parent.getItemAtPosition(position)).equals("Cadastrar Imóvel")){
+                    alterarFragment("CadastrarDadosProprietario");
                 }else if(((String) parent.getItemAtPosition(position)).equals("Sair")){
                     sair();
                 }
@@ -301,6 +303,14 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
     }
 
     @Override
+    public void copiarTexto(String texto) {
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("casamaisimoveis", texto);
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(this, "Texto Copiado!", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public void retornoJsonObject(JSONObject jsonObject, String rotaApi) {
         try {
             if(jsonObject.has("erro")){
@@ -336,10 +346,10 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
                 getHttpImagemAsyncTask.execute(VariaveisEstaticas.getAutenticacao().getLinkImagem());
             }
 
-            if(verificarPermissaoLocalizacao() == false)
+            /*if(verificarPermissaoLocalizacao() == false)
                 solicitarPermissaoDeLocalizacao();
             else
-                ativarLocalizacaoService();
+                ativarLocalizacaoService();*/
 
             VariaveisEstaticas.getTelaInicialInterface().carregarDadosUsuario();
         }
@@ -359,10 +369,10 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
                 getHttpImagemAsyncTask.execute(VariaveisEstaticas.getAutenticacao().getLinkImagem());
             }
 
-            if(verificarPermissaoLocalizacao() == false)
+            /*if(verificarPermissaoLocalizacao() == false)
                 solicitarPermissaoDeLocalizacao();
             else
-                ativarLocalizacaoService();
+                ativarLocalizacaoService();*/
 
             VariaveisEstaticas.getTelaInicialInterface().carregarDadosUsuario();
         }
@@ -431,7 +441,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    ativarLocalizacaoService();
+                    //ativarLocalizacaoService();
                 } else {
                     this.finish();
                 }

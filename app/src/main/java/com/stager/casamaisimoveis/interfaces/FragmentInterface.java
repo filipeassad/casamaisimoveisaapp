@@ -10,4 +10,5 @@ public interface FragmentInterface {
     public void fecharTeclado();
     public void removerFragment(String nomeFragment);
     public void iniciarUploadImagens();
+    public void copiarTexto(String texto);
 }

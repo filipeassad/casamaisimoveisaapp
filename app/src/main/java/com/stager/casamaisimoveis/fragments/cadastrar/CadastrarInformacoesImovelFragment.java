@@ -80,6 +80,34 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+
+        if(VariaveisEstaticas.getDadosImovelCadastro() != null){
+            VariaveisEstaticas.getDadosImovelCadastro().setDadosImovel(tipoImovelSelecionado.getId(),
+                    faseImovelSelecionado.getId(),
+                    esgotoImovelSelecionado.getId(),
+                    tipoRuaImovelSelecionado.getId(),
+                    edtValor.getText().toString(),
+                    edtHonorario.getText().toString(),
+                    edtAreaTerreno.getText().toString(),
+                    edtAreaConstruida.getText().toString(),
+                    edtObservacao.getText().toString());
+        }else{
+            DadosImovel dadosImovel = new DadosImovel(tipoImovelSelecionado.getId(),
+                    faseImovelSelecionado.getId(),
+                    esgotoImovelSelecionado.getId(),
+                    tipoRuaImovelSelecionado.getId(),
+                    edtValor.getText().toString(),
+                    edtHonorario.getText().toString(),
+                    edtAreaTerreno.getText().toString(),
+                    edtAreaConstruida.getText().toString(),
+                    edtObservacao.getText().toString());
+            VariaveisEstaticas.setDadosImovelCadastro(dadosImovel);
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 

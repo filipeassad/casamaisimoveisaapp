@@ -57,6 +57,15 @@ public class AlterarEnderecoImovelFragment extends Fragment implements HttpRespo
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        EnderecoImovel enderecoImovel = VariaveisEstaticas.getImovelBusca().getEnderecoImovel();
+        enderecoImovel.setBairro(edtBairroEnderecoImovel.getText().toString());
+        enderecoImovel.setRua(edtRuaEnderecoImovel.getText().toString());
+        enderecoImovel.setNumero(edtNumeroEnderecoImovel.getText().toString());
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 

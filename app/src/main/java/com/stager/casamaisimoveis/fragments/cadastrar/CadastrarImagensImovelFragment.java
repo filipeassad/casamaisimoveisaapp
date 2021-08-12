@@ -60,6 +60,12 @@ public class CadastrarImagensImovelFragment extends Fragment implements ImagemIm
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        VariaveisEstaticas.setImagensImovelCadastro(imagensSelecionadas);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         VariaveisEstaticas.getFragmentInterface().alterarTitulo("Cadastrar");

@@ -70,6 +70,16 @@ public class AlterarDadosAnuncioFragment extends Fragment implements HttpRespons
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        DadosImovel dadosImovel = VariaveisEstaticas.getImovelBusca().getDadosImovel();
+        dadosImovel.setDivulgacao(ckDivulgacao.isChecked());
+        dadosImovel.setPlaca(ckPlaca.isChecked());
+        dadosImovel.setExclusividade(ckExclusividade.isChecked());
+        dadosImovel.setAutorizacao_ate_venda(ckTempoAutorizacao.isChecked());
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 

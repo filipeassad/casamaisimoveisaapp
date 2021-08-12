@@ -24,6 +24,7 @@ public class TelaInicialCoordenadorFragment extends Fragment implements TelaInic
     private LinearLayout llHitorico;
     private LinearLayout llBuscarImovel;
     private LinearLayout llPublicarImoveis;
+    private LinearLayout llCadastrarImovel;
     private ImageView ivImagemUsuario;
 
     @Nullable
@@ -37,6 +38,7 @@ public class TelaInicialCoordenadorFragment extends Fragment implements TelaInic
         llHitorico = (LinearLayout) view.findViewById(R.id.llHitorico);
         llBuscarImovel = (LinearLayout) view.findViewById(R.id.llBuscarImovel);
         llPublicarImoveis = (LinearLayout) view.findViewById(R.id.llPublicarImoveis);
+        llCadastrarImovel = (LinearLayout) view.findViewById(R.id.llCadastrarImovel);
         ivImagemUsuario = (ImageView) view.findViewById(R.id.ivImagemUsuario);
 
         llRota.setVisibility(View.GONE);
@@ -73,6 +75,13 @@ public class TelaInicialCoordenadorFragment extends Fragment implements TelaInic
             @Override
             public void onClick(View view) {
                 VariaveisEstaticas.getFragmentInterface().alterarFragment("BuscarImovel");
+            }
+        });
+
+        llCadastrarImovel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VariaveisEstaticas.getFragmentInterface().alterarFragment("CadastrarDadosProprietario");
             }
         });
     }

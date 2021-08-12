@@ -95,6 +95,22 @@ public class AlterarInformacoesImovelFragment extends Fragment implements HttpRe
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        DadosImovel dadosImovel = VariaveisEstaticas.getImovelBusca().getDadosImovel();
+
+        dadosImovel.setTipo(tipoImovelSelecionado.getId());
+        dadosImovel.setFase_obra(faseImovelSelecionado.getId());
+        dadosImovel.setEsgoto(esgotoImovelSelecionado.getId());
+        dadosImovel.setTipo_rua(tipoRuaImovelSelecionado.getId());
+        dadosImovel.setValor(edtValor.getText().toString());
+        dadosImovel.setHonorario(edtHonorario.getText().toString());
+        dadosImovel.setArea_terreno(edtAreaTerreno.getText().toString());
+        dadosImovel.setArea_construida(edtAreaConstruida.getText().toString());
+        dadosImovel.setObservacao(edtObservacao.getText().toString());
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 

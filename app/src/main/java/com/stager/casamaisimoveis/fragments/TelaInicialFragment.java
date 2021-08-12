@@ -23,6 +23,7 @@ public class TelaInicialFragment extends Fragment implements TelaInicialInterfac
     private LinearLayout llRota;
     private LinearLayout llHitorico;
     private LinearLayout llBuscarImovel;
+    private LinearLayout llCadastrarImovel;
     private ImageView ivImagemUsuario;
 
     private String FRAGMENT_ROTA = "Rota";
@@ -37,6 +38,7 @@ public class TelaInicialFragment extends Fragment implements TelaInicialInterfac
         llRota = (LinearLayout) view.findViewById(R.id.llRota);
         llHitorico = (LinearLayout) view.findViewById(R.id.llHitorico);
         llBuscarImovel = (LinearLayout) view.findViewById(R.id.llBuscarImovel);
+        llCadastrarImovel = (LinearLayout) view.findViewById(R.id.llCadastrarImovel);
         ivImagemUsuario = (ImageView) view.findViewById(R.id.ivImagemUsuario);
 
         VariaveisEstaticas.setTelaInicialInterface(this);
@@ -71,6 +73,13 @@ public class TelaInicialFragment extends Fragment implements TelaInicialInterfac
             @Override
             public void onClick(View view) {
                 VariaveisEstaticas.getFragmentInterface().alterarFragment("BuscarImovel");
+            }
+        });
+
+        llCadastrarImovel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VariaveisEstaticas.getFragmentInterface().alterarFragment("CadastrarDadosProprietario");
             }
         });
     }

@@ -79,6 +79,20 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+
+        Imovel imovel = new Imovel(situacaoAnuncioSelecionado);
+        VariaveisEstaticas.setImovelCadastro(imovel);
+        Proprietario proprietario = new Proprietario(edtNomeProprietario.getText().toString(),
+                edtCpfProprietario.getText().toString(),
+                edtObservacaoCoordenador.getText().toString(),
+                telefonesProprietario);
+
+        VariaveisEstaticas.setProprietarioCadastro(proprietario);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 
