@@ -105,13 +105,13 @@ public class VisitaImovel {
         Date dataVisita = FerramentasBasicas
                 .converterStringParaData(this.data_visita, "dd/MM/yyyy");
 
-        Date dataRetorno = FerramentasBasicas
-                .converterStringParaData(this.retorno, "dd/MM/yyyy");
+        /*Date dataRetorno = FerramentasBasicas
+                .converterStringParaData(this.retorno, "dd/MM/yyyy");*/
 
         try {
             jsonObject.put("data_visita", FerramentasBasicas.converterDataParaString(dataVisita, "yyyy-MM-dd"));
-            if(this.retorno.trim().equals("") == false)
-                jsonObject.put("retorno", FerramentasBasicas.converterDataParaString(dataRetorno, "yyyy-MM-dd"));
+            /*if(this.retorno.trim().equals("") == false)
+                jsonObject.put("retorno", FerramentasBasicas.converterDataParaString(dataRetorno, "yyyy-MM-dd"));*/
             if(this.dados_imovel_id != null)
                 jsonObject.put("dados_imovel_id", this.dados_imovel_id);
 

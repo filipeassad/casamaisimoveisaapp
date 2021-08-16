@@ -57,8 +57,8 @@ public class DadosImovel {
             this.exclusividade = resposta.has("exclusividade") ? resposta.getBoolean("exclusividade") : false;
             this.autorizacao_ate_venda = resposta.has("autorizacao_ate_venda") ? resposta.getBoolean("autorizacao_ate_venda") : false;
             this.tipo = resposta.has("tipo") ? resposta.getInt("tipo") : 0;
-            this.valor = resposta.has("valor") ? NumberFormat.getCurrencyInstance(ptBr).format(Double.parseDouble(resposta.getString("valor"))) : new String();
-            this.honorario = resposta.has("honorario") ? NumberFormat.getCurrencyInstance(ptBr).format(Double.parseDouble(resposta.getString("honorario"))) : new String();
+            this.valor = resposta.has("valor") ? converterUsParaPtBr(resposta.getString("valor")) : new String();
+            this.honorario = resposta.has("honorario") ?  converterUsParaPtBr(resposta.getString("honorario")) : new String();
             this.fase_obra = resposta.has("fase_obra") ? resposta.getInt("fase_obra") : 0;
             this.esgoto = resposta.has("esgoto") ? resposta.getInt("esgoto") : 0;
             this.tipo_rua = resposta.has("tipo_rua") ? resposta.getInt("tipo_rua") : 0;
@@ -245,6 +245,16 @@ public class DadosImovel {
         String cleanString = valor.replaceAll("[R$%.,\\s+]", "");
         BigDecimal parsed = new BigDecimal(cleanString).setScale(2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR);
         String formatted = NumberFormat.getCurrencyInstance(Locale.US).format(parsed);
+        formatted = formatted.replaceAll("[R$%,\\s+]", "");
+        return formatted;
+    }
+
+    private String converterUsParaPtBr(String valor){
+        if (valor.isEmpty()) return "";
+
+        String cleanString = valor.replaceAll("[R$%.,\\s+]", "");
+        BigDecimal parsed = new BigDecimal(cleanString).setScale(2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR);
+        String formatted =  NumberFormat.getCurrencyInstance(ptBr).format(parsed);
         formatted = formatted.replaceAll("[R$%,\\s+]", "");
         return formatted;
     }

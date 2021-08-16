@@ -103,9 +103,11 @@ public class CadastrarComposicaoImovelFragment extends Fragment {
     private void avancarFormulario(){
         VariaveisEstaticas.getFragmentInterface().fecharTeclado();
 
-        if(composicoesImovel.size() == 0){
-            Toast.makeText(getContext(), "Selecione pelo menos uma composição", Toast.LENGTH_SHORT).show();
-            return;
+        if(VariaveisEstaticas.getImovelCadastro().getSituacao_anuncio() != 4 && VariaveisEstaticas.getImovelCadastro().getSituacao_anuncio() != 5){
+            if(composicoesImovel.size() == 0){
+                Toast.makeText(getContext(), "Selecione pelo menos uma composição", Toast.LENGTH_SHORT).show();
+                return;
+            }
         }
 
         VariaveisEstaticas.setComposicoesImovelCadastro(composicoesImovel);

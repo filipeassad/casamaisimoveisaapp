@@ -40,9 +40,11 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
     private ListView lvTelefoneProprietario;
     private RadioGroup rgrpSituacaoAnuncio1;
     private RadioGroup rgrpSituacaoAnuncio2;
+    private RadioGroup rgrpCondicaoImovel;
 
     private List<TelefoneProprietario> telefonesProprietario;
     private int situacaoAnuncioSelecionado = 0;
+    private int condicaoImovelSelecionado = 0;
     private boolean isChecking = true;
 
     private TelefoneProprietarioAdapterInterface telefoneProprietarioAdapterInterface;
@@ -64,7 +66,7 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
         lvTelefoneProprietario = (ListView) view.findViewById(R.id.lvTelefoneProprietario);
         rgrpSituacaoAnuncio1 = (RadioGroup) view.findViewById(R.id.rgrpSituacaoAnuncio1);
         rgrpSituacaoAnuncio2 = (RadioGroup) view.findViewById(R.id.rgrpSituacaoAnuncio2);
-
+        rgrpCondicaoImovel = (RadioGroup) view.findViewById(R.id.rgrpCondicaoImovel);
 
         edtCpfProprietario.addTextChangedListener(MascaraEditText.mask(edtCpfProprietario, MascaraEditText.FORMAT_CPF));
         edtTelefoneProprietario.addTextChangedListener(MascaraEditText.mask(edtTelefoneProprietario, MascaraEditText.FORMAT_FONE));
@@ -82,7 +84,7 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
     public void onPause() {
         super.onPause();
 
-        Imovel imovel = new Imovel(situacaoAnuncioSelecionado);
+        Imovel imovel = new Imovel(situacaoAnuncioSelecionado, condicaoImovelSelecionado);
         VariaveisEstaticas.setImovelCadastro(imovel);
         Proprietario proprietario = new Proprietario(edtNomeProprietario.getText().toString(),
                 edtCpfProprietario.getText().toString(),
@@ -111,6 +113,46 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
                     telefoneProprietarioAdapterInterface);
             lvTelefoneProprietario.setAdapter(telefoneProprietarioAdapter);
             lvTelefoneProprietario.setLayoutParams(parametrosListView());
+            carregarSituacaoAnuncio();
+            carregarCondicaoImovel();
+        }
+    }
+
+    private void carregarCondicaoImovel(){
+        rgrpCondicaoImovel.clearCheck();
+        switch (VariaveisEstaticas.getImovelCadastro().getCondicao_imovel()){
+            case 1:
+                rgrpCondicaoImovel.check(R.id.rbtnNovo);
+                break;
+            case 2 :
+                rgrpCondicaoImovel.check(R.id.rbtnUsado);
+                break;
+        }
+    }
+
+    private void carregarSituacaoAnuncio(){
+
+        rgrpSituacaoAnuncio1.clearCheck();
+        rgrpSituacaoAnuncio2.clearCheck();
+        switch (VariaveisEstaticas.getImovelBusca().getSituacao_anuncio()){
+            case 0:
+                rgrpSituacaoAnuncio1.check(R.id.rbtnPendente);
+                break;
+            case 1:
+                rgrpSituacaoAnuncio1.check(R.id.rbtnAtualizar);
+                break;
+            case 2:
+                rgrpSituacaoAnuncio1.check(R.id.rbtnOk);
+                break;
+            case 3:
+                rgrpSituacaoAnuncio2.check(R.id.rbtnVendido);
+                break;
+            case 4:
+                rgrpSituacaoAnuncio2.check(R.id.rbtnExclusividade);
+                break;
+            case 5:
+                rgrpSituacaoAnuncio2.check(R.id.rbtnParticular);
+                break;
         }
     }
 
@@ -188,6 +230,20 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
                 isChecking = true;
             }
         });
+
+        rgrpCondicaoImovel.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                switch(checkedId){
+                    case R.id.rbtnNovo:
+                        condicaoImovelSelecionado = 1;
+                        break;
+                    case R.id.rbtnUsado:
+                        condicaoImovelSelecionado = 2;
+                        break;
+                }
+            }
+        });
     }
 
     private void adicionarTelefone(){
@@ -213,12 +269,14 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
     public void avancarFormulario(){
         VariaveisEstaticas.getFragmentInterface().fecharTeclado();
 
-        if(edtNomeProprietario.getText().toString().trim().equals("")){
-            edtNomeProprietario.setError("Digite o nome.");
-            return;
+        if(situacaoAnuncioSelecionado != 4 && situacaoAnuncioSelecionado != 5){
+            if(edtNomeProprietario.getText().toString().trim().equals("")){
+                edtNomeProprietario.setError("Digite o nome.");
+                return;
+            }
         }
 
-        Imovel imovel = new Imovel(situacaoAnuncioSelecionado);
+        Imovel imovel = new Imovel(situacaoAnuncioSelecionado, condicaoImovelSelecionado);
         VariaveisEstaticas.setImovelCadastro(imovel);
 
         Proprietario proprietario = new Proprietario(edtNomeProprietario.getText().toString(),

@@ -41,6 +41,7 @@ public class VisualizarDadosProprietarioFragment extends Fragment {
     private Button btnEditar;
     private RadioGroup rgrpSituacaoAnuncio1;
     private RadioGroup rgrpSituacaoAnuncio2;
+    private RadioGroup rgrpCondicaoImovel;
 
     private RadioButton rbtnPendente;
     private RadioButton rbtnAtualizar;
@@ -48,6 +49,8 @@ public class VisualizarDadosProprietarioFragment extends Fragment {
     private RadioButton rbtnVendido;
     private RadioButton rbtnExclusividade;
     private RadioButton rbtnParticular;
+    private RadioButton rbtnNovo;
+    private RadioButton rbtnUsado;
 
 
     private List<TelefoneProprietario> telefonesProprietario;
@@ -71,12 +74,15 @@ public class VisualizarDadosProprietarioFragment extends Fragment {
         btnEditar = (Button) view.findViewById(R.id.btnEditar);
         rgrpSituacaoAnuncio1 = (RadioGroup) view.findViewById(R.id.rgrpSituacaoAnuncio1);
         rgrpSituacaoAnuncio2 = (RadioGroup) view.findViewById(R.id.rgrpSituacaoAnuncio2);
+        rgrpCondicaoImovel = (RadioGroup) view.findViewById(R.id.rgrpCondicaoImovel);
         rbtnPendente = (RadioButton) view.findViewById(R.id.rbtnPendente);
         rbtnAtualizar = (RadioButton) view.findViewById(R.id.rbtnAtualizar);
         rbtnOk = (RadioButton) view.findViewById(R.id.rbtnOk);
         rbtnVendido = (RadioButton) view.findViewById(R.id.rbtnVendido);
         rbtnExclusividade = (RadioButton) view.findViewById(R.id.rbtnExclusividade);
         rbtnParticular = (RadioButton) view.findViewById(R.id.rbtnParticular);
+        rbtnNovo = (RadioButton) view.findViewById(R.id.rbtnNovo);
+        rbtnUsado = (RadioButton) view.findViewById(R.id.rbtnUsado);
 
         edtNomeProprietario.setInputType(InputType.TYPE_NULL);
         edtCpfProprietario.setInputType(InputType.TYPE_NULL);
@@ -92,6 +98,8 @@ public class VisualizarDadosProprietarioFragment extends Fragment {
         rbtnVendido.setEnabled(false);
         rbtnExclusividade.setEnabled(false);
         rbtnParticular.setEnabled(false);
+        rbtnNovo.setEnabled(false);
+        rbtnUsado.setEnabled(false);
 
         telefonesProprietario = new ArrayList<>();
 
@@ -121,6 +129,19 @@ public class VisualizarDadosProprietarioFragment extends Fragment {
             lvTelefoneProprietario.setAdapter(telefoneProprietarioAdapter);
             lvTelefoneProprietario.setLayoutParams(parametrosListView());
             carregarSituacaoAnuncio();
+            carregarCondicaoImovel();
+        }
+    }
+
+    private void carregarCondicaoImovel(){
+        rgrpCondicaoImovel.clearCheck();
+        switch (VariaveisEstaticas.getImovelBusca().getCondicao_imovel()){
+            case 1:
+                rgrpCondicaoImovel.check(R.id.rbtnNovo);
+                break;
+            case 2 :
+                rgrpCondicaoImovel.check(R.id.rbtnUsado);
+                break;
         }
     }
 

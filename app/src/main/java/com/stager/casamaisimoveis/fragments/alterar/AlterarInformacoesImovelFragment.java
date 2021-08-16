@@ -158,46 +158,47 @@ public class AlterarInformacoesImovelFragment extends Fragment implements HttpRe
     private void avancarFormulario(){
         VariaveisEstaticas.getFragmentInterface().fecharTeclado();
 
-        if(tipoImovelSelecionado == null || (tipoImovelSelecionado != null && tipoImovelSelecionado.getId() == 0)){
-            Toast.makeText(getContext(), "Selecione o tipo do imóvel", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        if(VariaveisEstaticas.getImovelBusca().getSituacao_anuncio() != 4 && VariaveisEstaticas.getImovelBusca().getSituacao_anuncio() != 5){
+            if(tipoImovelSelecionado == null || (tipoImovelSelecionado != null && tipoImovelSelecionado.getId() == 0)){
+                Toast.makeText(getContext(), "Selecione o tipo do imóvel", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-        if(faseImovelSelecionado == null || (faseImovelSelecionado != null && faseImovelSelecionado.getId() == 0)){
-            Toast.makeText(getContext(), "Selecione a fase da obra", Toast.LENGTH_SHORT).show();
-            return;
-        }
+            if(faseImovelSelecionado == null || (faseImovelSelecionado != null && faseImovelSelecionado.getId() == 0)){
+                Toast.makeText(getContext(), "Selecione a fase da obra", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-        if(esgotoImovelSelecionado == null || (esgotoImovelSelecionado != null && esgotoImovelSelecionado.getId() == 0)){
-            Toast.makeText(getContext(), "Selecione o tipo de esgoto", Toast.LENGTH_SHORT).show();
-            return;
-        }
+            if(esgotoImovelSelecionado == null || (esgotoImovelSelecionado != null && esgotoImovelSelecionado.getId() == 0)){
+                Toast.makeText(getContext(), "Selecione o tipo de esgoto", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-        if(tipoRuaImovelSelecionado == null || (tipoRuaImovelSelecionado != null && tipoRuaImovelSelecionado.getId() == 0)){
-            Toast.makeText(getContext(), "Selecione o tipo de rua", Toast.LENGTH_SHORT).show();
-            return;
-        }
+            if(tipoRuaImovelSelecionado == null || (tipoRuaImovelSelecionado != null && tipoRuaImovelSelecionado.getId() == 0)){
+                Toast.makeText(getContext(), "Selecione o tipo de rua", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-        if(edtValor.getText().toString().trim().equals("")){
-            edtValor.setError("Digite o valor.");
-            return;
-        }
+            if(edtValor.getText().toString().trim().equals("")){
+                edtValor.setError("Digite o valor.");
+                return;
+            }
 
-        if(edtHonorario.getText().toString().trim().equals("")){
-            edtHonorario.setError("Digite a porcentagem do honorário.");
-            return;
-        }
+            if(edtHonorario.getText().toString().trim().equals("")){
+                edtHonorario.setError("Digite a porcentagem do honorário.");
+                return;
+            }
 
-        if(edtAreaTerreno.getText().toString().trim().equals("")){
-            edtAreaTerreno.setError("Digite a área do terreno.");
-            return;
-        }
+            if(edtAreaTerreno.getText().toString().trim().equals("")){
+                edtAreaTerreno.setError("Digite a área do terreno.");
+                return;
+            }
 
-        if(edtAreaConstruida.getText().toString().trim().equals("")){
-            edtAreaConstruida.setError("Digite a área construída.");
-            return;
+            if(edtAreaConstruida.getText().toString().trim().equals("")){
+                edtAreaConstruida.setError("Digite a área construída.");
+                return;
+            }
         }
-
 
         DadosImovel dadosImovel = VariaveisEstaticas.getImovelBusca().getDadosImovel();
 

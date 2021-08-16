@@ -42,7 +42,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_gravity="right"
-                    android:text="Avançar"
+                    android:text="Salvar"
                     android:layout_marginRight="10dp"
                     android:background="@drawable/selector_botao_topo_form"
                     android:textColor="#0D5ED9"

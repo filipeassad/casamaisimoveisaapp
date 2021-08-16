@@ -48,9 +48,11 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
     private ListView lvTelefoneProprietario;
     private RadioGroup rgrpSituacaoAnuncio1;
     private RadioGroup rgrpSituacaoAnuncio2;
+    private RadioGroup rgrpCondicaoImovel;
 
     private List<TelefoneProprietario> telefonesProprietario;
     private int situacaoAnuncioSelecionado = 0;
+    private int condicaoImovelSelecionado = 0;
 
     private TelefoneProprietarioAdapterInterface telefoneProprietarioAdapterInterface;
     private HttpResponseInterface httpResponseInterface;
@@ -76,6 +78,7 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
         lvTelefoneProprietario = (ListView) view.findViewById(R.id.lvTelefoneProprietario);
         rgrpSituacaoAnuncio1 = (RadioGroup) view.findViewById(R.id.rgrpSituacaoAnuncio1);
         rgrpSituacaoAnuncio2 = (RadioGroup) view.findViewById(R.id.rgrpSituacaoAnuncio2);
+        rgrpCondicaoImovel = (RadioGroup) view.findViewById(R.id.rgrpCondicaoImovel);
 
         edtCpfProprietario.addTextChangedListener(MascaraEditText.mask(edtCpfProprietario, MascaraEditText.FORMAT_CPF));
         edtTelefoneProprietario.addTextChangedListener(MascaraEditText.mask(edtTelefoneProprietario, MascaraEditText.FORMAT_FONE));
@@ -125,6 +128,19 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
             lvTelefoneProprietario.setAdapter(telefoneProprietarioAdapter);
             lvTelefoneProprietario.setLayoutParams(parametrosListView());
             carregarSituacaoAnuncio();
+            carregarCondicaoImovel();
+        }
+    }
+
+    private void carregarCondicaoImovel(){
+        rgrpCondicaoImovel.clearCheck();
+        switch (VariaveisEstaticas.getImovelBusca().getCondicao_imovel()){
+            case 1:
+                rgrpCondicaoImovel.check(R.id.rbtnNovo);
+                break;
+            case 2 :
+                rgrpCondicaoImovel.check(R.id.rbtnUsado);
+                break;
         }
     }
 
@@ -228,6 +244,20 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
                 isChecking = true;
             }
         });
+
+        rgrpCondicaoImovel.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                switch(checkedId){
+                    case R.id.rbtnNovo:
+                        condicaoImovelSelecionado = 1;
+                        break;
+                    case R.id.rbtnUsado:
+                        condicaoImovelSelecionado = 2;
+                        break;
+                }
+            }
+        });
     }
 
     private void adicionarTelefone(){
@@ -254,9 +284,12 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
     public void avancarFormulario(){
         VariaveisEstaticas.getFragmentInterface().fecharTeclado();
 
-        if(edtNomeProprietario.getText().toString().trim().equals("")){
-            edtNomeProprietario.setError("Digite o nome.");
-            return;
+
+        if(situacaoAnuncioSelecionado != 4 && situacaoAnuncioSelecionado != 5){
+            if(edtNomeProprietario.getText().toString().trim().equals("")){
+                edtNomeProprietario.setError("Digite o nome.");
+                return;
+            }
         }
 
         Proprietario proprietarioAltaracao = VariaveisEstaticas.getImovelBusca().getProprietario();
@@ -345,6 +378,8 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
         Imovel imovel = VariaveisEstaticas.getImovelBusca();
 
         imovel.setSituacao_anuncio(situacaoAnuncioSelecionado);
+        imovel.setCondicao_imovel(condicaoImovelSelecionado);
+
         PutHttpComHeaderAsyncTask putHttpComHeaderAsyncTask = new PutHttpComHeaderAsyncTask(getContext(),
                 imovel.gerarImovelSituacaoAnuncioJson(),
                 httpResponseInterface,

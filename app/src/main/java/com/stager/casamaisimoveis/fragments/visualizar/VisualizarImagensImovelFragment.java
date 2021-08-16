@@ -84,7 +84,8 @@ public class VisualizarImagensImovelFragment extends Fragment implements HttpRes
         btnAvancar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VariaveisEstaticas.getFragmentInterface().alterarFragment("VisualizarVisitaImovel");
+                VariaveisEstaticas.getFragmentInterface().alterarFragment("BuscarImovel");
+                //VariaveisEstaticas.getFragmentInterface().alterarFragment("VisualizarVisitaImovel");
             }
         });
 

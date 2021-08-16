@@ -18,23 +18,38 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.stager.casamaisimoveis.R;
+import com.stager.casamaisimoveis.api.PostHttpComHeaderAsyncTask;
+import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
 import com.stager.casamaisimoveis.interfaces.ImagemImovelInterface;
+import com.stager.casamaisimoveis.models.DadosImovel;
+import com.stager.casamaisimoveis.models.EnderecoImovel;
+import com.stager.casamaisimoveis.models.ImagemUpload;
+import com.stager.casamaisimoveis.models.Proprietario;
+import com.stager.casamaisimoveis.models.VisitaImovel;
+import com.stager.casamaisimoveis.utilitarios.FerramentasBasicas;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class CadastrarImagensImovelFragment extends Fragment implements ImagemImovelInterface {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class CadastrarImagensImovelFragment extends Fragment implements ImagemImovelInterface, HttpResponseInterface {
 
     private Button btnVoltar;
     private Button btnAvancar;
     private LinearLayout llImagensImovel;
     private Button btnAdicionarImagens;
     private Button btnExcluirTudo;
+    private HttpResponseInterface httpResponseInterface;
+    private String API_IMOVEL = "api/cadastrarImovel";
+    private int imovelId;
 
     private final int PICK_IMAGES = 26;
 
@@ -52,6 +67,7 @@ public class CadastrarImagensImovelFragment extends Fragment implements ImagemIm
         btnAdicionarImagens = (Button) view.findViewById(R.id.btnAdicionarImagens);
         btnExcluirTudo = (Button) view.findViewById(R.id.btnExcluirTudo);
 
+        httpResponseInterface = this;
         imagemImovelInterface = this;
         VariaveisEstaticas.setImagemImovelInterface(imagemImovelInterface);
         eventosBotoes();
@@ -110,13 +126,50 @@ public class CadastrarImagensImovelFragment extends Fragment implements ImagemIm
     }
 
     private void avancarFormulario(){
-        if(imagensSelecionadas.size() == 0){
+        /*if(imagensSelecionadas.size() == 0){
             Toast.makeText(getContext(), "Insira uma imagem do imóvel", Toast.LENGTH_SHORT).show();
             return;
-        }
+        }*/
         VariaveisEstaticas.setImagensImovelCadastro(imagensSelecionadas);
-        VariaveisEstaticas.getFragmentInterface().alterarFragment("CadastrarVisitaImovel");
+        salvarImovel();
+
+        //VariaveisEstaticas.getFragmentInterface().alterarFragment("CadastrarVisitaImovel");
     }
+
+    private void salvarImovel(){
+
+        VisitaImovel visitaImovel = new VisitaImovel(FerramentasBasicas.converterDataParaString(new Date(), "dd/MM/yyyy"),
+                null,
+                VariaveisEstaticas.getCaptador().getId());
+
+        VariaveisEstaticas.setVisitaImovelCadastro(visitaImovel);
+
+        Proprietario proprietario = VariaveisEstaticas.getProprietarioCadastro();
+        EnderecoImovel enderecoImovel = VariaveisEstaticas.getEnderecoImovelCadastro();
+        DadosImovel dadosImovel = VariaveisEstaticas.getDadosImovelCadastro();
+
+        dadosImovel.setComposicoes(VariaveisEstaticas.getComposicoesImovelCadastro());
+        List<VisitaImovel> visitasImoveis = new ArrayList<>();
+        visitasImoveis.add(VariaveisEstaticas.getVisitaImovelCadastro());
+        dadosImovel.setVisitasImovel(visitasImoveis);
+
+        VariaveisEstaticas.getImovelCadastro().preencherImovel(enderecoImovel, proprietario, dadosImovel);
+        PostHttpComHeaderAsyncTask postHttpComHeaderAsyncTask;
+        if(VariaveisEstaticas.getEnderecoRotaSelecionado() != null){
+            postHttpComHeaderAsyncTask = new PostHttpComHeaderAsyncTask(getContext(),
+                    VariaveisEstaticas.getImovelCadastro().gerarImovelComEnderecoRotaJson(VariaveisEstaticas.getEnderecoRotaSelecionado()),
+                    httpResponseInterface,
+                    API_IMOVEL);
+        }else{
+            postHttpComHeaderAsyncTask = new PostHttpComHeaderAsyncTask(getContext(),
+                    VariaveisEstaticas.getImovelCadastro().gerarImovelJson(),
+                    httpResponseInterface,
+                    API_IMOVEL);
+        }
+
+        postHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_IMOVEL);
+    }
+
 
     @Override
     public void retornoSelecaoImagens(List<Bitmap> imagens) {
@@ -188,5 +241,61 @@ public class CadastrarImagensImovelFragment extends Fragment implements ImagemIm
                         adicionarImagens();
                     }})
                 .setNegativeButton("Não", null).show();
+    }
+
+    private void retornoImovel(JSONObject resposta) {
+        if (resposta.has("imovelId")) {
+            try {
+                imovelId = resposta.getInt("imovelId");
+
+                for (Bitmap imagem : VariaveisEstaticas.getImagensImovelCadastro()) {
+                    ImagemUpload imagemUpload = new ImagemUpload(imovelId, imagem);
+                    VariaveisEstaticas.getImagensUpload().add(imagemUpload);
+                }
+
+                Toast.makeText(getContext(), "Imóvel cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+                VariaveisEstaticas.setProprietarioCadastro(null);
+                VariaveisEstaticas.setEnderecoImovelCadastro(null);
+                VariaveisEstaticas.setDadosImovelCadastro(null);
+                VariaveisEstaticas.setComposicoesImovelCadastro(null);
+                VariaveisEstaticas.setVisitaImovelCadastro(null);
+                VariaveisEstaticas.setEnderecoRotaSelecionado(null);
+                VariaveisEstaticas.setImagensImovelCadastro(null);
+                VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarDadosProprietario");
+                VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarEnderecoImovel");
+                VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarDadosAnuncio");
+                VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarInformacoesImovel");
+                VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarComposicaoImovel");
+                VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarImagensImovel");
+                VariaveisEstaticas.getFragmentInterface().removerFragment("CadastrarVisitaImovel");
+                VariaveisEstaticas.getFragmentInterface().iniciarUploadImagens();
+
+                VariaveisEstaticas.getFragmentInterface().alterarFragment("TelaInicial");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void retornoJsonObject(JSONObject jsonObject, String rotaApi) {
+        try {
+            if(jsonObject.has("erro")){
+                Toast.makeText(getContext(), jsonObject.getString("erro"), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if(rotaApi.equals(API_IMOVEL))
+                retornoImovel(jsonObject);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void retornoImagemBitmap(Bitmap imagem, String rotaAPI) {
+
     }
 }

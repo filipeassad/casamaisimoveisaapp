@@ -13,6 +13,7 @@ public class Imovel {
     private Integer proprietario_id;
     private Integer dados_imovel_id;
     private Integer situacao_anuncio;
+    private Integer condicao_imovel;
 
     private EnderecoImovel enderecoImovel;
     private Proprietario proprietario;
@@ -30,13 +31,15 @@ public class Imovel {
             this.dadosImovel = resposta.has("dadosImovel") ? new DadosImovel(resposta.getJSONObject("dadosImovel")) : null;
             this.imagensImovel = resposta.has("imagensImovel") ? ImagemImovel.gerarListaImagemImovelBuscaImovel(resposta.getJSONArray("imagensImovel")) : null;
             this.situacao_anuncio = resposta.has("situacao_anuncio") ? resposta.getInt("situacao_anuncio") : 0;
+            this.condicao_imovel = resposta.has("condicao_imovel") && resposta.getString("condicao_imovel") != "null" ? resposta.getInt("condicao_imovel")  : 1;
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    public Imovel(Integer situacao_anuncio) {
+    public Imovel(Integer situacao_anuncio, Integer condicao_imovel) {
         this.situacao_anuncio = situacao_anuncio;
+        this.condicao_imovel = condicao_imovel;
     }
 
     public Imovel(EnderecoImovel enderecoImovel, Proprietario proprietario, DadosImovel dadosImovel) {
@@ -117,6 +120,14 @@ public class Imovel {
         this.situacao_anuncio = situacao_anuncio;
     }
 
+    public Integer getCondicao_imovel() {
+        return condicao_imovel;
+    }
+
+    public void setCondicao_imovel(Integer condicao_imovel) {
+        this.condicao_imovel = condicao_imovel;
+    }
+
     public void preencherImovel(EnderecoImovel enderecoImovel, Proprietario proprietario, DadosImovel dadosImovel){
         this.enderecoImovel = enderecoImovel;
         this.proprietario = proprietario;
@@ -131,6 +142,7 @@ public class Imovel {
             jsonObject.put("proprietarioImovel", this.proprietario.gerarProprietarioJSON());
             jsonObject.put("dadosImovel", this.dadosImovel.gerarDadosImovelJson());
             jsonObject.put("situacao_anuncio", this.getSituacao_anuncio());
+            jsonObject.put("condicao_imovel", this.getCondicao_imovel());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -146,6 +158,7 @@ public class Imovel {
             jsonObject.put("proprietario_id", this.proprietario_id);
             jsonObject.put("dados_imovel_id", this.dados_imovel_id);
             jsonObject.put("situacao_anuncio", this.getSituacao_anuncio());
+            jsonObject.put("condicao_imovel", this.getCondicao_imovel());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -162,6 +175,7 @@ public class Imovel {
             jsonObject.put("dadosImovel", this.dadosImovel.gerarDadosImovelJson());
             jsonObject.put("enderecoRota",enderecoRota.gerarEnderecoRotaJSON());
             jsonObject.put("situacao_anuncio", this.getSituacao_anuncio());
+            jsonObject.put("condicao_imovel", this.getCondicao_imovel());
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -122,9 +122,11 @@ public class AlterarComposicaoImovelFragment extends Fragment implements HttpRes
     private void avancarFormulario(){
         VariaveisEstaticas.getFragmentInterface().fecharTeclado();
 
-        if(composicoesImovel.size() == 0){
-            Toast.makeText(getContext(), "Adicione pelo menos uma composição", Toast.LENGTH_SHORT).show();
-            return;
+        if(VariaveisEstaticas.getImovelBusca().getSituacao_anuncio() != 4 && VariaveisEstaticas.getImovelBusca().getSituacao_anuncio() != 5){
+            if(composicoesImovel.size() == 0){
+                Toast.makeText(getContext(), "Adicione pelo menos uma composição", Toast.LENGTH_SHORT).show();
+                return;
+            }
         }
 
         DadosImovel dadosImovel = VariaveisEstaticas.getImovelBusca().getDadosImovel();
