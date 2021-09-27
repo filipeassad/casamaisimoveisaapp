@@ -36,6 +36,7 @@ public class VisualizarDadosProprietarioFragment extends Fragment {
     private EditText edtObservacaoCoordenador;
     private EditText edtTelefoneProprietario;
     private Button btnAdicionar;
+    private Button btnBuscarProprietario;
     private TextView txtTelefone;
     private ListView lvTelefoneProprietario;
     private Button btnEditar;
@@ -62,6 +63,7 @@ public class VisualizarDadosProprietarioFragment extends Fragment {
 
         btnVoltar = (Button) view.findViewById(R.id.btnVoltar);
         btnAvancar = (Button) view.findViewById(R.id.btnAvancar);
+        btnBuscarProprietario = (Button) view.findViewById(R.id.btnBuscarProprietario);
         btnAvancarSecundario = (Button) view.findViewById(R.id.btnAvancarSecundario);
 
         edtNomeProprietario = (EditText) view.findViewById(R.id.edtNomeProprietario);
@@ -90,6 +92,7 @@ public class VisualizarDadosProprietarioFragment extends Fragment {
 
         edtTelefoneProprietario.setVisibility(View.GONE);
         btnAdicionar.setVisibility(View.GONE);
+        btnBuscarProprietario.setVisibility(View.GONE);
         btnEditar.setVisibility(View.VISIBLE);
 
         rbtnPendente.setEnabled(false);

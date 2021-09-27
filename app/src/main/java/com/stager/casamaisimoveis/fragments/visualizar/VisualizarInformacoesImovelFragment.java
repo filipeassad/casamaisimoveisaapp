@@ -38,6 +38,7 @@ public class VisualizarInformacoesImovelFragment extends Fragment {
     private EditText edtAreaTerreno;
     private EditText edtAreaConstruida;
     private EditText edtObservacao;
+    private EditText edtCaracteristicas;
     private Button btnEditar;
 
     private List<ItemSpinner> tiposImovel;
@@ -64,6 +65,7 @@ public class VisualizarInformacoesImovelFragment extends Fragment {
         edtAreaTerreno = (EditText) view.findViewById(R.id.edtAreaTerreno);
         edtAreaConstruida = (EditText) view.findViewById(R.id.edtAreaConstruida);
         edtObservacao = (EditText) view.findViewById(R.id.edtObservacao);
+        edtCaracteristicas = (EditText) view.findViewById(R.id.edtCaracteristicas);
         btnEditar = (Button) view.findViewById(R.id.btnEditar);
 
         edtValor.setInputType(InputType.TYPE_NULL);
@@ -71,6 +73,7 @@ public class VisualizarInformacoesImovelFragment extends Fragment {
         edtAreaTerreno.setInputType(InputType.TYPE_NULL);
         edtAreaConstruida.setInputType(InputType.TYPE_NULL);
         edtObservacao.setInputType(InputType.TYPE_NULL);
+        edtCaracteristicas.setInputType(InputType.TYPE_NULL);
         btnEditar.setVisibility(View.VISIBLE);
 
         edtValor.addTextChangedListener(new MoneyTextWatcher(edtValor));
@@ -106,6 +109,7 @@ public class VisualizarInformacoesImovelFragment extends Fragment {
             edtAreaTerreno.setText(dadosImovel.getArea_terreno() != null ? dadosImovel.getArea_terreno(): "");
             edtAreaConstruida.setText(dadosImovel.getArea_construida() != null ? dadosImovel.getArea_construida(): "");
             edtObservacao.setText(dadosImovel.getObservacao() != null ? dadosImovel.getObservacao(): "");
+            edtCaracteristicas.setText(dadosImovel.getCaracteristicas() != null ? dadosImovel.getCaracteristicas(): "");
         }
     }
 

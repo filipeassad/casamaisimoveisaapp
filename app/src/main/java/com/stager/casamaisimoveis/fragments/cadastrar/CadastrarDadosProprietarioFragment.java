@@ -1,6 +1,8 @@
 package com.stager.casamaisimoveis.fragments.cadastrar;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,8 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +19,10 @@ import androidx.fragment.app.Fragment;
 
 import com.stager.casamaisimoveis.R;
 import com.stager.casamaisimoveis.adapters.TelefoneProprietarioAdapter;
+import com.stager.casamaisimoveis.alertas.AlertaBuscaProprietariosImovel;
+import com.stager.casamaisimoveis.alertas.AlertaListaProprietariosImovel;
+import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
+import com.stager.casamaisimoveis.interfaces.ProprietarioInterface;
 import com.stager.casamaisimoveis.interfaces.TelefoneProprietarioAdapterInterface;
 import com.stager.casamaisimoveis.models.Imovel;
 import com.stager.casamaisimoveis.models.Proprietario;
@@ -24,10 +30,13 @@ import com.stager.casamaisimoveis.models.TelefoneProprietario;
 import com.stager.casamaisimoveis.utilitarios.MascaraEditText;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class CadastrarDadosProprietarioFragment extends Fragment implements TelefoneProprietarioAdapterInterface {
+public class CadastrarDadosProprietarioFragment extends Fragment implements TelefoneProprietarioAdapterInterface, HttpResponseInterface, ProprietarioInterface {
 
     private Button btnVoltar;
     private Button btnAvancar;
@@ -37,6 +46,8 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
     private EditText edtObservacaoCoordenador;
     private Button btnAdicionar;
     private Button btnAvancarSecundario;
+    private Button btnBuscarProprietario;
+    private Button btnRemoverProprietarioSelecionado;
     private ListView lvTelefoneProprietario;
     private RadioGroup rgrpSituacaoAnuncio1;
     private RadioGroup rgrpSituacaoAnuncio2;
@@ -47,7 +58,10 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
     private int condicaoImovelSelecionado = 0;
     private boolean isChecking = true;
 
+    private Proprietario proprietarioSelecionado = null;
+
     private TelefoneProprietarioAdapterInterface telefoneProprietarioAdapterInterface;
+    private HttpResponseInterface httpResponseInterface = this;
 
     @Nullable
     @Override
@@ -63,6 +77,8 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
         edtObservacaoCoordenador = (EditText) view.findViewById(R.id.edtObservacaoCoordenador);
         btnAdicionar = (Button) view.findViewById(R.id.btnAdicionar);
         btnAvancarSecundario = (Button) view.findViewById(R.id.btnAvancarSecundario);
+        btnBuscarProprietario = (Button) view.findViewById(R.id.btnBuscarProprietario);
+        btnRemoverProprietarioSelecionado = (Button) view.findViewById(R.id.btnRemoverProprietarioSelecionado);
         lvTelefoneProprietario = (ListView) view.findViewById(R.id.lvTelefoneProprietario);
         rgrpSituacaoAnuncio1 = (RadioGroup) view.findViewById(R.id.rgrpSituacaoAnuncio1);
         rgrpSituacaoAnuncio2 = (RadioGroup) view.findViewById(R.id.rgrpSituacaoAnuncio2);
@@ -113,8 +129,10 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
                     telefoneProprietarioAdapterInterface);
             lvTelefoneProprietario.setAdapter(telefoneProprietarioAdapter);
             lvTelefoneProprietario.setLayoutParams(parametrosListView());
-            carregarSituacaoAnuncio();
-            carregarCondicaoImovel();
+            if(VariaveisEstaticas.getImovelCadastro() != null){
+                carregarSituacaoAnuncio();
+                carregarCondicaoImovel();
+            }
         }
     }
 
@@ -134,7 +152,7 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
 
         rgrpSituacaoAnuncio1.clearCheck();
         rgrpSituacaoAnuncio2.clearCheck();
-        switch (VariaveisEstaticas.getImovelBusca().getSituacao_anuncio()){
+        switch (VariaveisEstaticas.getImovelCadastro().getSituacao_anuncio()){
             case 0:
                 rgrpSituacaoAnuncio1.check(R.id.rbtnPendente);
                 break;
@@ -244,6 +262,21 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
                 }
             }
         });
+
+        btnBuscarProprietario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertaBuscaProprietariosImovel.alertaProprietaiosImovel(getContext(), httpResponseInterface);
+            }
+        });
+
+        btnRemoverProprietarioSelecionado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                proprietarioSelecionado = null;
+                btnRemoverProprietarioSelecionado.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void adicionarTelefone(){
@@ -283,6 +316,9 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
                 edtCpfProprietario.getText().toString(),
                 edtObservacaoCoordenador.getText().toString(),
                 telefonesProprietario);
+
+        if(proprietarioSelecionado != null)
+            proprietario.setId(proprietarioSelecionado.getId());
         VariaveisEstaticas.setProprietarioCadastro(proprietario);
         VariaveisEstaticas.getFragmentInterface().alterarFragment("CadastrarEnderecoImovel");
     }
@@ -303,5 +339,47 @@ public class CadastrarDadosProprietarioFragment extends Fragment implements Tele
         layoutParams.setMargins(0,50,0,0);
 
         return layoutParams;
+    }
+
+    @Override
+    public void retornoJsonObject(JSONObject jsonObject, String rotaApi) {
+        try {
+            if(jsonObject.has("erro")){
+                Toast.makeText(getContext(), jsonObject.getString("erro"), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if(rotaApi.equals("api/bucarProprietario"))
+                retornoProprietarios(jsonObject);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void retornoProprietarios(JSONObject proprietarios){
+        AlertaListaProprietariosImovel.alertaListaProprietaiosImovel(getContext(), this, Proprietario.gerarProprietarios(proprietarios));
+    }
+
+    @Override
+    public void retornoImagemBitmap(Bitmap imagem, String rotaAPI) {
+
+    }
+
+    @Override
+    public void selecionarProprietario(Proprietario proprietario) {
+
+        proprietarioSelecionado = proprietario;
+        edtNomeProprietario.setText(proprietarioSelecionado.getNome());
+        edtCpfProprietario.setText(proprietarioSelecionado.getCpf());
+
+        telefonesProprietario = proprietario.getTelefones();
+        TelefoneProprietarioAdapter telefoneProprietarioAdapter = new TelefoneProprietarioAdapter(getContext(),
+                R.layout.adapter_telefone_item,
+                telefonesProprietario,
+                telefoneProprietarioAdapterInterface);
+        lvTelefoneProprietario.setAdapter(telefoneProprietarioAdapter);
+        lvTelefoneProprietario.setLayoutParams(parametrosListView());
+        btnRemoverProprietarioSelecionado.setVisibility(View.VISIBLE);
     }
 }

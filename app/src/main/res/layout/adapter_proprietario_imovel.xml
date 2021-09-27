@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:gravity="left|center">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/usuario"
+        app:civ_border_width="1dp"
+        app:civ_border_color="#ffffff"
+        app:civ_circle_background_color="#ffffff"
+        android:layout_marginLeft="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="left|center"
+        android:layout_marginLeft="10dp"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/txtNomeProprietarioAdapter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nome: Filipe Assad Baraúna"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="#0D5ED9">
+        </TextView>
+
+        <TextView
+            android:id="@+id/txtCPFProprietarioAdapter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CPF: 000.000.000-00"
+            android:textSize="10sp"
+            android:textColor="#0D5ED9">
+        </TextView>
+
+        <TextView
+            android:id="@+id/txtTelefonesProprietarioAdapter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Telefone(s): (00) 00000-0000"
+            android:textSize="10sp"
+            android:textColor="#0D5ED9">
+        </TextView>
+
+    </LinearLayout>
+
+</LinearLayout>

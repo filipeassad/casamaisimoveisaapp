@@ -39,6 +39,7 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
     private EditText edtAreaTerreno;
     private EditText edtAreaConstruida;
     private EditText edtObservacao;
+    private EditText edtCaracteristicas;
 
     private List<ItemSpinner> tiposImovel;
     private List<ItemSpinner> fasesObra;
@@ -69,6 +70,7 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
         edtAreaTerreno = (EditText) view.findViewById(R.id.edtAreaTerreno);
         edtAreaConstruida = (EditText) view.findViewById(R.id.edtAreaConstruida);
         edtObservacao = (EditText) view.findViewById(R.id.edtObservacao);
+        edtCaracteristicas = (EditText) view.findViewById(R.id.edtCaracteristicas);
 
         edtValor.addTextChangedListener(new MoneyTextWatcher(edtValor));
         edtHonorario.addTextChangedListener(new PorcentagemTextWatch(edtHonorario));
@@ -92,7 +94,8 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
                     edtHonorario.getText().toString(),
                     edtAreaTerreno.getText().toString(),
                     edtAreaConstruida.getText().toString(),
-                    edtObservacao.getText().toString());
+                    edtObservacao.getText().toString(),
+                    edtCaracteristicas.getText().toString());
         }else{
             DadosImovel dadosImovel = new DadosImovel(tipoImovelSelecionado.getId(),
                     faseImovelSelecionado.getId(),
@@ -102,7 +105,8 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
                     edtHonorario.getText().toString(),
                     edtAreaTerreno.getText().toString(),
                     edtAreaConstruida.getText().toString(),
-                    edtObservacao.getText().toString());
+                    edtObservacao.getText().toString(),
+                    edtCaracteristicas.getText().toString());
             VariaveisEstaticas.setDadosImovelCadastro(dadosImovel);
         }
     }
@@ -126,6 +130,7 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
             edtAreaTerreno.setText(dadosImovel.getArea_terreno() != null ? dadosImovel.getArea_terreno(): "");
             edtAreaConstruida.setText(dadosImovel.getArea_construida() != null ? dadosImovel.getArea_construida(): "");
             edtObservacao.setText(dadosImovel.getObservacao() != null ? dadosImovel.getObservacao(): "");
+            edtCaracteristicas.setText(dadosImovel.getCaracteristicas() != null ? dadosImovel.getCaracteristicas(): "");
         }
     }
 
@@ -206,7 +211,8 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
                     edtHonorario.getText().toString(),
                     edtAreaTerreno.getText().toString(),
                     edtAreaConstruida.getText().toString(),
-                    edtObservacao.getText().toString());
+                    edtObservacao.getText().toString(),
+                    edtCaracteristicas.getText().toString());
         }else{
             DadosImovel dadosImovel = new DadosImovel(tipoImovelSelecionado.getId(),
                     faseImovelSelecionado.getId(),
@@ -216,7 +222,8 @@ public class CadastrarInformacoesImovelFragment extends Fragment {
                     edtHonorario.getText().toString(),
                     edtAreaTerreno.getText().toString(),
                     edtAreaConstruida.getText().toString(),
-                    edtObservacao.getText().toString());
+                    edtObservacao.getText().toString(),
+                    edtCaracteristicas.getText().toString());
             VariaveisEstaticas.setDadosImovelCadastro(dadosImovel);
         }
 

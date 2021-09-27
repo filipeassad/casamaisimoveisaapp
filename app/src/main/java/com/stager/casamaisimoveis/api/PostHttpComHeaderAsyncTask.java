@@ -8,8 +8,10 @@ import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
 import com.stager.casamaisimoveis.utilitarios.FerramentasHttp;
 import com.stager.casamaisimoveis.utilitarios.VariaveisEstaticas;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -66,12 +68,17 @@ public class PostHttpComHeaderAsyncTask extends AsyncTask<String, String, JSONOb
             os.close();
 
             httpResponse = conn.getResponseCode();
-            JSONObject response;
+            JSONObject response = new JSONObject();
 
             if(httpResponse == HttpURLConnection.HTTP_OK || httpResponse == 201){
 
                 String responseString = ferramentasHttp.readStream(conn.getInputStream());
-                response = new JSONObject(responseString);
+                Object dataJson = new JSONTokener(responseString).nextValue();
+                if(dataJson instanceof JSONArray)
+                    response.put("array", new JSONArray(responseString));
+                else
+                    response =  new JSONObject(responseString);
+
                 return response;
 
             }else if(httpResponse == HttpURLConnection.HTTP_UNAUTHORIZED){

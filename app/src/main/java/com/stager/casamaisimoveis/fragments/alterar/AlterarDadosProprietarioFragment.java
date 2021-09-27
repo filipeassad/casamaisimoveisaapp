@@ -19,8 +19,11 @@ import androidx.fragment.app.Fragment;
 
 import com.stager.casamaisimoveis.R;
 import com.stager.casamaisimoveis.adapters.TelefoneProprietarioAdapter;
+import com.stager.casamaisimoveis.alertas.AlertaBuscaProprietariosImovel;
+import com.stager.casamaisimoveis.alertas.AlertaListaProprietariosImovel;
 import com.stager.casamaisimoveis.api.PutHttpComHeaderAsyncTask;
 import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
+import com.stager.casamaisimoveis.interfaces.ProprietarioInterface;
 import com.stager.casamaisimoveis.interfaces.TelefoneProprietarioAdapterInterface;
 import com.stager.casamaisimoveis.models.Imovel;
 import com.stager.casamaisimoveis.models.Proprietario;
@@ -35,11 +38,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlterarDadosProprietarioFragment extends Fragment implements TelefoneProprietarioAdapterInterface, HttpResponseInterface {
+public class AlterarDadosProprietarioFragment extends Fragment implements TelefoneProprietarioAdapterInterface, HttpResponseInterface, ProprietarioInterface {
 
     private Button btnVoltar;
     private Button btnAvancar;
     private Button btnAvancarSecundario;
+    private Button btnBuscarProprietario;
+    private Button btnRemoverProprietarioSelecionado;
     private EditText edtNomeProprietario;
     private EditText edtCpfProprietario;
     private EditText edtObservacaoCoordenador;
@@ -60,6 +65,7 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
     private String API_ALTERAR_PROPRIETARIO = "api/proprietario";
     private String API_ALTERAR_IMOVEL = "api/imovel";
     private boolean isChecking = true;
+    private Proprietario proprietarioSelecionado = null;
 
     @Nullable
     @Override
@@ -69,6 +75,8 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
         btnVoltar = (Button) view.findViewById(R.id.btnVoltar);
         btnAvancar = (Button) view.findViewById(R.id.btnAvancar);
         btnAvancarSecundario = (Button) view.findViewById(R.id.btnAvancarSecundario);
+        btnBuscarProprietario = (Button) view.findViewById(R.id.btnBuscarProprietario);
+        btnRemoverProprietarioSelecionado = (Button) view.findViewById(R.id.btnRemoverProprietarioSelecionado);
 
         edtNomeProprietario = (EditText) view.findViewById(R.id.edtNomeProprietario);
         edtCpfProprietario = (EditText) view.findViewById(R.id.edtCpfProprietario);
@@ -115,7 +123,7 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
 
         if(VariaveisEstaticas.getImovelBusca() != null){
             Proprietario proprietario = VariaveisEstaticas.getImovelBusca().getProprietario();
-
+            proprietarioSelecionado = VariaveisEstaticas.getImovelBusca().getProprietario();
             edtNomeProprietario.setText(proprietario.getNome());
             edtCpfProprietario.setText(proprietario.getCpf());
             edtObservacaoCoordenador.setText(proprietario.getObservacao_coordenador());
@@ -258,6 +266,21 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
                 }
             }
         });
+
+        btnBuscarProprietario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertaBuscaProprietariosImovel.alertaProprietaiosImovel(getContext(), httpResponseInterface);
+            }
+        });
+
+        btnRemoverProprietarioSelecionado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                proprietarioSelecionado = null;
+                btnRemoverProprietarioSelecionado.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void adicionarTelefone(){
@@ -284,7 +307,6 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
     public void avancarFormulario(){
         VariaveisEstaticas.getFragmentInterface().fecharTeclado();
 
-
         if(situacaoAnuncioSelecionado != 4 && situacaoAnuncioSelecionado != 5){
             if(edtNomeProprietario.getText().toString().trim().equals("")){
                 edtNomeProprietario.setError("Digite o nome.");
@@ -294,13 +316,22 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
 
         Proprietario proprietarioAltaracao = VariaveisEstaticas.getImovelBusca().getProprietario();
 
+        if(proprietarioSelecionado != null)
+            proprietarioAltaracao.setId(proprietarioSelecionado.getId());
+
         proprietarioAltaracao.setNome(edtNomeProprietario.getText().toString());
         proprietarioAltaracao.setCpf(edtCpfProprietario.getText().toString());
         proprietarioAltaracao.setObservacao_coordenador(edtObservacaoCoordenador.getText().toString());
         proprietarioAltaracao.setTelefones(telefonesProprietario);
 
+        JSONObject proprietarioEnviar = proprietarioAltaracao.gerarProprietarioJSON();
+        try {
+            proprietarioEnviar.put("imovel_id", VariaveisEstaticas.getImovelBusca().getId());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         PutHttpComHeaderAsyncTask putHttpComHeaderAsyncTask = new PutHttpComHeaderAsyncTask(getContext(),
-                proprietarioAltaracao.gerarProprietarioJSON(),
+                proprietarioEnviar,
                 httpResponseInterface,
                 API_ALTERAR_PROPRIETARIO);
 
@@ -337,10 +368,16 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
                 retornoAlteracaoProprietario(jsonObject);
             if(rotaApi.equals(API_ALTERAR_IMOVEL))
                 retornoAlteracaoImovel(jsonObject);
+            if(rotaApi.equals("api/bucarProprietario"))
+                retornoProprietarios(jsonObject);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void retornoProprietarios(JSONObject proprietarios){
+        AlertaListaProprietariosImovel.alertaListaProprietaiosImovel(getContext(), this, Proprietario.gerarProprietarios(proprietarios));
     }
 
     @Override
@@ -386,5 +423,21 @@ public class AlterarDadosProprietarioFragment extends Fragment implements Telefo
                 API_ALTERAR_IMOVEL);
 
         putHttpComHeaderAsyncTask.execute(FerramentasBasicas.getURL() + API_ALTERAR_IMOVEL + "/" + imovel.getId());
+    }
+
+    @Override
+    public void selecionarProprietario(Proprietario proprietario) {
+        proprietarioSelecionado = proprietario;
+        edtNomeProprietario.setText(proprietarioSelecionado.getNome());
+        edtCpfProprietario.setText(proprietarioSelecionado.getCpf());
+
+        telefonesProprietario = proprietario.getTelefones();
+        TelefoneProprietarioAdapter telefoneProprietarioAdapter = new TelefoneProprietarioAdapter(getContext(),
+                R.layout.adapter_telefone_item,
+                telefonesProprietario,
+                telefoneProprietarioAdapterInterface);
+        lvTelefoneProprietario.setAdapter(telefoneProprietarioAdapter);
+        lvTelefoneProprietario.setLayoutParams(parametrosListView());
+        btnRemoverProprietarioSelecionado.setVisibility(View.VISIBLE);
     }
 }

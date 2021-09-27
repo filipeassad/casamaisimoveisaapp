@@ -46,6 +46,7 @@ public class AlterarInformacoesImovelFragment extends Fragment implements HttpRe
     private EditText edtAreaTerreno;
     private EditText edtAreaConstruida;
     private EditText edtObservacao;
+    private EditText edtCaracteristicas;
 
     private List<ItemSpinner> tiposImovel;
     private List<ItemSpinner> fasesObra;
@@ -79,6 +80,7 @@ public class AlterarInformacoesImovelFragment extends Fragment implements HttpRe
         edtAreaTerreno = (EditText) view.findViewById(R.id.edtAreaTerreno);
         edtAreaConstruida = (EditText) view.findViewById(R.id.edtAreaConstruida);
         edtObservacao = (EditText) view.findViewById(R.id.edtObservacao);
+        edtCaracteristicas = (EditText) view.findViewById(R.id.edtCaracteristicas);
 
         edtValor.addTextChangedListener(new MoneyTextWatcher(edtValor));
         edtHonorario.addTextChangedListener(new PorcentagemTextWatch(edtHonorario));
@@ -108,6 +110,7 @@ public class AlterarInformacoesImovelFragment extends Fragment implements HttpRe
         dadosImovel.setArea_terreno(edtAreaTerreno.getText().toString());
         dadosImovel.setArea_construida(edtAreaConstruida.getText().toString());
         dadosImovel.setObservacao(edtObservacao.getText().toString());
+        dadosImovel.setCaracteristicas(edtCaracteristicas.getText().toString());
     }
 
     @Override
@@ -129,6 +132,7 @@ public class AlterarInformacoesImovelFragment extends Fragment implements HttpRe
             edtAreaTerreno.setText(dadosImovel.getArea_terreno() != null ? dadosImovel.getArea_terreno(): "");
             edtAreaConstruida.setText(dadosImovel.getArea_construida() != null ? dadosImovel.getArea_construida(): "");
             edtObservacao.setText(dadosImovel.getObservacao() != null ? dadosImovel.getObservacao(): "");
+            edtCaracteristicas.setText(dadosImovel.getCaracteristicas() != null ? dadosImovel.getCaracteristicas(): "");
         }
     }
 
@@ -211,6 +215,7 @@ public class AlterarInformacoesImovelFragment extends Fragment implements HttpRe
         dadosImovel.setArea_terreno(edtAreaTerreno.getText().toString());
         dadosImovel.setArea_construida(edtAreaConstruida.getText().toString());
         dadosImovel.setObservacao(edtObservacao.getText().toString());
+        dadosImovel.setCaracteristicas(edtCaracteristicas.getText().toString());
 
         PutHttpComHeaderAsyncTask putHttpComHeaderAsyncTask = new PutHttpComHeaderAsyncTask(getContext(),
                 dadosImovel.gerarDadosImovelJson(),

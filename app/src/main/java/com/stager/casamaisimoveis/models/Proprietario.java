@@ -1,5 +1,8 @@
 package com.stager.casamaisimoveis.models;
 
+import com.google.gson.JsonArray;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -88,5 +91,24 @@ public class Proprietario {
         }
 
         return proprietarioJson;
+    }
+
+    public static List<Proprietario> gerarProprietarios(JSONObject resposta){
+        List<Proprietario> proprietarios = new ArrayList<>();
+
+        try {
+            if(resposta.has("array")) {
+                JSONArray arrayResposta = resposta.getJSONArray("array");
+
+                for(int i = 0; i < arrayResposta.length(); i++){
+                    JSONObject itemResposta = arrayResposta.getJSONObject(i);
+                    proprietarios.add(new Proprietario(itemResposta));
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return proprietarios;
     }
 }
