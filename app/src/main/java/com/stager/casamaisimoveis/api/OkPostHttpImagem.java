@@ -29,19 +29,23 @@ public class OkPostHttpImagem extends AsyncTask<String, String, JSONObject> {
     private ProgressDialog progress;
     private HttpResponseInterface httpResponseInterface;
     private String API_ROTA;
+    private int quantidadeImagem;
+    private int posicaoAtualImagem;
 
-    public OkPostHttpImagem(Bitmap bitmap, Integer parentId, Context contexto, HttpResponseInterface httpResponseInterface, String API_ROTA) {
+    public OkPostHttpImagem(Bitmap bitmap, Integer usuarioId, Context contexto, HttpResponseInterface httpResponseInterface, String API_ROTA, int quantidadeImagem, int posicaoAtualImagem) {
         this.bitmap = bitmap;
-        this.usuarioId = parentId;
+        this.usuarioId = usuarioId;
         this.contexto = contexto;
         this.httpResponseInterface = httpResponseInterface;
         this.API_ROTA = API_ROTA;
+        this.quantidadeImagem = quantidadeImagem;
+        this.posicaoAtualImagem = posicaoAtualImagem;
     }
 
     @Override
     protected void onPreExecute() {
         progress = new ProgressDialog(contexto);
-        progress.setMessage("Aguarde...");
+        progress.setMessage("Upload Imagem " + posicaoAtualImagem + "/" + quantidadeImagem + "...\nAguarde! Não feche o aplicativo!");
         progress.show();
     }
 

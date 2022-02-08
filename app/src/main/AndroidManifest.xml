@@ -43,8 +43,13 @@
             </intent-filter>
         </service>
         <service
-            android:name=".utilitarios.UploadImagemService"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
+            android:enabled="true"
+            android:exported="true"
+            android:name=".utilitarios.UploadImagemService">
+            <intent-filter>
+                <action android:name=".utilitarios.UploadImagemService" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

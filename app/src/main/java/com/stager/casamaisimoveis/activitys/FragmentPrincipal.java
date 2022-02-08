@@ -2,6 +2,8 @@ package com.stager.casamaisimoveis.activitys;
 
 import android.Manifest;
 import android.app.ActivityManager;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.ContentResolver;
@@ -120,9 +122,9 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
     protected void onResume() {
         super.onResume();
         /*if(localizacaoServiceEstahRodando() == false && verificarPermissaoLocalizacao())
-            ativarLocalizacaoService();*/
-        if(VariaveisEstaticas.getImagensUpload().size() > 0)
-            iniciarUploadImagens();
+            ativarLocalizacaoService();
+        if(uploadImagemServiceEstahRodando() == false)
+            iniciarUploadImagens();*/
     }
 
     private void buscarDadosUsuario(Autenticacao autenticacao){
@@ -297,8 +299,8 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         if(uploadServiceEstahRodando() == false){
             /*Intent serviceIntent = new Intent(this, UploadImagemService.class);
             this.startService(serviceIntent);*/
-            Intent mIntent = new Intent(this, UploadImagemService.class);
-            UploadImagemService.enqueueWork(this, mIntent);
+            Intent serviceIntent = new Intent(this, UploadImagemService.class);
+            this.startService(serviceIntent);
         }
     }
 
@@ -466,7 +468,7 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
                                 R.drawable.usuario));
                     }else{
                         ivImagemUsuario.setImageBitmap(resultBitmap);
-                        OkPostHttpImagem okPostHttpImagem = new OkPostHttpImagem(resultBitmap, VariaveisEstaticas.getAutenticacao().getUsuario_id(), this, httpResponseInterface, "api/uploadImagemUsuario");
+                        OkPostHttpImagem okPostHttpImagem = new OkPostHttpImagem(resultBitmap, VariaveisEstaticas.getAutenticacao().getUsuario_id(), this, httpResponseInterface, "api/uploadImagemUsuario", 1, 1);
                         okPostHttpImagem.execute(FerramentasBasicas.getURL() + "api/uploadImagemUsuario");
                         VariaveisEstaticas.getAutenticacao().setImagemUsuario(resultBitmap);
                         VariaveisEstaticas.getTelaInicialInterface().carregarDadosUsuario();
@@ -502,6 +504,17 @@ public class FragmentPrincipal extends FragmentActivity implements FragmentInter
         ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
             if("com.stager.casamaisimoveis.utilitarios.LocalizacaoService".equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean uploadImagemServiceEstahRodando() {
+
+        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
+            if("com.stager.casamaisimoveis.utilitarios.UploadImagemService".equals(service.service.getClassName())) {
                 return true;
             }
         }

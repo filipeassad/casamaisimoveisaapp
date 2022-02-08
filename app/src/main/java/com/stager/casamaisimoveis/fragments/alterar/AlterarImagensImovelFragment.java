@@ -17,6 +17,8 @@ import com.stager.casamaisimoveis.R;
 import com.stager.casamaisimoveis.api.GetHttpImagemAsyncTask;
 import com.stager.casamaisimoveis.api.OkPostHttpImagem;
 import com.stager.casamaisimoveis.api.PutHttpComHeaderAsyncTask;
+import com.stager.casamaisimoveis.banco.DatabaseManager;
+import com.stager.casamaisimoveis.banco.ImagemUploadManager;
 import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
 import com.stager.casamaisimoveis.interfaces.ImagemImovelInterface;
 import com.stager.casamaisimoveis.models.ImagemImovel;
@@ -53,6 +55,7 @@ public class AlterarImagensImovelFragment extends Fragment implements ImagemImov
     private String API_ALTERAR_IMAGEM_IMOVEL = "api/alterarImagensImovel";
     private String API_UPLOAD_IMAGEM_IMOVEL = "api/uploadImagemImovel";
     private List<ImagemImovel> imagensParaRemover;
+    private int totalImagems;
 
     @Nullable
     @Override
@@ -189,13 +192,15 @@ public class AlterarImagensImovelFragment extends Fragment implements ImagemImov
 
     private void retornoUploadoImagem(){
         if (imagensSemId.size() != 0) {
-            /*Bitmap primeiraImagem = imagensSemId.remove(0).getBitmapImagem();
+            Bitmap primeiraImagem = imagensSemId.remove(0).getBitmapImagem();
             OkPostHttpImagem okPostHttpImagem = new OkPostHttpImagem(primeiraImagem,
                     VariaveisEstaticas.getImovelBusca().getId(),
                     getContext(),
                     httpResponseInterface,
-                    API_UPLOAD_IMAGEM_IMOVEL);
-            okPostHttpImagem.execute(FerramentasBasicas.getURL() + API_UPLOAD_IMAGEM_IMOVEL);*/
+                    API_UPLOAD_IMAGEM_IMOVEL,
+                    totalImagems,
+                    (totalImagems - imagensSemId.size()));
+            okPostHttpImagem.execute(FerramentasBasicas.getURL() + API_UPLOAD_IMAGEM_IMOVEL);
         } else {
             Toast.makeText(getContext(), "Imagens alteradas com sucesso.", Toast.LENGTH_SHORT).show();
             VariaveisEstaticas.getFragmentInterface().voltar();
@@ -205,21 +210,27 @@ public class AlterarImagensImovelFragment extends Fragment implements ImagemImov
     private void retornoAlteracaoImagemImovel(JSONObject resposta){
 
         if(imagensSemId.size() != 0){
-            for(ImagemImovel imagem : imagensSemId){
-                ImagemUpload imagemUpload = new ImagemUpload(VariaveisEstaticas.getImovelBusca().getId(), imagem.getBitmapImagem());
-                VariaveisEstaticas.getImagensUpload().add(imagemUpload);
-            }
-            VariaveisEstaticas.getFragmentInterface().iniciarUploadImagens();
+            totalImagems = imagensSemId.size();
+            /*DatabaseManager databaseManager = new DatabaseManager(getContext());
+            ImagemUploadManager imagemUploadManager = new ImagemUploadManager(databaseManager.getWritableDatabase());
 
-            Toast.makeText(getContext(), "Imagens alteradas com sucesso.", Toast.LENGTH_SHORT).show();
-            VariaveisEstaticas.getFragmentInterface().voltar();
-            /*Bitmap primeiraImagem = imagensSemId.remove(0).getBitmapImagem();
+            for (ImagemImovel imagem : imagensSemId) {
+                ImagemUpload imagemUpload = new ImagemUpload(VariaveisEstaticas.getImovelBusca().getId(), imagem.getBitmapImagem());
+                imagemUploadManager.insertImagemUpload(imagemUpload);
+                //VariaveisEstaticas.getImagensUpload().add(imagemUpload);
+            }
+            imagemUploadManager.closeDatabase();
+            VariaveisEstaticas.getFragmentInterface().iniciarUploadImagens();*/
+
+            Bitmap primeiraImagem = imagensSemId.remove(0).getBitmapImagem();
             OkPostHttpImagem okPostHttpImagem = new OkPostHttpImagem(primeiraImagem,
                     VariaveisEstaticas.getImovelBusca().getId(),
                     getContext(),
                     httpResponseInterface,
-                    API_UPLOAD_IMAGEM_IMOVEL);
-            okPostHttpImagem.execute(FerramentasBasicas.getURL() + API_UPLOAD_IMAGEM_IMOVEL);*/
+                    API_UPLOAD_IMAGEM_IMOVEL,
+                    totalImagems,
+                    (totalImagems - imagensSemId.size()));
+            okPostHttpImagem.execute(FerramentasBasicas.getURL() + API_UPLOAD_IMAGEM_IMOVEL);
         }else{
             Toast.makeText(getContext(), "Imagens alteradas com sucesso.", Toast.LENGTH_SHORT).show();
             VariaveisEstaticas.getFragmentInterface().voltar();

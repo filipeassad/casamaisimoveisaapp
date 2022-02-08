@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.JobIntentService;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
@@ -25,7 +26,10 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.stager.casamaisimoveis.activitys.FragmentPrincipal;
 import com.stager.casamaisimoveis.api.PostHttpComHeaderAsyncTask;
 import com.stager.casamaisimoveis.api.PostHttpComHeaderServicesAsyncTask;
+import com.stager.casamaisimoveis.banco.DatabaseManager;
+import com.stager.casamaisimoveis.banco.ImagemUploadManager;
 import com.stager.casamaisimoveis.interfaces.HttpResponseInterface;
+import com.stager.casamaisimoveis.models.ImagemUpload;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,37 +37,41 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-public class UploadImagemService extends JobIntentService implements HttpResponseInterface {
+public class UploadImagemService extends Service implements HttpResponseInterface {
 
     private HttpResponseInterface httpResponseInterface = this;
     private String API_UPLOAD_IMAGEM_IMOVEL = "api/imagemImovel";
     private String poolId = "us-east-2:81030e5c-c14e-405a-abac-a5e4f9133506";
     private static final int JOB_ID = 102;
+    private ImagemUpload imagemUploadBanco;
 
-
-    public static void enqueueWork(Context context, Intent intent) {
-        enqueueWork(context, UploadImagemService.class, JOB_ID, intent);
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-    }
-
-    @Override
-    protected void onHandleWork(Intent intent) {
-        Log.v("Service Upload", "ENTROU");
+        Log.v("Upload Imagem Service", "Upload iniciado");
         uploadtos3();
     }
 
     public void uploadtos3() {
+        DatabaseManager databaseManager = new DatabaseManager(getApplicationContext());
+        ImagemUploadManager imagemUploadManager = new ImagemUploadManager(databaseManager.getWritableDatabase());
+        imagemUploadBanco = imagemUploadManager.getPrimeiraImagemUpload();
+        imagemUploadManager.closeDatabase();
 
-        if (VariaveisEstaticas.getImagensUpload().size() > 0){
+        Log.v("Upload Imagem Service","Iniciando um upload +++");
+        if (imagemUploadBanco != null){
             final String fileName = "casamaisimoveis-" + UUID.randomUUID().toString();
 
-            Bitmap imagemParaUpload = VariaveisEstaticas.getImagensUpload().get(0).getImagem();
+            Bitmap imagemParaUpload = imagemUploadBanco.getImagem();
 
             final File file = createFile(getApplicationContext(), fileName, imagemParaUpload);
 
@@ -89,7 +97,7 @@ public class UploadImagemService extends JobIntentService implements HttpRespons
                 public void onStateChanged(int id, TransferState state) {
                     if (state.equals(TransferState.COMPLETED)) {
                         PostHttpComHeaderServicesAsyncTask postHttpComHeaderAsyncTask = new PostHttpComHeaderServicesAsyncTask(getApplicationContext(),
-                                VariaveisEstaticas.getImagensUpload().get(0).gerarJSONImagemUpload(fileName),
+                                imagemUploadBanco.gerarJSONImagemUpload(fileName),
                                 httpResponseInterface,
                                 API_UPLOAD_IMAGEM_IMOVEL);
 
@@ -104,15 +112,16 @@ public class UploadImagemService extends JobIntentService implements HttpRespons
 
                 @Override
                 public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-                    Log.v("progress", ((bytesTotal - bytesCurrent) / 2048) / 1024 +"%");
+                    Log.v("Upload Imagem Service", ((bytesTotal - bytesCurrent) / 2048) / 1024 +"%");
                 }
 
                 @Override
                 public void onError(int id, Exception ex) {
-                    Log.d("aws",ex.getMessage());
+                    Log.v("Upload Imagem Service",ex.getMessage());
                 }
             });
         }else {
+            Log.v("Upload Imagem Service", "##### Service sendo stopada.");
             stopSelf();
         }
     }
@@ -129,7 +138,7 @@ public class UploadImagemService extends JobIntentService implements HttpRespons
             os.close();
             return imageFile;
         } catch (Exception e) {
-            Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
+            Log.e("Upload Imagem Service", "Error writing bitmap", e);
             return null;
         }
     }
@@ -156,11 +165,12 @@ public class UploadImagemService extends JobIntentService implements HttpRespons
     }
 
     private void removerImagemDaListagem() {
-        if(VariaveisEstaticas.getImagensUpload().size() > 0){
-            Log.v("Service Upload", "Quantidade Imagens para upload: " + VariaveisEstaticas.getImagensUpload().size());
-            VariaveisEstaticas.getImagensUpload().remove(0);
-            uploadtos3();
-        }
+        Log.v("Service Upload", "Removendo Imagem: " + imagemUploadBanco.getId());
+        DatabaseManager databaseManager = new DatabaseManager(getApplicationContext());
+        ImagemUploadManager imagemUploadManager = new ImagemUploadManager(databaseManager.getWritableDatabase());
+        imagemUploadManager.deletarImagemUpload(imagemUploadBanco);
+        imagemUploadManager.closeDatabase();
+        uploadtos3();
     }
 
     @Override

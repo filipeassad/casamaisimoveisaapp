@@ -21,6 +21,7 @@ public class PostHttpComHeaderServicesAsyncTask extends AsyncTask<String, String
     private HttpResponseInterface httpResponseInterface;
     private JSONObject jsonObject;
     private String rotaApi;
+    private HttpURLConnection conn;
 
     public PostHttpComHeaderServicesAsyncTask(Context contexto, JSONObject jsonObject, HttpResponseInterface httpResponseInterface, String rotaApi) {
         this.jsonObject = jsonObject;
@@ -36,7 +37,7 @@ public class PostHttpComHeaderServicesAsyncTask extends AsyncTask<String, String
 
         try {
             URL url = new URL(strings[0]);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(10000);
             conn.setRequestProperty("Content-Type","application/json");
             conn.addRequestProperty("x-access-token", VariaveisEstaticas.getAutenticacao().getToken());
@@ -87,6 +88,8 @@ public class PostHttpComHeaderServicesAsyncTask extends AsyncTask<String, String
 
     @Override
     protected void onPostExecute(JSONObject resposta) {
+        conn.disconnect();
+        conn = null;
         httpResponseInterface.retornoJsonObject(resposta, rotaApi);
     }
 }

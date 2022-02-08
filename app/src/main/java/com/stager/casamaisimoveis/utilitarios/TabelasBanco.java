@@ -27,4 +27,14 @@ public class TabelasBanco {
         return rotaCaptadorTable;
     }
 
+    public String tabelaImagemUpload() {
+
+        String imagemUploadTable = "CREATE TABLE IMAGEMUPLOAD( " +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "imovelId INTEGER, " +
+                "imagem BLOB);";
+
+        return imagemUploadTable;
+    }
+
 }

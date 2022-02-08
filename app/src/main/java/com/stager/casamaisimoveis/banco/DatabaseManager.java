@@ -10,7 +10,7 @@ import com.stager.casamaisimoveis.utilitarios.TabelasBanco;
 
 public class DatabaseManager extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "casamaisimoveis";
 
     public DatabaseManager(@Nullable Context context) {
@@ -23,6 +23,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL(tabelasBanco.tabelaAutenticacao());
         sqLiteDatabase.execSQL(tabelasBanco.tabelaRotaCaptador());
+        sqLiteDatabase.execSQL(tabelasBanco.tabelaImagemUpload());
     }
 
     @Override
@@ -31,6 +32,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
         if(oldVersion < 2){
             sqLiteDatabase.execSQL(tabelasBanco.tabelaRotaCaptador());
+            sqLiteDatabase.execSQL(tabelasBanco.tabelaImagemUpload());
+        }else if(oldVersion < 3) {
+            sqLiteDatabase.execSQL(tabelasBanco.tabelaImagemUpload());
         }
     }
 }

@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 public class ImagemUpload {
 
+    private Integer id;
     private Integer imovelId;
     private Bitmap imagem;
 
@@ -32,6 +33,14 @@ public class ImagemUpload {
 
     public void setImagem(Bitmap imagem) {
         this.imagem = imagem;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public JSONObject gerarJSONImagemUpload(String hash) {
